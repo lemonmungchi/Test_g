@@ -36,10 +36,10 @@ class Body {
     private String RSTR_NM;
     @SerializedName("RSTR_LA")     //위도
     @Expose
-    private String RSTR_LA;
+    private Double RSTR_LA;
     @SerializedName("RSTR_LO")     //경도
     @Expose
-    private String RSTR_LO;
+    private Double RSTR_LO;
 
     public int getRSTR_ID() {
         return RSTR_ID;
@@ -49,11 +49,11 @@ class Body {
         return RSTR_NM;
     }
 
-    public String getRSTR_LA() {
+    public Double getRSTR_LA() {
         return RSTR_LA;
     }
 
-    public String getRSTR_LO() {
+    public Double getRSTR_LO() {
         return RSTR_LO;
     }
 

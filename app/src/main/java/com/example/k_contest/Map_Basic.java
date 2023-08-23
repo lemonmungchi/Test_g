@@ -19,6 +19,7 @@ import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.util.FusedLocationSource;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,7 +34,9 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationSource locationSource;
     private NaverMap naverMap;
 
+    private ArrayList<Double> Data_LA= new ArrayList<>();       //위도
 
+    private ArrayList<Double>Data_Lo=new ArrayList<>();         //경도
 
     private static final String APIKEY="aE5iTKPfr1Msn7QXu8LmeK1SuDfo36insow1VLonAp3hb0VbTMjYr08mS8h1Q42h";
     private Button ex_retro;
@@ -68,7 +71,8 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                         if(response.isSuccessful()){
                             DataPath data = response.body();
                             for(int i=0;i<data.getBody().size();i++){
-
+                                    Data_LA.add(data.getBody().get(i).getRSTR_LA());
+                                    Data_Lo.add(data.getBody().get(i).getRSTR_LO());
                             }
 
                         }else {

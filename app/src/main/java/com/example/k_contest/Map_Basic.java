@@ -1,6 +1,11 @@
 package com.example.k_contest;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +18,12 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.util.FusedLocationSource;
 
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -22,10 +33,11 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationSource locationSource;
     private NaverMap naverMap;
 
-    static final String Base_URL="https://gyeongnam.openapi.redtable.global/";
+
 
     private static final String APIKEY="aE5iTKPfr1Msn7QXu8LmeK1SuDfo36insow1VLonAp3hb0VbTMjYr08mS8h1Q42h";
-
+    private Button ex_retro;
+    private  Gson gson = new GsonBuilder().setLenient().create();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +48,41 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
         mapView.getMapAsync(this);
 
+
+        ex_retro=findViewById(R.id.ex_retro);
+
+        ex_retro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://gyeongnam.openapi.redtable.global/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                DataAddress dataAddress = retrofit.create(DataAddress.class);
+
+                Call<DataPath> call = dataAddress.getData("aE5iTKPfr1Msn7QXu8LmeK1SuDfo36insow1VLonAp3hb0VbTMjYr08mS8h1Q42h",1);
+
+                call.enqueue(new Callback<DataPath>() {
+                    @Override
+                    public void onResponse(Call<DataPath> call, Response<DataPath> response) {
+                        if(response.isSuccessful()){
+                            DataPath data = response.body();
+                            for(int i=0;i<data.getBody().size();i++){
+
+                            }
+
+                        }else {
+                            Log.d(TAG,"실패");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DataPath> call, Throwable t) {
+                        Log.d(TAG,"실패"+t.getMessage());
+                    }
+                });
+            }
+        });
     }
     @Override
     protected void onStart() {
@@ -81,7 +128,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {                                        //맵객체 매서드 사용시 여기서 작성
-        Gson gson = new GsonBuilder().setLenient().create();
+
 
     }
 

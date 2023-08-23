@@ -1,6 +1,5 @@
 package com.example.k_contest;
 
-import static com.example.k_contest.Map_Basic.Base_URL;
 
 import androidx.appcompat.app.AppCompatActivity;
 

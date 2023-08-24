@@ -2,6 +2,8 @@ package com.example.k_contest;
 
 import static android.content.ContentValues.TAG;
 
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,10 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraPosition;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 
 
@@ -51,42 +57,9 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
         mapView.getMapAsync(this);
 
+        locationSource =
+                new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
 
-        ex_retro=findViewById(R.id.ex_retro);
-
-        ex_retro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://gyeongnam.openapi.redtable.global/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                DataAddress dataAddress = retrofit.create(DataAddress.class);
-
-                Call<DataPath> call = dataAddress.getData("aE5iTKPfr1Msn7QXu8LmeK1SuDfo36insow1VLonAp3hb0VbTMjYr08mS8h1Q42h",1);
-
-                call.enqueue(new Callback<DataPath>() {
-                    @Override
-                    public void onResponse(Call<DataPath> call, Response<DataPath> response) {
-                        if(response.isSuccessful()){
-                            DataPath data = response.body();
-                            for(int i=0;i<data.getBody().size();i++){
-                                    Data_LA.add(data.getBody().get(i).getRSTR_LA());
-                                    Data_Lo.add(data.getBody().get(i).getRSTR_LO());
-                            }
-
-                        }else {
-                            Log.d(TAG,"실패");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<DataPath> call, Throwable t) {
-                        Log.d(TAG,"실패"+t.getMessage());
-                    }
-                });
-            }
-        });
     }
     @Override
     protected void onStart() {
@@ -134,7 +107,108 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     public void onMapReady(@NonNull NaverMap naverMap) {                                        //맵객체 매서드 사용시 여기서 작성
 
 
+
+        this.naverMap=naverMap;
+        naverMap.setLocationSource(locationSource);
+        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
+
+        ex_retro=findViewById(R.id.ex_retro);
+
+        ex_retro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://gyeongnam.openapi.redtable.global/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                DataAddress dataAddress = retrofit.create(DataAddress.class);
+
+                Call<DataPath> call = dataAddress.getData("aE5iTKPfr1Msn7QXu8LmeK1SuDfo36insow1VLonAp3hb0VbTMjYr08mS8h1Q42h",1);
+
+                call.enqueue(new Callback<DataPath>() {
+                    @Override
+                    public void onResponse(Call<DataPath> call, Response<DataPath> response) {
+                        float count=0;        //주변식당수 체크
+                        float re_LA=0;      //식당들 위도
+                        float re_Lo=0;      //식당들 경도
+                        if(response.isSuccessful()){
+                            DataPath data = response.body();
+                            for(int i=0;i<data.getBody().size();i++){
+                                Data_LA.add(data.getBody().get(i).getRSTR_LA());            //1페이지 1000개 위도
+                                Data_Lo.add(data.getBody().get(i).getRSTR_LO());            //1페이지 1000개 경도
+                            }
+                            Marker[] m=new Marker[1000];
+
+                            for(int j=0;j<m.length;j++){
+                                m[j]=new Marker();
+                                m[j].setPosition(new LatLng(Data_LA.get(j),Data_Lo.get(j)));
+                                m[j].setCaptionText("식당");
+                                m[j].setMap(naverMap);
+
+                                Location d=locationSource.getLastLocation();
+                                double my_LA=d.getLatitude();
+                                double my_Lo=d.getLongitude();
+                                if(distance(my_LA,my_Lo,Data_LA.get(j),Data_Lo.get(j))<3) {
+                                    m[j].setVisible(true);
+                                    count++;
+                                    re_LA += Data_LA.get(j);
+                                    re_Lo += Data_Lo.get(j);
+                                }
+                                else
+                                    m[j].setVisible(false);             //만약에 주면에 없다면
+                                CameraPosition cameraPosition= new CameraPosition(new LatLng(re_LA/count,re_Lo/count),12);
+                                naverMap.setCameraPosition(cameraPosition);
+                            }
+                        }else {
+                            Log.d(TAG,"실패");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DataPath> call, Throwable t) {
+                        Log.d(TAG,"실패"+t.getMessage());
+                    }
+                });
+            }
+        });
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,  @NonNull int[] grantResults) {
+        if (locationSource.onRequestPermissionsResult(
+                requestCode, permissions, grantResults)) {
+            if (!locationSource.isActivated()) { // 권한 거부됨
+                naverMap.setLocationTrackingMode(LocationTrackingMode.None);
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(
+                requestCode, permissions, grantResults);                //위치권환가져오는 코드
     }
 
+    private static double distance(double lat1, double lon1, double lat2, double lon2) {
 
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+
+        dist = dist * 1.609344;
+
+
+        return (dist);
+    }
+
+    //10진수를 radian(라디안)으로 변환
+    private static double deg2rad(double deg){
+        return (deg * Math.PI/180.0);
+    }
+    //radian(라디안)을 10진수로 변환
+    private static double rad2deg(double rad){
+        return (rad * 180 / Math.PI);
+    }
 }

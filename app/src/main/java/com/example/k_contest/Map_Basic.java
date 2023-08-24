@@ -26,6 +26,7 @@ import com.naver.maps.map.util.FusedLocationSource;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,9 +41,9 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationSource locationSource;
     private NaverMap naverMap;
 
-    private ArrayList<Double> Data_LA= new ArrayList<>();       //위도
+    private ArrayList<Double> Data_LA = new ArrayList<>();;       //위도
 
-    private ArrayList<Double>Data_Lo=new ArrayList<>();         //경도
+    private ArrayList<Double> Data_Lo = new ArrayList<>();         //경도
 
     private static final String APIKEY="aE5iTKPfr1Msn7QXu8LmeK1SuDfo36insow1VLonAp3hb0VbTMjYr08mS8h1Q42h";
     private Button ex_retro;
@@ -120,7 +121,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://gyeongnam.openapi.redtable.global/")
-                        .addConverterFactory(GsonConverterFactory.create())
+                        .addConverterFactory(GsonConverterFactory.create(gson))
                         .build();
                 DataAddress dataAddress = retrofit.create(DataAddress.class);
 
@@ -129,17 +130,90 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                 call.enqueue(new Callback<DataPath>() {
                     @Override
                     public void onResponse(Call<DataPath> call, Response<DataPath> response) {
-                        float count=0;        //주변식당수 체크
-                        float re_LA=0;      //식당들 위도
-                        float re_Lo=0;      //식당들 경도
+
                         if(response.isSuccessful()){
                             DataPath data = response.body();
                             for(int i=0;i<data.getBody().size();i++){
                                 Data_LA.add(data.getBody().get(i).getRSTR_LA());            //1페이지 1000개 위도
                                 Data_Lo.add(data.getBody().get(i).getRSTR_LO());            //1페이지 1000개 경도
                             }
-                            Marker[] m=new Marker[1000];
+                        }else {
+                            Log.d(TAG,"실패");
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<DataPath> call, Throwable t) {
+                        Log.d(TAG,"실패"+t.getMessage());
+                    }
 
+
+                });
+
+                Call<DataPath> call2 = dataAddress.getData("aE5iTKPfr1Msn7QXu8LmeK1SuDfo36insow1VLonAp3hb0VbTMjYr08mS8h1Q42h",2);
+
+                call2.enqueue(new Callback<DataPath>() {
+                    @Override
+                    public void onResponse(Call<DataPath> call, Response<DataPath> response) {
+
+                        if(response.isSuccessful()){
+                            DataPath data = response.body();
+                            for(int i=0;i<data.getBody().size();i++){
+                                Data_LA.add(data.getBody().get(i).getRSTR_LA());            //1페이지 1000개 위도
+                                Data_Lo.add(data.getBody().get(i).getRSTR_LO());            //1페이지 1000개 경도
+                            }
+                        }else {
+                            Log.d(TAG,"실패");
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<DataPath> call, Throwable t) {
+                        Log.d(TAG,"실패"+t.getMessage());
+                    }
+
+
+                });
+
+                Call<DataPath> call3 = dataAddress.getData("aE5iTKPfr1Msn7QXu8LmeK1SuDfo36insow1VLonAp3hb0VbTMjYr08mS8h1Q42h",3);
+
+                call3.enqueue(new Callback<DataPath>() {
+                    @Override
+                    public void onResponse(Call<DataPath> call, Response<DataPath> response) {
+
+                        if(response.isSuccessful()){
+                            DataPath data = response.body();
+                            for(int i=0;i<data.getBody().size();i++){
+                                Data_LA.add(data.getBody().get(i).getRSTR_LA());            //1페이지 1000개 위도
+                                Data_Lo.add(data.getBody().get(i).getRSTR_LO());            //1페이지 1000개 경도
+                            }
+                        }else {
+                            Log.d(TAG,"실패");
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<DataPath> call, Throwable t) {
+                        Log.d(TAG,"실패"+t.getMessage());
+                    }
+
+
+                });
+
+                Call<DataPath> call4 = dataAddress.getData("aE5iTKPfr1Msn7QXu8LmeK1SuDfo36insow1VLonAp3hb0VbTMjYr08mS8h1Q42h",4);
+
+                call4.enqueue(new Callback<DataPath>() {
+                    @Override
+                    public void onResponse(Call<DataPath> call, Response<DataPath> response) {
+
+                        if(response.isSuccessful()){
+                            DataPath data = response.body();
+                            for(int i=0;i<data.getBody().size();i++){
+                                Data_LA.add(data.getBody().get(i).getRSTR_LA());            //1페이지 1000개 위도
+                                Data_Lo.add(data.getBody().get(i).getRSTR_LO());            //1페이지 1000개 경도
+                            }
+                            int i=Data_LA.size();
+                            Marker[] m=new Marker[3468];
+                            float count=0;        //주변식당수 체크
+                            float re_LA=0;      //식당들 위도
+                            float re_Lo=0;      //식당들 경도
                             for(int j=0;j<m.length;j++){
                                 m[j]=new Marker();
                                 m[j].setPosition(new LatLng(Data_LA.get(j),Data_Lo.get(j)));
@@ -164,11 +238,12 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                             Log.d(TAG,"실패");
                         }
                     }
-
                     @Override
                     public void onFailure(Call<DataPath> call, Throwable t) {
                         Log.d(TAG,"실패"+t.getMessage());
                     }
+
+
                 });
             }
         });
@@ -190,7 +265,13 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
     private static double distance(double lat1, double lon1, double lat2, double lon2) {
 
-        double theta = lon1 - lon2;
+        double theta;
+        if(lon1>lon2){
+            theta = lon1 - lon2;
+        } else{
+            theta=lon2-lat1;
+        }
+
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
 
         dist = Math.acos(dist);
@@ -211,4 +292,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     private static double rad2deg(double rad){
         return (rad * 180 / Math.PI);
     }
+
+
+
 }

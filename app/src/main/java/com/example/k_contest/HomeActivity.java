@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ public class HomeActivity extends AppCompatActivity {
     AutoCompleteTextView EndPoint;
 
     Button MapPoint;
+
+    ImageButton UserPage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,17 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        UserPage = findViewById(R.id.usericon);
+
+        UserPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, UserPageActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
         private void settingList(){
             searchList.add("창원");

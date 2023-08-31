@@ -31,7 +31,7 @@ class Body {
     @SerializedName("RSTR_ID")
     @Expose
     private int RSTR_ID;
-    @SerializedName("RSTR_NM")      //도로명 주소
+    @SerializedName("RSTR_NM")      //식당이름
     @Expose
     private String RSTR_NM;
     @SerializedName("RSTR_LA")     //위도
@@ -40,6 +40,10 @@ class Body {
     @SerializedName("RSTR_LO")     //경도
     @Expose
     private Double RSTR_LO;
+
+    @SerializedName(("RSTR_INTRCN_CONT"))       //식당소개
+    @Expose
+    private String RSTR_INTRCN_CONT;
 
     public int getRSTR_ID() {
         return RSTR_ID;
@@ -57,10 +61,14 @@ class Body {
         return RSTR_LO;
     }
 
+    public String  getRSTR_INTRCN_CONT() {
+        return RSTR_INTRCN_CONT;
+    }
+
     @Override
     public String toString(){
         return "Result [RSTR_ID = "+RSTR_ID +"RSTR_NM"+RSTR_NM+"RSTR_LA"+RSTR_LA+
-                "RSTR_LO"+RSTR_LO+"]";
+                "RSTR_LO"+RSTR_LO+"RSTR_INTRCN_CONT="+RSTR_INTRCN_CONT;
     }
 }
 

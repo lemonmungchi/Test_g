@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-public class SearchActivity extends Activity {
+public class ProfileActivity  extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_profile);
         //실행페이지
 
         ImageButton backspaceButton=findViewById(R.id.backspaceicon);

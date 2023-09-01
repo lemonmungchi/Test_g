@@ -22,6 +22,9 @@
             android:name=".SearchActivity"
             android:exported="true" />
         <activity
+            android:name=".ProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>

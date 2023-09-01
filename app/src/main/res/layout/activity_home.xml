@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/border_radius"
         android:ems="10"
         android:hint="출발"
         android:inputType="text"
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/border_radius"
         android:ems="10"
         android:hint="도착"
         android:inputType="text"
@@ -36,12 +36,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Search" />
+        android:text="Search"
+        android:textColor="@color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:background="@color/white"
         android:orientation="vertical">
 
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom|center"
-            android:layout_weight="9" />
+            android:layout_weight="8" />
     </LinearLayout>
 
 

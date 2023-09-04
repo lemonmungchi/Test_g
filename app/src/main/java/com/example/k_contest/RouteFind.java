@@ -7,6 +7,7 @@ import retrofit2.http.Query;
 
 public interface RouteFind {
     @GET("v1/driving")
-    Call<DataPath> getData(@Header ("X-NCP-APIGW-API-KEY-ID")String ClientID,@Header("X-NCP-APIGW-API-KEY") String Secret,
-                           @Query("start") float start, @Query("goal") float goal);
+    Call<RoutePath> getData(@Header ("X-NCP-APIGW-API-KEY-ID")String ClientID,
+                            @Header("X-NCP-APIGW-API-KEY") String Secret,
+                            @Query("start") String start,@Query("goal") String goal);
 }

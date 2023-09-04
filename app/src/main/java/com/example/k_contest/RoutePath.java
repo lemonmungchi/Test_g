@@ -22,26 +22,35 @@ public class RoutePath {
     @Expose
     private Route route;
 
-    public int getcode(){
+    public int getCode() {
         return code;
     }
 
-    public Route getroute(){
+    public Route getRoute() {
         return route;
     }
+
+    public String getCurrentDateTime() {
+        return currentDateTime;
+    }
+
+    public String getMessge() {
+        return messge;
+    }
+
 }
 
 class Route{
-    @SerializedName("summary")
+    @SerializedName("traoptimal")
     @Expose
-    private List<Trafast> trafast;
+    private List<Traoptimal> traoptimal;
 
-    public List<Trafast> getTrafast() {
-        return trafast;
+    public List<Traoptimal> getTraoptimal() {
+        return traoptimal;
     }
 }
 
-class Trafast{
+class Traoptimal{
     @SerializedName("summary")
     @Expose
     private Summary summary;
@@ -66,12 +75,20 @@ class Summary{
     @Expose
     private Goal goal;
 
+    @SerializedName("distance")
+    @Expose
+    private int distance;
+
     public Goal getGoal() {
         return goal;
     }
 
     public Start getStart() {
         return start;
+    }
+
+    public int getDistance() {
+        return distance;
     }
 }
 class Start

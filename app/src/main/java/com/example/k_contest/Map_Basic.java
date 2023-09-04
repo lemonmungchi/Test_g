@@ -43,6 +43,10 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationSource locationSource;
     private NaverMap naverMap;
 
+    private String NavaApIKey="nowdd7jigt";
+
+    private String secret="C7toUlRTfdqJlYR8tsX6fGj2WtVIFIEySUFTO72L";
+
     private ArrayList<Double> Data_LA = new ArrayList<>();;       //위도
 
     private ArrayList<Double> Data_Lo = new ArrayList<>();         //경도
@@ -52,6 +56,8 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
     private ArrayList<String> Data_Con = new ArrayList<>();         //식당소개글
     private Button ex_retro;
+
+    private Button ex_retro2;
     private  Gson gson = new GsonBuilder().setLenient().create();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +124,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 
         ex_retro=findViewById(R.id.ex_retro);
-
+        ex_retro2=findViewById(R.id.ex_retro2);
 
         ex_retro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,6 +188,37 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                     }
 
 
+                });
+            }
+        });
+
+        ex_retro2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://naveropenapi.apigw.ntruss.com/map-direction/")
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build();
+                RouteFind routeFind = retrofit.create(RouteFind.class);
+
+                Location d=locationSource.getLastLocation();
+
+                Call<RoutePath> call = routeFind.getData(NavaApIKey,secret,"127.1058342,37.359708","129.075986,35.179470");
+
+                call.enqueue(new Callback<RoutePath>() {
+                    @Override
+                    public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
+                        if(response.isSuccessful()) {
+                            RoutePath routePath=response.body();
+                            Log.d(TAG,"성공"+routePath.getRoute());
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RoutePath> call, Throwable t) {
+                        Log.d(TAG,"실패");
+                    }
                 });
             }
         });

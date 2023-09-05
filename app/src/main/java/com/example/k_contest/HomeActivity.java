@@ -86,7 +86,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        UserPage = findViewById(R.id.usericon);
+        UserPage = findViewById(R.id.profileicon);
 
         UserPage.setOnClickListener(new View.OnClickListener() {
             @Override

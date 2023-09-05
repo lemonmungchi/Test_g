@@ -16,7 +16,7 @@
         android:layout_weight="1"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
-        tools:src="@drawable/backspaceimage" />
+        android:src="@drawable/backspaceimage" />
 
     <ImageButton
         android:id="@+id/homeicon"

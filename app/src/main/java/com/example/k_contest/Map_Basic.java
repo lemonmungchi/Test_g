@@ -64,7 +64,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_basic);
 
-        mapView = findViewById(R.id.map_basic);
+        mapView = findViewById(R.id.map_search_view);
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(this);

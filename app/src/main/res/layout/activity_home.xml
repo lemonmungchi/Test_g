@@ -16,7 +16,8 @@
         android:layout_margin="5dp"
         android:background="@drawable/border_radius"
         android:ems="10"
-        android:hint="출발"
+        android:hint="출발지"
+        android:textColorHint="@color/black"
         android:inputType="text"
         android:padding="5dp" />
 
@@ -27,7 +28,8 @@
         android:layout_margin="5dp"
         android:background="@drawable/border_radius"
         android:ems="10"
-        android:hint="도착"
+        android:hint="도착지"
+        android:textColorHint="@color/black"
         android:inputType="text"
         android:padding="5dp" />
 

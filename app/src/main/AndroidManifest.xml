@@ -27,6 +27,7 @@
         <activity
             android:name=".ProfileActivity"
             android:exported="true" />
+
         <activity
             android:name=".HomeActivity"
             android:exported="true">
@@ -38,6 +39,8 @@
         </activity>
         <activity android:name=".UserPageActivity" />
         <activity android:name=".PrivacyActivity" />
+        <activity android:name=".fragments.Testfrag1" />
+        <activity android:name=".fragments.Testfrag2"/>
     </application>
 
 </manifest>

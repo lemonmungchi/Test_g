@@ -13,17 +13,20 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.drawerlayout.widget.DrawerLayout;
+
 public class HomeActivity extends AppCompatActivity {
     List<String> searchList;
     AutoCompleteTextView StartPoint;
     AutoCompleteTextView EndPoint;
     Button MapPoint;
-
     ImageButton UserPage;
+    DrawerLayout drawerLayout;
+    View drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_drawer);
         //실행페이지
 
         ImageButton backspaceButton=findViewById(R.id.backspaceicon);
@@ -66,6 +69,27 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         //버튼 페이지 이동
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);  //드로어레이아웃 선택을 통해 작동
+        drawer = (View)findViewById(R.id.drawer);
+
+        ImageButton openBtn = (ImageButton)findViewById(R.id.sideMenuBtn);  // 사이드메뉴 열기 버튼
+
+        openBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(drawer);
+            }
+        });
+
+        Button closeBtn = (Button)findViewById(R.id.closeBtn);  //사이드메뉴 닫기
+
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.closeDrawer(drawer);
+            }
+        });
 
         searchList = new ArrayList<>();
         settingList();

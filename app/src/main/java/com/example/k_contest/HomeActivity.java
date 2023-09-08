@@ -70,21 +70,21 @@ public class HomeActivity extends AppCompatActivity {
         });
         //버튼 페이지 이동
 
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);  //드로어레이아웃 선택을 통해 작동
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);  //드로어 레이아웃 선택을 통해 작동
         drawer = (View)findViewById(R.id.drawer);
 
-        ImageButton openBtn = (ImageButton)findViewById(R.id.sideMenuBtn);  // 사이드메뉴 열기 버튼
+        ImageButton openSideBtn = (ImageButton)findViewById(R.id.sideMenuBtn);  // 사이드메뉴 열기 버튼
 
-        openBtn.setOnClickListener(new View.OnClickListener() {
+        openSideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 drawerLayout.openDrawer(drawer);
             }
         });
 
-        Button closeBtn = (Button)findViewById(R.id.closeBtn);  //사이드메뉴 닫기
+        Button closeSideBtn = (Button)findViewById(R.id.closeBtn);  //사이드메뉴 닫기
 
-        closeBtn.setOnClickListener(new View.OnClickListener() {
+        closeSideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 drawerLayout.closeDrawer(drawer);

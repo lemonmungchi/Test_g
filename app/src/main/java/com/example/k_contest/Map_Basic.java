@@ -12,6 +12,14 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.naver.maps.geometry.LatLng;
@@ -59,6 +67,8 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
     private Button ex_retro2;
     private  Gson gson = new GsonBuilder().setLenient().create();
+
+    private  FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +81,9 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
         locationSource =
                 new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
+
+
+
 
     }
     @Override
@@ -127,6 +140,26 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
         ex_retro2=findViewById(R.id.ex_retro2);
 
         ex_retro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("data1")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+            }
+        });
+
+        /*ex_retro.setOnClickListener(new View.OnClickListener() {                      식당불러오기코드
             @Override
             public void onClick(View view) {
                 Retrofit retrofit = new Retrofit.Builder()
@@ -190,7 +223,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
                 });
             }
-        });
+        });*/
 
         ex_retro2.setOnClickListener(new View.OnClickListener() {
             @Override

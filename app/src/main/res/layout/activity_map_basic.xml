@@ -21,7 +21,9 @@
         <com.naver.maps.map.MapView
             android:id="@+id/map_basic"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+        </com.naver.maps.map.MapView>
 
         <Button
             android:id="@+id/ex_retro"

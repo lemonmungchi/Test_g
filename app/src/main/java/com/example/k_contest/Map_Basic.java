@@ -2,6 +2,7 @@ package com.example.k_contest;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -69,6 +70,27 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     private  Gson gson = new GsonBuilder().setLenient().create();
 
     private  FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private double[][] region_position = {
+            {35.1320, 128.7163},        //창원
+            {35.1805, 128.1087},        //진주
+            {34.8497, 128.4339},        //통영
+            {35.0903, 128.0705},        //사천
+            {35.2332, 128.8819},        //김해
+            {35.4913, 128.7481},        //밀양
+            {34.8918, 128.6206},        //거제
+            {35.3385, 129.0265},        //양산
+            {35.3227, 128.2878},        //의령
+            {35.5202, 127.7259},        //함양
+            {35.5414, 128.5004},        //창녕
+            {34.9754, 128.3234},        //고성
+            {34.8953, 127.8828},        //남해
+            {35.0642, 127.7556},        //하동
+            {35.4138, 127.8741},        //산청
+            {35.2795, 128.4075},        //함안
+            {35.6875, 127.9056},        //거창
+            {35.5667, 128.1684}         //합천
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +152,16 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {                                        //맵객체 매서드 사용시 여기서 작성
+
+        Intent intent = getIntent();
+        String st = intent.getStringExtra("start");          //출발지 받아오기
+        String ed = intent.getStringExtra("end");             //목적지 받아오기
+
+        /* todo - 출발 목적지 받아서 다익스트라에 돌린다음 restapi에 넣고 각 점을 받아오고
+        *   그 점을 마커로 찍고 각 점 사이를 PathOverlay path = new PathOverlay(); 객체 배열로
+        * 이어주기 */
+
+        // 다익스트라 함수 Dijkstra dj=new Dijkstra(18, newGN);
 
 
         this.naverMap=naverMap;
@@ -236,7 +268,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
                 Location d=locationSource.getLastLocation();
 
-                Call<RoutePath> call = routeFind.getData(NavaApIKey,secret,"127.1058342,37.359708","129.075986,35.179470");
+                Call<RoutePath> call = routeFind.getData(NavaApIKey,secret,"127.1058342,37.359708","129.075986,35.179470");        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
 
                 call.enqueue(new Callback<RoutePath>() {
                     @Override

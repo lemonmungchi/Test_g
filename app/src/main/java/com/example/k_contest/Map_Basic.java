@@ -3,8 +3,6 @@ package com.example.k_contest;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,33 +11,20 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
-import com.naver.maps.map.CameraUpdate;
-import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
-import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.overlay.PathOverlay;
 import com.naver.maps.map.util.FusedLocationSource;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import retrofit2.Call;
@@ -63,7 +48,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     private ArrayList<Double> Data_Lo = new ArrayList<>();         //경도
 
 
-    private Button ex_retro;
+    List<LatLng> list=new ArrayList<>();
 
     private Button ex_retro2;
     private  Gson gson = new GsonBuilder().setLenient().create();
@@ -165,8 +150,6 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
 
         this.naverMap=naverMap;
-        naverMap.setLocationSource(locationSource);
-        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 
         ex_retro2=findViewById(R.id.ex_retro2);
 
@@ -267,8 +250,6 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                         .build();
                 RouteFind routeFind = retrofit.create(RouteFind.class);
 
-                Location d=locationSource.getLastLocation();
-
                 Call<RoutePath> call = routeFind.getData(NavaApIKey,secret,"127.1058342,37.359708","129.075986,35.179470");        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
 
                 call.enqueue(new Callback<RoutePath>() {
@@ -278,17 +259,33 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                             RoutePath routePath=response.body();
                             List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
                             Marker[] marker= new Marker[path.size()];
-                            PathOverlay[] line_path=new PathOverlay[path.size()-1];       //길 선 표시할 path 배열
-                            List<LatLng> list;
+                            PathOverlay line_path=new PathOverlay();       //길 선 표시할 path 배열
                             for(int i=0;i<path.size();i++) {
-                                list.add(new LatLng(path.get(i).get(0),path.get(i).get(1)));
-                                    for(int a=0;a<marker.length;a++){
-                                        marker[a]=new Marker();
-                                        marker[a].setPosition(new LatLng(path.get(i).get(0),path.get(i).get(1)));
-                                        marker[a].setMap(naverMap);
-                                        line_path[a].setCoords(path.get(i).get(0),path.get(i).get(1)));
-                                    }
+                                list.add(new LatLng(path.get(i).get(1), path.get(i).get(0)));
                             }
+                            //todo 끝점 경유지점 마커 찍기
+                            line_path.setCoords(list);
+
+
+                            line_path.setMap(naverMap);
+                            LatLng m_p=new LatLng((37.359708+35.179470)/2,(127.1058342+129.075986)/2);
+                            CameraPosition cameraPosition=new CameraPosition(m_p,5);
+                            naverMap.setCameraPosition(cameraPosition);
+                            // String encodeResult = URLEncoder.encode(String encodingString, "UTF-8"); 인코딩하기
+                            /* 길찾기 자동차 nmap://navigation?dlat=35.5328&dlng=128.7029&dname=%eb%b0%80%ec%96%91+%ec%97%b0%ea%bd%83%eb%a7%88%ec%9d%84&appname=com.example.ownroadrider
+                            대중교통 nmap://route/public?dlat=35.5328&dlng=128.7029&dname=%eb%b0%80%ec%96%91+%ec%97%b0%ea%bd%83%eb%a7%88%ec%9d%84&appname=com.example.ownroadrider
+                            String url = "nmap://actionPath?parameter=value&appname=ownroadrider";
+
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+
+                            List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                            if (list == null || list.isEmpty()) {
+                                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("nmap://navigation?dlat=35.5328&dlng=128.7029&dname=%eb%b0%80%ec%96%91+%ec%97%b0%ea%bd%83%eb%a7%88%ec%9d%84&appname=com.example.ownroadrider")));
+                            } else {
+                                context.startActivity(intent);
+                            }
+                             */
                         }
                     }
 
@@ -301,19 +298,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
         });
 
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,  @NonNull int[] grantResults) {
-        if (locationSource.onRequestPermissionsResult(
-                requestCode, permissions, grantResults)) {
-            if (!locationSource.isActivated()) { // 권한 거부됨
-                naverMap.setLocationTrackingMode(LocationTrackingMode.None);
-            }
-            return;
-        }
-        super.onRequestPermissionsResult(
-                requestCode, permissions, grantResults);                //위치권환가져오는 코드
-    }
+
 
     private static double distance(double lat1, double lon1, double lat2, double lon2) {
 

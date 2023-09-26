@@ -33,10 +33,12 @@ import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.overlay.PathOverlay;
 import com.naver.maps.map.util.FusedLocationSource;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -60,10 +62,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
     private ArrayList<Double> Data_Lo = new ArrayList<>();         //경도
 
-    private ArrayList<String> Data_NM = new ArrayList<>();          //식당이름
 
-
-    private ArrayList<String> Data_Con = new ArrayList<>();         //식당소개글
     private Button ex_retro;
 
     private Button ex_retro2;
@@ -101,8 +100,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
         mapView.getMapAsync(this);
 
-        locationSource =
-                new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
+
 
 
 
@@ -164,14 +162,17 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
         // 다익스트라 함수 Dijkstra dj=new Dijkstra(18, newGN);
 
 
+
+
         this.naverMap=naverMap;
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 
-        ex_retro=findViewById(R.id.ex_retro);
         ex_retro2=findViewById(R.id.ex_retro2);
 
+        /*
         ex_retro.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 db.collection("data1")
@@ -190,7 +191,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                         });
             }
         });
-
+        */
         /*ex_retro.setOnClickListener(new View.OnClickListener() {                      식당불러오기코드
             @Override
             public void onClick(View view) {
@@ -275,8 +276,19 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                     public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
                         if(response.isSuccessful()) {
                             RoutePath routePath=response.body();
-                            Log.d(TAG,"성공"+routePath.getRoute());
-
+                            List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
+                            Marker[] marker= new Marker[path.size()];
+                            PathOverlay[] line_path=new PathOverlay[path.size()-1];       //길 선 표시할 path 배열
+                            List<LatLng> list;
+                            for(int i=0;i<path.size();i++) {
+                                list.add(new LatLng(path.get(i).get(0),path.get(i).get(1)));
+                                    for(int a=0;a<marker.length;a++){
+                                        marker[a]=new Marker();
+                                        marker[a].setPosition(new LatLng(path.get(i).get(0),path.get(i).get(1)));
+                                        marker[a].setMap(naverMap);
+                                        line_path[a].setCoords(path.get(i).get(0),path.get(i).get(1)));
+                                    }
+                            }
                         }
                     }
 

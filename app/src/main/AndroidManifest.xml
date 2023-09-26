@@ -15,9 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.K_contest"
         tools:targetApi="31">
+        <activity
+            android:name=".Map_myloc"
+            android:exported="false" />
+
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="nowdd7jigt" />
+
         <activity
             android:name=".Map_Basic"
             android:exported="false" />
@@ -27,7 +32,6 @@
         <activity
             android:name=".ProfileActivity"
             android:exported="true" />
-
         <activity
             android:name=".HomeActivity"
             android:exported="true">
@@ -40,7 +44,7 @@
         <activity android:name=".UserPageActivity" />
         <activity android:name=".PrivacyActivity" />
         <activity android:name=".fragments.Testfrag1" />
-        <activity android:name=".fragments.Testfrag2"/>
+        <activity android:name=".fragments.Testfrag2" />
     </application>
 
 </manifest>

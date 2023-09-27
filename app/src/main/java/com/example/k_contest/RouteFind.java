@@ -9,5 +9,6 @@ public interface RouteFind {
     @GET("v1/driving")
     Call<RoutePath> getData(@Header ("X-NCP-APIGW-API-KEY-ID")String ClientID,
                             @Header("X-NCP-APIGW-API-KEY") String Secret,
-                            @Query("start") String start,@Query("goal") String goal);
+                            @Query("start") String start,@Query("goal") String goal,
+                            @Query("waypoints")String waypoints);
 }

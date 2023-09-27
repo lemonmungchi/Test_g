@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +48,9 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
     private ArrayList<Double> Data_Lo = new ArrayList<>();         //경도
 
+    private ListView List;
+
+    private ArrayList<String> dataSample;
 
     List<LatLng> list=new ArrayList<>();
 
@@ -250,7 +254,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                         .build();
                 RouteFind routeFind = retrofit.create(RouteFind.class);
 
-                Call<RoutePath> call = routeFind.getData(NavaApIKey,secret,"127.1058342,37.359708","129.075986,35.179470");        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
+                Call<RoutePath> call = routeFind.getData(NavaApIKey,secret,"127.1058342,37.359708","129.075986,35.179470","128.075986,36.179470");        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
 
                 call.enqueue(new Callback<RoutePath>() {
                     @Override
@@ -269,7 +273,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
                             line_path.setMap(naverMap);
                             LatLng m_p=new LatLng((37.359708+35.179470)/2,(127.1058342+129.075986)/2);
-                            CameraPosition cameraPosition=new CameraPosition(m_p,5);
+                            CameraPosition cameraPosition=new CameraPosition(m_p,6);
                             naverMap.setCameraPosition(cameraPosition);
                             // String encodeResult = URLEncoder.encode(String encodingString, "UTF-8"); 인코딩하기
                             /* 길찾기 자동차 nmap://navigation?dlat=35.5328&dlng=128.7029&dname=%eb%b0%80%ec%96%91+%ec%97%b0%ea%bd%83%eb%a7%88%ec%9d%84&appname=com.example.ownroadrider
@@ -297,6 +301,9 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
+        List = findViewById(R.id.listView);
+        List_Adapter buttonListAdapter = new List_Adapter(this, dataSample);
+        List.setAdapter(buttonListAdapter);
     }
 
 

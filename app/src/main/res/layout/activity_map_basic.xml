@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16sp"
-                android:text="관광지목록"
+                android:text="길찾기"
                 android:textSize="24sp" />
 
         </LinearLayout>

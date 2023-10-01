@@ -111,6 +111,8 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
         }
         return x;
     }
+    
+    //코드수정
 
     private double[][] region_position = {
             {35.2279, 128.6817},        //창원

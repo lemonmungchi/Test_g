@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:verticalScrollbarPosition="left">
 
-    <include layout="@layout/topbar" />
+    <include layout="@layout/topbar_my" />
 
     <ImageView
         android:id="@+id/imageView"

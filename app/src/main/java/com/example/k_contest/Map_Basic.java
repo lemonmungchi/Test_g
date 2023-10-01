@@ -26,6 +26,8 @@ import com.naver.maps.map.util.FusedLocationSource;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,44 +42,108 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationSource locationSource;
     private NaverMap naverMap;
 
+    private ListView List;
+    private ArrayList<String> dataSample;
+
     private String NavaApIKey="nowdd7jigt";
 
     private String secret="C7toUlRTfdqJlYR8tsX6fGj2WtVIFIEySUFTO72L";
 
-    private ArrayList<Double> Data_LA = new ArrayList<>();;       //위도
+    // 가중치 곱 함수
+    public void multiplyMatix(int[][] newGN, double[][] map) {
+        for(int i = 0; i < 18; i++){
+            for(int j = 0; j < 18; j++) {
+                newGN[i][j] =(int) (newGN[i][j] * map[i][j]);
+            }
+        }
+    }
 
-    private ArrayList<Double> Data_Lo = new ArrayList<>();         //경도
+<<<<<<< HEAD
+    int[][] matrixGN = new int[][]{
+            {0,27,Integer.MAX_VALUE,Integer.MAX_VALUE,27,51,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,35,63,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,31,Integer.MAX_VALUE,Integer.MAX_VALUE},      //창원
+            {27,0,Integer.MAX_VALUE,61,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,59,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,64,Integer.MAX_VALUE,58,50,41,Integer.MAX_VALUE,Integer.MAX_VALUE},      //진주
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,100,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,79,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},   //통영
+            {Integer.MAX_VALUE,61,Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,63,22,81,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //사천
+            {27,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,0,31,Integer.MAX_VALUE,18,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //김해
+            {51,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,31,0,Integer.MAX_VALUE,38,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,46,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //밀양
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,100,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //거제
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,18,38,Integer.MAX_VALUE,0,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},   //양산
+            {Integer.MAX_VALUE,59,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,0,
+                    Integer.MAX_VALUE,50,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,66,30,Integer.MAX_VALUE,28},      //의령
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,56,85,Integer.MAX_VALUE,29,Integer.MAX_VALUE},      //함양
+            {35,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,46,Integer.MAX_VALUE,Integer.MAX_VALUE,50,
+                    Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,47,Integer.MAX_VALUE,30},      //창녕
+            {63,64,79,63,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //고성
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,22,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,0,70,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},   //남해
+            {Integer.MAX_VALUE,58,Integer.MAX_VALUE,81,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    56,Integer.MAX_VALUE,Integer.MAX_VALUE,70,0,69,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //하동
+            {Integer.MAX_VALUE,50,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,66,
+                    85,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,69,0,Integer.MAX_VALUE,30,31},      //산청
+            {31,41,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,30,
+                    Integer.MAX_VALUE,47,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE},      //함안
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    29,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,30,Integer.MAX_VALUE,0,27},  //거창
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,28,
+                    Integer.MAX_VALUE,30,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,31,Integer.MAX_VALUE,27,0}      //합천
+    };
+=======
+    private ListView List;
 
+<<<<<<< Updated upstream
     private ListView List;
 
     private ArrayList<String> dataSample;
+=======
+    private ArrayList<String> dataSample;
+>>>>>>> 601550459b080978035aafa8ed3c8e05bb7ac68a
+>>>>>>> Stashed changes
 
     List<LatLng> list=new ArrayList<>();
 
-    private Button ex_retro2;
     private  Gson gson = new GsonBuilder().setLenient().create();
 
     private  FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    private String[] vertex = {"창원", "진주", "통영", "사천", "김해","밀양", "거제", "양산", "의령",
+            "함양", "창녕", "고성", "남해", "하동", "산청", "함안", "거창", "합천"};
+    public int stringToInt(String s) {              // String to Int
+        int x = 0;
+        for (int i = 0; i < vertex.length; i++) {
+            if (vertex[i].equals(s)) x = i;
+        }
+        return x;
+    }
+
     private double[][] region_position = {
-            {35.1320, 128.7163},        //창원
+            {35.2279, 128.6817},        //창원
             {35.1805, 128.1087},        //진주
-            {34.8497, 128.4339},        //통영
-            {35.0903, 128.0705},        //사천
-            {35.2332, 128.8819},        //김해
-            {35.4913, 128.7481},        //밀양
-            {34.8918, 128.6206},        //거제
-            {35.3385, 129.0265},        //양산
-            {35.3227, 128.2878},        //의령
-            {35.5202, 127.7259},        //함양
-            {35.5414, 128.5004},        //창녕
-            {34.9754, 128.3234},        //고성
-            {34.8953, 127.8828},        //남해
-            {35.0642, 127.7556},        //하동
-            {35.4138, 127.8741},        //산청
-            {35.2795, 128.4075},        //함안
-            {35.6875, 127.9056},        //거창
-            {35.5667, 128.1684}         //합천
+            {34.8542, 128.4330},        //통영
+            {35.0033, 128.0640},        //사천
+            {35.2284, 128.8893},        //김해
+            {35.2284, 128.8893},        //밀양
+            {34.8805, 128.6210},        //거제
+            {35.3469, 129.0374},        //양산
+            {35.3221, 128.2616},        //의령
+            {35.5204, 127.7251},        //함양
+            {35.5445, 128.4922},        //창녕
+            {34.9730, 128.3223},        //고성
+            {34.8375, 127.8926},        //남해
+            {35.0671, 127.7513},        //하동
+            {35.4154, 127.8734},        //산청
+            {35.2723, 128.4065},        //함안
+            {35.6865, 127.9095},        //거창
+            {35.5665, 128.1658}         //합천
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,46 +207,70 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     public void onMapReady(@NonNull NaverMap naverMap) {                                        //맵객체 매서드 사용시 여기서 작성
 
         Intent intent = getIntent();
-        String st = intent.getStringExtra("start");          //출발지 받아오기
-        String ed = intent.getStringExtra("end");             //목적지 받아오기
+        String st = intent.getStringExtra("Start");          //출발지 받아오기
+        String ed = intent.getStringExtra("End");             //목적지 받아오기
 
-        /* todo - 출발 목적지 받아서 다익스트라에 돌린다음 restapi에 넣고 각 점을 받아오고
-        *   그 점을 마커로 찍고 각 점 사이를 PathOverlay path = new PathOverlay(); 객체 배열로
-        * 이어주기 */
+        Dijkstra dj=new Dijkstra(18, matrixGN);
+        String[]rot =dj.algorithm(vertex[dj.stringToInt(st)],vertex[dj.stringToInt(ed)]);
+        Collections.reverse(Arrays.asList(rot));
+        Marker[] markers= new Marker[rot.length];
 
-        // 다익스트라 함수 Dijkstra dj=new Dijkstra(18, newGN);
+        double start_lot= region_position[dj.stringToInt(st)][0];           //출발지 위도경도
+        double start_lng= region_position[dj.stringToInt(st)][1];
 
-
-
+        double end_lot= region_position[dj.stringToInt(ed)][0];          //목적지 위도경도
+        double end_lng= region_position[dj.stringToInt(ed)][1];
 
         this.naverMap=naverMap;
 
-        ex_retro2=findViewById(R.id.ex_retro2);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://naveropenapi.apigw.ntruss.com/map-direction/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        RouteFind routeFind = retrofit.create(RouteFind.class);
 
-        /*
-        ex_retro.setOnClickListener(new View.OnClickListener() {
+        Call<RoutePath> call = routeFind.getData(NavaApIKey,secret,start_lng+","+start_lot,end_lng+","+end_lot);        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
+
+        call.enqueue(new Callback<RoutePath>() {
+            @Override
+            public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
+                if(response.isSuccessful()) {
+                    RoutePath routePath=response.body();
+                    List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
+                    PathOverlay line_path=new PathOverlay();       //길 선 표시할 path 배열
+                    for(int i=0;i<path.size();i++) {
+                        list.add(new LatLng(path.get(i).get(1), path.get(i).get(0)));
+                    }
+                    markers[0]=new Marker();
+                    markers[0].setPosition(new LatLng(start_lot,start_lng));
+                    markers[0].setCaptionText("출발지");
+                    markers[0].setMap(naverMap);
+                    markers[rot.length-1]=new Marker();
+                    markers[rot.length-1].setPosition(new LatLng(end_lot,end_lng));
+                    markers[rot.length-1].setCaptionText("목적지");
+                    markers[rot.length-1].setMap(naverMap);
+
+
+                    line_path.setCoords(list);
+
+
+                    line_path.setMap(naverMap);
+                    LatLng m_p=new LatLng((start_lot+end_lot)/2,(start_lng+end_lng)/2);
+                    CameraPosition cameraPosition=new CameraPosition(m_p,9);
+                    naverMap.setCameraPosition(cameraPosition);
+
+                }
+            }
 
             @Override
-            public void onClick(View view) {
-                db.collection("data1")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d(TAG, document.getId() + " => " + document.getData());
-                                    }
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
+<<<<<<< HEAD
+            public void onFailure(Call<RoutePath> call, Throwable t) {
+                Log.d(TAG,"실패");
             }
         });
-        */
-        /*ex_retro.setOnClickListener(new View.OnClickListener() {                      식당불러오기코드
-            @Override
+
+        dataSample = new ArrayList<String>();
+=======
             public void onClick(View view) {
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://gyeongnam.openapi.redtable.global/")
@@ -305,38 +395,16 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
         List_Adapter buttonListAdapter = new List_Adapter(this, dataSample);
         List.setAdapter(buttonListAdapter);
     }
+>>>>>>> 601550459b080978035aafa8ed3c8e05bb7ac68a
 
-
-    private static double distance(double lat1, double lon1, double lat2, double lon2) {
-
-        double theta;
-        if(lon1>lon2){
-            theta = lon1 - lon2;
-        } else{
-            theta=lon2-lat1;
+        for(int i=0;i<rot.length;i++){                  //출발,경유,도착지 넣기
+            dataSample.add(rot[i]);
         }
 
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-
-        dist = dist * 1.609344;
-
-
-        return (dist);
+        List = findViewById(R.id.listView);
+        List_Adapter buttonListAdapter = new List_Adapter(this, dataSample);
+        List.setAdapter(buttonListAdapter);
     }
-
-    //10진수를 radian(라디안)으로 변환
-    private static double deg2rad(double deg){
-        return (deg * Math.PI/180.0);
-    }
-    //radian(라디안)을 10진수로 변환
-    private static double rad2deg(double rad){
-        return (rad * 180 / Math.PI);
-    }
-
 
 
 }

@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),Map_Basic.class);
+                Intent intent=new Intent(getApplicationContext(),Map_myloc.class);
                 startActivity(intent);
             }
         });
@@ -90,6 +90,8 @@ public class HomeActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(drawer);
             }
         });
+
+
 
         searchList = new ArrayList<>();
         settingList();

@@ -33,31 +33,27 @@ public class HomeActivity extends AppCompatActivity {
     private Button buttontestfrag1;
     private Button buttontestfrag2;
 
+    DrawerLayout drawerLayout;
+
+    View drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);        //실행페이지
-
-        //하단바
-
-        DrawerLayout drawerLayout;
-        View drawer;
-        @Override
-        protected void onCreate (Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_drawer);
-            //실행페이지
-
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        setContentView(R.layout.activity_drawer);        //실행페이지
 
 
-            ImageButton backspaceButton = findViewById(R.id.backspaceicon);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+
+        ImageButton backspaceButton = findViewById(R.id.backspaceicon);
             backspaceButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onBackPressed();
                 }
             });
+
             ImageButton homeButton = findViewById(R.id.homeicon);
 
             homeButton.setOnClickListener(new View.OnClickListener() {
@@ -90,40 +86,12 @@ public class HomeActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), UserPageActivity.class);
                     startActivity(intent);
                 }
-            });//하단바
-
-            //fragment
-            testfrag1 = new Testfrag1();
-            testfrag2 = new Testfrag2();
-            //프래그먼트 매니저 획득
-            FragmentManager fragmentManager = getSupportFragmentManager();
-
-            //프래그먼트 Transaction(프래그먼트를 올리거나 교체하는 작업)
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            //프래그먼트를 FrameLayout의 자식으로 등록
-            fragmentTransaction.add(R.id.fragmentframe, testfrag1);
-            fragmentTransaction.commit();
-
-            buttontestfrag1 = findViewById(R.id.buttontestfrag1);
-            buttontestfrag2 = findViewById(R.id.buttontestfrag2);
-
-            buttontestfrag1.setOnClickListener(v -> {
-                FragmentManager fm1 = getSupportFragmentManager();
-                FragmentTransaction ft1 = fragmentManager.beginTransaction();
-                ft1.replace(R.id.fragmentframe, testfrag1);
-                ft1.commit();
             });
 
-            buttontestfrag2.setOnClickListener(v -> {
-                FragmentManager fm2 = getSupportFragmentManager();
-                FragmentTransaction ft2 = fragmentManager.beginTransaction();
-                ft2.replace(R.id.fragmentframe, testfrag2);
-                ft2.commit();
-            });
-            drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);  //드로어 레이아웃 선택을 통해 작동
-            drawer = (View) findViewById(R.id.drawer);
+            drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);  //드로어 레이아웃 선택을 통해 작동
+            drawer = (View)findViewById(R.id.drawer);
 
-            ImageButton openSideBtn = (ImageButton) findViewById(R.id.sideMenuBtn);  // 사이드메뉴 열기 버튼
+            ImageButton openSideBtn = (ImageButton)findViewById(R.id.sideMenuBtn);  // 사이드메뉴 열기 버튼
 
             openSideBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,8 +100,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-            Button closeSideBtn = (Button) findViewById(R.id.closeBtn);  //사이드메뉴 닫기
-
+            Button closeSideBtn = (Button)findViewById(R.id.closeBtn);  //사이드메뉴 닫기
             closeSideBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -161,38 +128,30 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-            UserPage = findViewById(R.id.profileicon);
-
-            UserPage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(HomeActivity.this, UserPageActivity.class);
-                    startActivity(intent);
-                }
-            });
 
         }
 
-        private void settingList() {
-            searchList.add("창원");
-            searchList.add("진주");
-            searchList.add("통영");
-            searchList.add("사천");
-            searchList.add("김해");
-            searchList.add("밀양");
-            searchList.add("거제");
-            searchList.add("양산");
-            searchList.add("부산");
-            searchList.add("의령");
-            searchList.add("함안");
-            searchList.add("창녕");
-            searchList.add("고성");
-            searchList.add("남해");
-            searchList.add("하동");
-            searchList.add("산청");
-            searchList.add("함양");
-            searchList.add("거창");
-            searchList.add("합천");
-        }
+
+
+    private void settingList() {
+        searchList.add("창원");
+        searchList.add("진주");
+        searchList.add("통영");
+        searchList.add("사천");
+        searchList.add("김해");
+        searchList.add("밀양");
+        searchList.add("거제");
+        searchList.add("양산");
+        searchList.add("부산");
+        searchList.add("의령");
+        searchList.add("함안");
+        searchList.add("창녕");
+        searchList.add("고성");
+        searchList.add("남해");
+        searchList.add("하동");
+        searchList.add("산청");
+        searchList.add("함양");
+        searchList.add("거창");
+        searchList.add("합천");
     }
 }

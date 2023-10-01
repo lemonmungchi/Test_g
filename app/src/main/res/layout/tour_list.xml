@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    >
 
     <TextView
         android:id="@+id/title"
@@ -20,7 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/gray"
+        android:background="#A2A2A2"
+        android:textColor="#000000"
         android:text="대중교통 길찾기" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -28,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/gray"
+        android:background="#A2A2A2"
+        android:textColor="#000000"
         android:text="자동차 길찾기" />
 </LinearLayout>

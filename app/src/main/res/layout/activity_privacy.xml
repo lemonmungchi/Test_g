@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="false"
-    android:background="#03A9F4"
+    android:background="#AED2FF"
     android:orientation="vertical"
     android:verticalScrollbarPosition="left">
 
@@ -61,6 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:background="@drawable/edge"
                     android:orientation="horizontal">
 
                     <TextView
@@ -76,6 +77,7 @@
                         android:id="@+id/ageSpinner"
                         android:layout_width="140dp"
                         android:layout_height="40dp"
+                        android:background="@drawable/edge"
                         android:layout_marginStart="10dp"
                         android:entries="@array/ageGroup"/>
 

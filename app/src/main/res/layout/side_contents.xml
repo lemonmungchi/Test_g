@@ -4,7 +4,7 @@
     android:layout_width="240dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="#03A9F4"
+    android:background="#8ECDDD"
     android:id="@+id/drawer">
 
     <androidx.appcompat.widget.AppCompatButton
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="#0040FF"
+        android:background="#22668D"
         android:text="메뉴 닫기"
         android:textColor="#FFFFFF" />
 
@@ -28,126 +28,126 @@
                 android:id="@+id/side_btn_changwon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0040FF"
+                android:background="#8ECDDD"
                 android:text="창원"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_jinju"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#03A9F4"
+                android:background="#22668D"
                 android:text="진주"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_tongyeong"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0040FF"
+                android:background="#8ECDDD"
                 android:text="통영"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_sacheon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#03A9F4"
+                android:background="#22668D"
                 android:text="사천"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_gimhae"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0040FF"
+                android:background="#8ECDDD"
                 android:text="김해"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_miryang"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#03A9F4"
+                android:background="#22668D"
                 android:text="밀양"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_geoje"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0040FF"
+                android:background="#8ECDDD"
                 android:text="거제"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_yangsan"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#03A9F4"
+                android:background="#22668D"
                 android:text="양산"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_uiryeong"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0040FF"
+                android:background="#8ECDDD"
                 android:text="의령"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_hamyang"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#03A9F4"
+                android:background="#22668D"
                 android:text="함양"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_changnyeong"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0040FF"
+                android:background="#8ECDDD"
                 android:text="창녕"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_goseong"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#03A9F4"
+                android:background="#22668D"
                 android:text="고성"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_namhae"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0040FF"
+                android:background="#8ECDDD"
                 android:text="남해"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_hadong"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#03A9F4"
+                android:background="#22668D"
                 android:text="하동"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_sancheong"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0040FF"
+                android:background="#8ECDDD"
                 android:text="산청"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_haman"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#03A9F4"
+                android:background="#22668D"
                 android:text="함안"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_geochang"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0040FF"
+                android:background="#8ECDDD"
                 android:text="거창"
                 android:textColor="#FFFFFF" />
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_hapcheon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#03A9F4"
+                android:background="#22668D"
                 android:text="합천"
                 android:textColor="#FFFFFF" />
         </LinearLayout>

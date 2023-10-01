@@ -8,10 +8,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class UserPageActivity extends AppCompatActivity {
 
     Button Privacy;
+
+    DrawerLayout drawerLayout;
+    View drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,5 @@ public class UserPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //버튼 페이지 이동
-
     }
 }

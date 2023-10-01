@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="false"
-    android:background="#03A9F4"
+    android:background="#AED2FF"
     android:orientation="vertical"
     android:verticalScrollbarPosition="left">
 
@@ -40,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:background="#27005D"
         android:text="Search"
         android:textColor="@color/white" />
 

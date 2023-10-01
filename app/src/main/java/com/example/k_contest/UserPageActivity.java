@@ -8,10 +8,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class UserPageActivity extends AppCompatActivity {
 
     Button Privacy;
+
+    DrawerLayout drawerLayout;
+    View drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,46 @@ public class UserPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(UserPageActivity.this, PrivacyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton backspaceButton=findViewById(R.id.backspaceicon);
+        backspaceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        ImageButton homeButton=findViewById(R.id.homeicon);
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton mapButton=findViewById(R.id.mapicon);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),Map_myloc.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton searchButton=findViewById(R.id.searchicon);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton profileButton=findViewById(R.id.profileicon);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
                 startActivity(intent);
             }
         });

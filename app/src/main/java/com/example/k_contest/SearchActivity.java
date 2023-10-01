@@ -31,7 +31,7 @@ public class SearchActivity extends Activity {
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),Map_Basic.class);
+                Intent intent=new Intent(getApplicationContext(),Map_myloc.class);
                 startActivity(intent);
             }
         });

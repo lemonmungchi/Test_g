@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#03A9F4">
+    android:background="#AED2FF">
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/sideMenuBtn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:layout_weight="5"
-        android:background="#00FFFFFF"
+        android:background="#AED2FF"
         android:scaleType="fitCenter"
         android:src="@drawable/menuimage" />
 
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#00FFFFFF"
+        android:background="#AED2FF"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 

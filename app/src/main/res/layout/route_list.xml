@@ -16,18 +16,16 @@
         android:textSize="16dp" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bus_route"
+        android:id="@+id/find_inform"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@color/gray"
-        android:text="대중교통 길찾기" />
+        android:text="정보보기" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/car_route"
+    <CheckBox
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/gray"
-        android:text="자동차 길찾기" />
+        android:layout_height="wrap_content"
+        android:text="선택"
+        android:id="@+id/checkBox"/>
 </LinearLayout>

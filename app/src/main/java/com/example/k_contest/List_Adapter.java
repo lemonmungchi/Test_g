@@ -12,6 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,25 +35,25 @@ public class List_Adapter extends BaseAdapter{
 
 
 
-    double[][] region_position = {
-            {35.1320, 128.7163},        //창원
+    private double[][] region_position = {
+            {35.2279, 128.6817},        //창원
             {35.1805, 128.1087},        //진주
-            {34.8497, 128.4339},        //통영
-            {35.0903, 128.0705},        //사천
-            {35.2332, 128.8819},        //김해
-            {35.4913, 128.7481},        //밀양
-            {34.8918, 128.6206},        //거제
-            {35.3385, 129.0265},        //양산
-            {35.3227, 128.2878},        //의령
-            {35.5202, 127.7259},        //함양
-            {35.5414, 128.5004},        //창녕
-            {34.9754, 128.3234},        //고성
-            {34.8953, 127.8828},        //남해
-            {35.0642, 127.7556},        //하동
-            {35.4138, 127.8741},        //산청
-            {35.2795, 128.4075},        //함안
-            {35.6875, 127.9056},        //거창
-            {35.5667, 128.1684}         //합천
+            {34.8542, 128.4330},        //통영
+            {35.0033, 128.0640},        //사천
+            {35.2284, 128.8893},        //김해
+            {35.2284, 128.8893},        //밀양
+            {34.8805, 128.6210},        //거제
+            {35.3469, 129.0374},        //양산
+            {35.3221, 128.2616},        //의령
+            {35.5204, 127.7251},        //함양
+            {35.5445, 128.4922},        //창녕
+            {34.9730, 128.3223},        //고성
+            {34.8375, 127.8926},        //남해
+            {35.0671, 127.7513},        //하동
+            {35.4154, 127.8734},        //산청
+            {35.2723, 128.4065},        //함안
+            {35.6865, 127.9095},        //거창
+            {35.5665, 128.1658}         //합천
     };
     String[] url_city={"%ec%b0%bd%ec%9b%90","%ec%a7%84%ec%a3%bc","%ED%86%B5%EC%98%81","%EC%82%AC%EC%B2%9C","%EA%B9%80%ED%95%B4","%EB%B0%80%EC%96%91","%EA%B1%B0%EC%A0%9C"
             ,"%EC%96%91%EC%82%B0","%EC%9D%98%EB%A0%B9","%ED%95%A8%EC%96%91","%ED%95%A8%EC%96%91","%EA%B3%A0%EC%84%B1","%EB%82%A8%ED%95%B4","%ED%95%98%EB%8F%99","%EC%82%B0%EC%B2%AD",
@@ -86,7 +88,78 @@ public class List_Adapter extends BaseAdapter{
         TextView title = view.findViewById(R.id.title);
         title.setText(data.get(position));
 
+        Button bus_route= view.findViewById(R.id.bus_route);
+        Button car_route= view.findViewById(R.id.car_route);
 
+
+
+        bus_route.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String item= data.get(position);
+                Intent intent;
+                String url;
+                String encodeResult;
+                try {
+                    encodeResult = URLEncoder.encode(item, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+                String url_f="nmap://route/public?dlat=";
+                String url_b="&appname=com.example.ownroadrider";
+                List<ResolveInfo> list;
+                url = "nmap://actionPath?parameter=value&appname=ownroadrider";
+
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+
+                list = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                if (list == null || list.isEmpty()) {
+                    try {
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url_f+String.valueOf(region_position[stringToInt(data.get(position))][0])+"&dlng="+String.valueOf(region_position[stringToInt(data.get(position))][1])+"&dname="+encodeResult+url_b)));
+                    }catch (Exception e){
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nhn.android.nmap")));
+                    }
+                } else {
+                    context.startActivity(intent);
+                }
+
+            }
+        });
+        car_route.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String item= data.get(position);
+                Intent intent;
+                String url;
+                String encodeResult;
+                try {
+                    encodeResult = URLEncoder.encode(item, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+                String url_f="nmap://navigation?dlat=";
+                String url_b="&appname=com.example.ownroadrider";
+                List<ResolveInfo> list;
+                url = "nmap://actionPath?parameter=value&appname=ownroadrider";
+
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+
+                list = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                if (list == null || list.isEmpty()) {
+                    try {
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url_f+String.valueOf(region_position[stringToInt(data.get(position))][0])+"&dlng="+String.valueOf(region_position[stringToInt(data.get(position))][1])+"&dname="+encodeResult+url_b)));
+                    }catch (Exception e){
+                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nhn.android.nmap")));
+                    }
+                } else {
+                    context.startActivity(intent);
+                }
+
+
+            }
+        });
 
         return view;
     }

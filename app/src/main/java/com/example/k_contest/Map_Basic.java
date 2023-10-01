@@ -2,33 +2,32 @@ package com.example.k_contest;
 
 import static android.content.ContentValues.TAG;
 
-import android.graphics.Color;
-import android.location.Location;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
-import com.naver.maps.map.CameraUpdate;
-import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
-import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.overlay.PathOverlay;
 import com.naver.maps.map.util.FusedLocationSource;
 
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,22 +42,96 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationSource locationSource;
     private NaverMap naverMap;
 
+    private ListView List;
+    private ArrayList<String> dataSample;
+
     private String NavaApIKey="nowdd7jigt";
 
     private String secret="C7toUlRTfdqJlYR8tsX6fGj2WtVIFIEySUFTO72L";
 
-    private ArrayList<Double> Data_LA = new ArrayList<>();;       //위도
+    // 가중치 곱 함수
+    public void multiplyMatix(int[][] newGN, double[][] map) {
+        for(int i = 0; i < 18; i++){
+            for(int j = 0; j < 18; j++) {
+                newGN[i][j] =(int) (newGN[i][j] * map[i][j]);
+            }
+        }
+    }
 
-    private ArrayList<Double> Data_Lo = new ArrayList<>();         //경도
+    int[][] matrixGN = new int[][]{
+            {0,27,Integer.MAX_VALUE,Integer.MAX_VALUE,27,51,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,35,63,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,31,Integer.MAX_VALUE,Integer.MAX_VALUE},      //창원
+            {27,0,Integer.MAX_VALUE,61,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,59,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,64,Integer.MAX_VALUE,58,50,41,Integer.MAX_VALUE,Integer.MAX_VALUE},      //진주
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,100,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,79,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},   //통영
+            {Integer.MAX_VALUE,61,Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,63,22,81,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //사천
+            {27,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,0,31,Integer.MAX_VALUE,18,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //김해
+            {51,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,31,0,Integer.MAX_VALUE,38,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,46,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //밀양
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,100,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //거제
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,18,38,Integer.MAX_VALUE,0,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},   //양산
+            {Integer.MAX_VALUE,59,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,0,
+                    Integer.MAX_VALUE,50,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,66,30,Integer.MAX_VALUE,28},      //의령
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,56,85,Integer.MAX_VALUE,29,Integer.MAX_VALUE},      //함양
+            {35,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,46,Integer.MAX_VALUE,Integer.MAX_VALUE,50,
+                    Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,47,Integer.MAX_VALUE,30},      //창녕
+            {63,64,79,63,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //고성
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,22,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,0,70,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},   //남해
+            {Integer.MAX_VALUE,58,Integer.MAX_VALUE,81,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    56,Integer.MAX_VALUE,Integer.MAX_VALUE,70,0,69,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE},      //하동
+            {Integer.MAX_VALUE,50,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,66,
+                    85,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,69,0,Integer.MAX_VALUE,30,31},      //산청
+            {31,41,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,30,
+                    Integer.MAX_VALUE,47,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,0,Integer.MAX_VALUE,Integer.MAX_VALUE},      //함안
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
+                    29,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,30,Integer.MAX_VALUE,0,27},  //거창
+            {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,28,
+                    Integer.MAX_VALUE,30,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,31,Integer.MAX_VALUE,27,0}      //합천
+    };
 
-    private ArrayList<String> Data_NM = new ArrayList<>();          //식당이름
+    List<LatLng> list=new ArrayList<>();
 
-
-    private ArrayList<String> Data_Con = new ArrayList<>();         //식당소개글
-    private Button ex_retro;
-
-    private Button ex_retro2;
     private  Gson gson = new GsonBuilder().setLenient().create();
+
+
+    private String[] vertex = {"창원", "진주", "통영", "사천", "김해","밀양", "거제", "양산", "의령",
+            "함양", "창녕", "고성", "남해", "하동", "산청", "함안", "거창", "합천"};
+    public int stringToInt(String s) {              // String to Int
+        int x = 0;
+        for (int i = 0; i < vertex.length; i++) {
+            if (vertex[i].equals(s)) x = i;
+        }
+        return x;
+    }
+
+    private double[][] region_position = {
+            {35.2279, 128.6817},        //창원
+            {35.1805, 128.1087},        //진주
+            {34.8542, 128.4330},        //통영
+            {35.0033, 128.0640},        //사천
+            {35.2284, 128.8893},        //김해
+            {35.2284, 128.8893},        //밀양
+            {34.8805, 128.6210},        //거제
+            {35.3469, 129.0374},        //양산
+            {35.3221, 128.2616},        //의령
+            {35.5204, 127.7251},        //함양
+            {35.5445, 128.4922},        //창녕
+            {34.9730, 128.3223},        //고성
+            {34.8375, 127.8926},        //남해
+            {35.0671, 127.7513},        //하동
+            {35.4154, 127.8734},        //산청
+            {35.2723, 128.4065},        //함안
+            {35.6865, 127.9095},        //거창
+            {35.5665, 128.1658}         //합천
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +142,10 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
         mapView.getMapAsync(this);
 
-        locationSource =
-                new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
+
+
+
+
 
     }
     @Override
@@ -118,156 +193,283 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {                                        //맵객체 매서드 사용시 여기서 작성
 
+        Intent intent = getIntent();
+        String st = intent.getStringExtra("Start");          //출발지 받아오기
+        String ed = intent.getStringExtra("End");             //목적지 받아오기
+
+        Dijkstra dj=new Dijkstra(18, matrixGN);
+        String[]rot =dj.algorithm(vertex[dj.stringToInt(st)],vertex[dj.stringToInt(ed)]);
+        Collections.reverse(Arrays.asList(rot));
+        Marker[] markers= new Marker[rot.length];
+        int mid_n=rot.length-2;
+        double[][] mid_lotlng=new double[mid_n][2];
+        double start_lot= region_position[dj.stringToInt(st)][0];           //출발지 위도경도
+        double start_lng= region_position[dj.stringToInt(st)][1];
+        for(int i=0;i<mid_n;i++){
+                mid_lotlng[i][0]=region_position[dj.stringToInt(rot[i+1])][0];
+                mid_lotlng[i][1]=region_position[dj.stringToInt(rot[i+1])][1];
+        }
+        double end_lot= region_position[dj.stringToInt(ed)][0];          //목적지 위도경도
+        double end_lng= region_position[dj.stringToInt(ed)][1];
 
         this.naverMap=naverMap;
-        naverMap.setLocationSource(locationSource);
-        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 
-        ex_retro=findViewById(R.id.ex_retro);
-        ex_retro2=findViewById(R.id.ex_retro2);
-
-        ex_retro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://gyeongnam.openapi.redtable.global/")
-                        .addConverterFactory(GsonConverterFactory.create(gson))
-                        .build();
-                DataAddress dataAddress = retrofit.create(DataAddress.class);
-
-
-
-                Call<DataPath> call4 = dataAddress.getData("aE5iTKPfr1Msn7QXu8LmeK1SuDfo36insow1VLonAp3hb0VbTMjYr08mS8h1Q42h",4);
-
-                call4.enqueue(new Callback<DataPath>() {
-                    @Override
-                    public void onResponse(Call<DataPath> call, Response<DataPath> response) {
-
-                        if(response.isSuccessful()){
-                            DataPath data = response.body();
-                            for(int i=0;i<data.getBody().size();i++){
-                                Data_LA.add(data.getBody().get(i).getRSTR_LA());            //1페이지 1000개 위도
-                                Data_Lo.add(data.getBody().get(i).getRSTR_LO());            //1페이지 1000개 경도
-                                 Data_NM.add(data.getBody().get(i).getRSTR_NM());
-                                Data_Con.add(data.getBody().get(i).getRSTR_INTRCN_CONT());
-                            }
-                            int i=Data_LA.size();
-                            Marker[] m=new Marker[data.getBody().size()];
-                            InfoWindow[] I= new InfoWindow[data.getBody().size()];
-                            float count=0;        //주변식당수 체크
-                            float re_LA=0;      //식당들 위도
-                            float re_Lo=0;      //식당들 경도
-                            for(int a=0;a<m.length;a++){
-                                m[a]=new Marker();
-                                m[a].setPosition(new LatLng(Data_LA.get(a),Data_Lo.get(a)));
-                                m[a].setCaptionText(Data_NM.get(a));
-                                m[a].setMap(naverMap);
-                                
-                                Location d=locationSource.getLastLocation();
-                                double my_LA=d.getLatitude();
-                                double my_Lo=d.getLongitude();
-                                if(distance(my_LA,my_Lo,Data_LA.get(a),Data_Lo.get(a))<3) {
-                                    m[a].setVisible(true);
-                                    count++;
-                                    re_LA += Data_LA.get(a);
-                                    re_Lo += Data_Lo.get(a);
-                                }
-                                else
-                                    m[a].setVisible(false);             //만약에 주면에 없다면
-                                CameraPosition cameraPosition= new CameraPosition(new LatLng(re_LA/count,re_Lo/count),12);
-                                naverMap.setCameraPosition(cameraPosition);
-                            }
-
-                        }else {
-                            Log.d(TAG,"실패");
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<DataPath> call, Throwable t) {
-                        Log.d(TAG,"실패"+t.getMessage());
-                    }
-
-
-                });
-            }
-        });
-
-        ex_retro2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Retrofit retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://naveropenapi.apigw.ntruss.com/map-direction/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        RouteFind routeFind = retrofit.create(RouteFind.class);
+        switch (mid_n){
+            case 0:
+                Retrofit retrofit0 = new Retrofit.Builder()
                         .baseUrl("https://naveropenapi.apigw.ntruss.com/map-direction/")
                         .addConverterFactory(GsonConverterFactory.create(gson))
                         .build();
-                RouteFind routeFind = retrofit.create(RouteFind.class);
+                RouteFind_nomid routeFind0 = retrofit.create(RouteFind_nomid.class);
+                Call<RoutePath> call0 = routeFind0.getData(NavaApIKey,secret,start_lng+","+start_lot,end_lng+","+end_lot);        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
+                call0.enqueue(new Callback<RoutePath>() {
+                    @Override
+                    public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
+                        if(response.isSuccessful()) {
+                            RoutePath routePath=response.body();
+                            List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
+                            PathOverlay line_path=new PathOverlay();       //길 선 표시할 path 배열
+                            for(int i=0;i<path.size();i++) {
+                                list.add(new LatLng(path.get(i).get(1), path.get(i).get(0)));
+                            }
+                            markers[0]=new Marker();
+                            markers[0].setPosition(new LatLng(start_lot,start_lng));
+                            markers[0].setCaptionText("출발지");
+                            markers[0].setMap(naverMap);
+                            markers[rot.length-1]=new Marker();
+                            markers[rot.length-1].setPosition(new LatLng(end_lot,end_lng));
+                            markers[rot.length-1].setCaptionText("목적지");
+                            markers[rot.length-1].setMap(naverMap);
+                            line_path.setCoords(list);
+                            line_path.setMap(naverMap);
 
-                Location d=locationSource.getLastLocation();
+                        }
+                    }
 
-                Call<RoutePath> call = routeFind.getData(NavaApIKey,secret,"127.1058342,37.359708","129.075986,35.179470");
+                    @Override
 
+                    public void onFailure(Call<RoutePath> call, Throwable t) {
+                        Log.d(TAG,"실패");
+                    }
+                });
+                break;
+            case 1:
+                Call<RoutePath> call = routeFind.getData(NavaApIKey,secret,start_lng+","+start_lot,end_lng+","+end_lot,mid_lotlng[0][1]+","+mid_lotlng[0][0]);        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
                 call.enqueue(new Callback<RoutePath>() {
                     @Override
                     public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
                         if(response.isSuccessful()) {
                             RoutePath routePath=response.body();
-                            Log.d(TAG,"성공"+routePath.getRoute());
+                            List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
+                            PathOverlay line_path=new PathOverlay();       //길 선 표시할 path 배열
+                            for(int i=0;i<path.size();i++) {
+                                list.add(new LatLng(path.get(i).get(1), path.get(i).get(0)));
+                            }
+                            markers[0]=new Marker();
+                            markers[0].setPosition(new LatLng(start_lot,start_lng));
+                            markers[0].setCaptionText("출발지");
+                            markers[0].setMap(naverMap);
+                            for(int i=1;i< rot.length-1;i++){
+                                markers[i]=new Marker();
+                                markers[i].setPosition(new LatLng(mid_lotlng[i-1][0],mid_lotlng[i-1][1]));
+                                markers[i].setCaptionText("경유지");
+                                markers[i].setMap(naverMap);
+                            }
+                            markers[rot.length-1]=new Marker();
+                            markers[rot.length-1].setPosition(new LatLng(end_lot,end_lng));
+                            markers[rot.length-1].setCaptionText("목적지");
+                            markers[rot.length-1].setMap(naverMap);
+                            line_path.setCoords(list);
+                            line_path.setMap(naverMap);
+
 
                         }
                     }
 
                     @Override
+
                     public void onFailure(Call<RoutePath> call, Throwable t) {
                         Log.d(TAG,"실패");
                     }
                 });
-            }
-        });
+                break;
+            case 2:
+                Call<RoutePath> call2 = routeFind.getData(NavaApIKey,secret,start_lng+","+start_lot,end_lng+","+end_lot,mid_lotlng[0][1]+","+mid_lotlng[0][0]+"|"+mid_lotlng[1][1]+","+mid_lotlng[1][0]);        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
+                call2.enqueue(new Callback<RoutePath>() {
+                    @Override
+                    public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
+                        if(response.isSuccessful()) {
+                            RoutePath routePath=response.body();
+                            List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
+                            PathOverlay line_path=new PathOverlay();       //길 선 표시할 path 배열
+                            for(int i=0;i<path.size();i++) {
+                                list.add(new LatLng(path.get(i).get(1), path.get(i).get(0)));
+                            }
+                            markers[0]=new Marker();
+                            markers[0].setPosition(new LatLng(start_lot,start_lng));
+                            markers[0].setCaptionText("출발지");
+                            markers[0].setMap(naverMap);
+                            for(int i=0;i<mid_n+1;i++){
+                                markers[i+1]=new Marker();
+                                markers[i+1].setPosition(new LatLng(mid_lotlng[i][0],mid_lotlng[i][1]));
+                                markers[i+1].setCaptionText("경유지");
+                                markers[i+1].setMap(naverMap);
+                            }
+                            markers[rot.length-1]=new Marker();
+                            markers[rot.length-1].setPosition(new LatLng(end_lot,end_lng));
+                            markers[rot.length-1].setCaptionText("목적지");
+                            markers[rot.length-1].setMap(naverMap);
+                            line_path.setCoords(list);
+                            line_path.setMap(naverMap);
+                        }
+                    }
 
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,  @NonNull int[] grantResults) {
-        if (locationSource.onRequestPermissionsResult(
-                requestCode, permissions, grantResults)) {
-            if (!locationSource.isActivated()) { // 권한 거부됨
-                naverMap.setLocationTrackingMode(LocationTrackingMode.None);
-            }
-            return;
+                    @Override
+
+                    public void onFailure(Call<RoutePath> call, Throwable t) {
+                        Log.d(TAG,"실패");
+                    }
+                });
+                break;
+            case 3:
+                Call<RoutePath> call3 = routeFind.getData(NavaApIKey,secret,start_lng+","+start_lot,end_lng+","+end_lot,mid_lotlng[0][1]+","+mid_lotlng[0][0]+"|"+mid_lotlng[1][1]+","+mid_lotlng[1][0]+"|"+mid_lotlng[2][1]+","+mid_lotlng[2][0]);        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
+                call3.enqueue(new Callback<RoutePath>() {
+                    @Override
+                    public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
+                        if(response.isSuccessful()) {
+                            RoutePath routePath=response.body();
+                            List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
+                            PathOverlay line_path=new PathOverlay();       //길 선 표시할 path 배열
+                            for(int i=0;i<path.size();i++) {
+                                list.add(new LatLng(path.get(i).get(1), path.get(i).get(0)));
+                            }
+                            markers[0]=new Marker();
+                            markers[0].setPosition(new LatLng(start_lot,start_lng));
+                            markers[0].setCaptionText("출발지");
+                            markers[0].setMap(naverMap);
+                            for(int i=0;i<mid_n+1;i++){
+                                markers[i+1]=new Marker();
+                                markers[i+1].setPosition(new LatLng(mid_lotlng[i][0],mid_lotlng[i][1]));
+                                markers[i+1].setCaptionText("경유지");
+                                markers[i+1].setMap(naverMap);
+                            }
+                            markers[rot.length-1]=new Marker();
+                            markers[rot.length-1].setPosition(new LatLng(end_lot,end_lng));
+                            markers[rot.length-1].setCaptionText("목적지");
+                            markers[rot.length-1].setMap(naverMap);
+                            line_path.setCoords(list);
+                            line_path.setMap(naverMap);
+
+                        }
+                    }
+
+                    @Override
+
+                    public void onFailure(Call<RoutePath> call, Throwable t) {
+                        Log.d(TAG,"실패");
+                    }
+                });
+                break;
+            case 4:
+                Call<RoutePath> call4 = routeFind.getData(NavaApIKey,secret,start_lng+","+start_lot,end_lng+","+end_lot,mid_lotlng[0][1]+","+mid_lotlng[0][0]+"|"+mid_lotlng[1][1]+","+mid_lotlng[1][0]+"|"+mid_lotlng[2][1]+","+mid_lotlng[2][0]+"|"+mid_lotlng[3][1]+","+mid_lotlng[3][0]);        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
+                call4.enqueue(new Callback<RoutePath>() {
+                    @Override
+                    public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
+                        if(response.isSuccessful()) {
+                            RoutePath routePath=response.body();
+                            List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
+                            PathOverlay line_path=new PathOverlay();       //길 선 표시할 path 배열
+                            for(int i=0;i<path.size();i++) {
+                                list.add(new LatLng(path.get(i).get(1), path.get(i).get(0)));
+                            }
+                            markers[0]=new Marker();
+                            markers[0].setPosition(new LatLng(start_lot,start_lng));
+                            markers[0].setCaptionText("출발지");
+                            markers[0].setMap(naverMap);
+                            for(int i=0;i<mid_n+1;i++){
+                                markers[i+1]=new Marker();
+                                markers[i+1].setPosition(new LatLng(mid_lotlng[i][0],mid_lotlng[i][1]));
+                                markers[i+1].setCaptionText("경유지");
+                                markers[i+1].setMap(naverMap);
+                            }
+                            markers[rot.length-1]=new Marker();
+                            markers[rot.length-1].setPosition(new LatLng(end_lot,end_lng));
+                            markers[rot.length-1].setCaptionText("목적지");
+                            markers[rot.length-1].setMap(naverMap);
+                            line_path.setCoords(list);
+                            line_path.setMap(naverMap);
+
+
+                        }
+                    }
+
+                    @Override
+
+                    public void onFailure(Call<RoutePath> call, Throwable t) {
+                        Log.d(TAG,"실패");
+                    }
+                });
+                break;
+            case 5:
+                Call<RoutePath> call5 = routeFind.getData(NavaApIKey,secret,start_lng+","+start_lot,end_lng+","+end_lot,mid_lotlng[0][1]+","+mid_lotlng[0][0]+"|"+mid_lotlng[1][1]+","+mid_lotlng[1][0]+"|"+mid_lotlng[2][1]+","+mid_lotlng[2][0]+"|"+mid_lotlng[3][1]+","+mid_lotlng[3][0]+"|"+mid_lotlng[4][1]+","+mid_lotlng[4][0]);        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
+                call5.enqueue(new Callback<RoutePath>() {
+                    @Override
+                    public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
+                        if(response.isSuccessful()) {
+                            RoutePath routePath=response.body();
+                            List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
+                            PathOverlay line_path=new PathOverlay();       //길 선 표시할 path 배열
+                            for(int i=0;i<path.size();i++) {
+                                list.add(new LatLng(path.get(i).get(1), path.get(i).get(0)));
+                            }
+                            markers[0]=new Marker();
+                            markers[0].setPosition(new LatLng(start_lot,start_lng));
+                            markers[0].setCaptionText("출발지");
+                            markers[0].setMap(naverMap);
+                            if(mid_n>0){
+                                    for(int i=0;i<mid_n+1;i++){
+                                        markers[i+1]=new Marker();
+                                        markers[i+1].setPosition(new LatLng(mid_lotlng[i][0],mid_lotlng[i][1]));
+                                        markers[i+1].setCaptionText("경유지");
+                                        markers[i+1].setMap(naverMap);
+                                    }
+                            }
+                            markers[rot.length-1]=new Marker();
+                            markers[rot.length-1].setPosition(new LatLng(end_lot,end_lng));
+                            markers[rot.length-1].setCaptionText("목적지");
+                            markers[rot.length-1].setMap(naverMap);
+                            line_path.setCoords(list);
+                            line_path.setMap(naverMap);
+
+
+                        }
+                    }
+
+                    @Override
+
+                    public void onFailure(Call<RoutePath> call, Throwable t) {
+                        Log.d(TAG,"실패");
+                    }
+                });
+                break;
+
         }
-        super.onRequestPermissionsResult(
-                requestCode, permissions, grantResults);                //위치권환가져오는 코드
-    }
-
-    private static double distance(double lat1, double lon1, double lat2, double lon2) {
-
-        double theta;
-        if(lon1>lon2){
-            theta = lon1 - lon2;
-        } else{
-            theta=lon2-lat1;
+        LatLng m_p=new LatLng((start_lot+end_lot)/2,(start_lng+end_lng)/2);
+        CameraPosition cameraPosition=new CameraPosition(m_p,8);
+        naverMap.setCameraPosition(cameraPosition);
+        dataSample = new ArrayList<String>();
+        List = findViewById(R.id.listView);
+        for(int i=0;i<rot.length;i++){                  //출발,경유,도착지 넣기
+            dataSample.add(rot[i]);
         }
-
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-
-        dist = dist * 1.609344;
-
-
-        return (dist);
+        List_Adapter buttonListAdapter = new List_Adapter(this, dataSample);
+        List.setAdapter(buttonListAdapter);
     }
-
-    //10진수를 radian(라디안)으로 변환
-    private static double deg2rad(double deg){
-        return (deg * Math.PI/180.0);
-    }
-    //radian(라디안)을 10진수로 변환
-    private static double rad2deg(double rad){
-        return (rad * 180 / Math.PI);
-    }
-
 
 
 }

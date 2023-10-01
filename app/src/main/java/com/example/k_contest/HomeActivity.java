@@ -1,6 +1,8 @@
 package com.example.k_contest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import com.example.k_contest.fragments.Testfrag1;
+import com.example.k_contest.fragments.Testfrag2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,111 +27,153 @@ public class HomeActivity extends AppCompatActivity {
     AutoCompleteTextView EndPoint;
     Button MapPoint;
     ImageButton UserPage;
-    DrawerLayout drawerLayout;
-    View drawer;
+
+    private Testfrag1 testfrag1;
+    private Testfrag2 testfrag2;
+    private Button buttontestfrag1;
+    private Button buttontestfrag2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawer);
-        //실행페이지
+        setContentView(R.layout.activity_home);        //실행페이지
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        //하단바
 
-        ImageButton backspaceButton=findViewById(R.id.backspaceicon);
-        backspaceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-        ImageButton homeButton=findViewById(R.id.homeicon);
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
-                startActivity(intent);
-            }
-        });
-        ImageButton mapButton=findViewById(R.id.mapicon);
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),Map_myloc.class);
-                startActivity(intent);
-            }
-        });
-        ImageButton searchButton=findViewById(R.id.searchicon);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),SearchActivity.class);
-                startActivity(intent);
-            }
-        });
-        ImageButton profileButton=findViewById(R.id.profileicon);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-        //버튼 페이지 이동
+        DrawerLayout drawerLayout;
+        View drawer;
+        @Override
+        protected void onCreate (Bundle savedInstanceState){
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_drawer);
+            //실행페이지
 
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);  //드로어 레이아웃 선택을 통해 작동
-        drawer = (View)findViewById(R.id.drawer);
-
-        ImageButton openSideBtn = (ImageButton)findViewById(R.id.sideMenuBtn);  // 사이드메뉴 열기 버튼
-
-        openSideBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.openDrawer(drawer);
-            }
-        });
-
-        Button closeSideBtn = (Button)findViewById(R.id.closeBtn);  //사이드메뉴 닫기
-
-        closeSideBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.closeDrawer(drawer);
-            }
-        });
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
 
+            ImageButton backspaceButton = findViewById(R.id.backspaceicon);
+            backspaceButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+            ImageButton homeButton = findViewById(R.id.homeicon);
 
-        searchList = new ArrayList<>();
-        settingList();
-        StartPoint = findViewById(R.id.StartPoint);
-        StartPoint.setAdapter(new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, searchList));
+            homeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(intent);
+                }
+            });
+            ImageButton mapButton = findViewById(R.id.mapicon);
+            mapButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), Map_myloc.class);
+                    startActivity(intent);
+                }
+            });
+            ImageButton searchButton = findViewById(R.id.searchicon);
+            searchButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                    startActivity(intent);
+                }
+            });
+            ImageButton profileButton = findViewById(R.id.profileicon);
+            profileButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), UserPageActivity.class);
+                    startActivity(intent);
+                }
+            });//하단바
 
-        EndPoint = findViewById(R.id.EndPoint);
-        EndPoint.setAdapter(new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, searchList));
+            //fragment
+            testfrag1 = new Testfrag1();
+            testfrag2 = new Testfrag2();
+            //프래그먼트 매니저 획득
+            FragmentManager fragmentManager = getSupportFragmentManager();
 
-        MapPoint = findViewById(R.id.MapPoint);
-        MapPoint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Map_Basic.class);
-                intent.putExtra("Start",StartPoint.getText().toString());
-                intent.putExtra("End",EndPoint.getText().toString());
-                startActivity(intent);
-            }
-        });
+            //프래그먼트 Transaction(프래그먼트를 올리거나 교체하는 작업)
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            //프래그먼트를 FrameLayout의 자식으로 등록
+            fragmentTransaction.add(R.id.fragmentframe, testfrag1);
+            fragmentTransaction.commit();
 
-        UserPage = findViewById(R.id.profileicon);
+            buttontestfrag1 = findViewById(R.id.buttontestfrag1);
+            buttontestfrag2 = findViewById(R.id.buttontestfrag2);
 
-        UserPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, UserPageActivity.class);
-                startActivity(intent);
-            }
-        });
+            buttontestfrag1.setOnClickListener(v -> {
+                FragmentManager fm1 = getSupportFragmentManager();
+                FragmentTransaction ft1 = fragmentManager.beginTransaction();
+                ft1.replace(R.id.fragmentframe, testfrag1);
+                ft1.commit();
+            });
 
-    }
-        private void settingList(){
+            buttontestfrag2.setOnClickListener(v -> {
+                FragmentManager fm2 = getSupportFragmentManager();
+                FragmentTransaction ft2 = fragmentManager.beginTransaction();
+                ft2.replace(R.id.fragmentframe, testfrag2);
+                ft2.commit();
+            });
+            drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);  //드로어 레이아웃 선택을 통해 작동
+            drawer = (View) findViewById(R.id.drawer);
+
+            ImageButton openSideBtn = (ImageButton) findViewById(R.id.sideMenuBtn);  // 사이드메뉴 열기 버튼
+
+            openSideBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    drawerLayout.openDrawer(drawer);
+                }
+            });
+
+            Button closeSideBtn = (Button) findViewById(R.id.closeBtn);  //사이드메뉴 닫기
+
+            closeSideBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    drawerLayout.closeDrawer(drawer);
+                }
+            });
+
+
+            searchList = new ArrayList<>();
+            settingList();
+            StartPoint = findViewById(R.id.StartPoint);
+            StartPoint.setAdapter(new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, searchList));
+
+            EndPoint = findViewById(R.id.EndPoint);
+            EndPoint.setAdapter(new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, searchList));
+
+            MapPoint = findViewById(R.id.MapPoint);
+            MapPoint.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), Map_Basic.class);
+                    intent.putExtra("Start", StartPoint.getText().toString());
+                    intent.putExtra("End", EndPoint.getText().toString());
+                    startActivity(intent);
+                }
+            });
+
+            UserPage = findViewById(R.id.profileicon);
+
+            UserPage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(HomeActivity.this, UserPageActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+        }
+
+        private void settingList() {
             searchList.add("창원");
             searchList.add("진주");
             searchList.add("통영");
@@ -147,4 +194,5 @@ public class HomeActivity extends AppCompatActivity {
             searchList.add("거창");
             searchList.add("합천");
         }
+    }
 }

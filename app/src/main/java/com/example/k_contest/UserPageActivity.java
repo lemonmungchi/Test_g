@@ -23,6 +23,49 @@ public class UserPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_userpage);
 
         Privacy = findViewById(R.id.privacyBtn);
+
+        //하단바
+        ImageButton backspaceButton=findViewById(R.id.backspaceicon);
+        backspaceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        ImageButton homeButton=findViewById(R.id.homeicon);
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton mapButton=findViewById(R.id.mapicon);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),Map_Basic.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton searchButton=findViewById(R.id.searchicon);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton profileButton=findViewById(R.id.profileicon);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),UserPageActivity.class);
+                startActivity(intent);
+            }
+        });//하단바
+
         Privacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -83,8 +83,5 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="bottom|center"
                 android:layout_weight="8" />
-        </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>

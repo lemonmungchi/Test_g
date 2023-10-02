@@ -33,19 +33,12 @@ public class HomeActivity extends AppCompatActivity {
     private Button buttontestfrag1;
     private Button buttontestfrag2;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);        //실행페이지
-
-        //하단바
-
         DrawerLayout drawerLayout;
         View drawer;
         @Override
-        protected void onCreate (Bundle savedInstanceState){
+        protected void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_drawer);
+            setContentView(R.layout.activity_drawer); // 드로어를 통해 사이드바가 구현됨. 액티비티 드로어 내부에 액티비티 홈 레이아웃이 들어가 있으므로 별도의 수정 불필요
             //실행페이지
 
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -195,4 +188,3 @@ public class HomeActivity extends AppCompatActivity {
             searchList.add("합천");
         }
     }
-}

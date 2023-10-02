@@ -1,14 +1,28 @@
 package com.example.k_contest;
 
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
+import com.example.k_contest.fragments.List_Adapter_Route;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class Route_choose extends AppCompatActivity {
     // 가중치 곱 함수
@@ -19,6 +33,15 @@ public class Route_choose extends AppCompatActivity {
             }
         }
     }
+
+    private FirebaseFirestore db;
+
+    private ListView Route_List;
+    private ArrayList<String> route_data;
+    private ArrayList<Double> route_lat;
+
+    private ArrayList<Double> route_long;
+
     float max1Nature = 368; // 자연 가중치 최대값
     float max1Culture = 656; // 문화 가중치 최대값
     float max1leisure = 104; // 레저 가중치 최대값
@@ -96,21 +119,97 @@ public class Route_choose extends AppCompatActivity {
         }
         return x;
     }
-    
+    private String first_ca;
     private Button mapFind;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_choose);
 
+        db = FirebaseFirestore.getInstance();
+
         Intent intent = getIntent();
         String st = intent.getStringExtra("Start");          //출발지 받아오기
         String ed = intent.getStringExtra("End");             //목적지 받아오기
         boolean curs[]= intent.getBooleanArrayExtra("State"); //체크표시 받아오기
+        String[] curs_name={"자연관광","레저관광","문화관광"};
+        for(int i=0;i<3;i++){
+            if(curs[i]==true){
+                first_ca=curs_name[i];
+            }
+        }
 
-        Dijkstra dj=new Dijkstra(18, matrixGN);
+        double coff1 = 1.0; // 1차분류 가중치 계수
+
+        // 자연 가중치 적용
+        if(curs[0] == true) {
+            for(int i = 0; i < 18; i++) {
+                for(int j = 0; j < 18; j++) {
+                    matrixGN[i][j] += coff1 * max1Nature / weigth1Nature[j];
+                }
+            }
+        }
+
+        // 레저 가중치 적용
+        if(curs[1] == true) {
+            for(int i = 0; i < 18; i++) {
+                for(int j = 0; j < 18; j++) {
+                    matrixGN[i][j] += coff1 * max1leisure / weigth1leisure[j];
+                }
+            }
+        }
+
+        // 문화 가중치 적용
+        if(curs[2] == true) {
+            for(int i = 0; i < 18; i++) {
+                for(int j = 0; j < 18; j++) {
+                    matrixGN[i][j] += coff1 * max1Culture / weigth1Culture[j];
+                }
+            }
+        }
+        Dijkstra dj = new Dijkstra(18, matrixGN);
         String[]rot =dj.algorithm(vertex[dj.stringToInt(st)],vertex[dj.stringToInt(ed)]);
         Collections.reverse(Arrays.asList(rot));
+
+        route_data = new ArrayList<String>();
+        route_lat=new ArrayList<Double>();
+        route_long=new ArrayList<Double>();
+        Route_List = findViewById(R.id.route_list);
+
+        if(rot.length-2>0){
+            String[] rot_name=new String[rot.length-2];
+
+            for(int i=1;i<=rot.length-1;i++){
+                rot_name[i-1]=rot[i];
+            }
+        }
+
+        switch (rot.length-2){
+            case 0:
+                db.collection("tour_data")
+                        .whereEqualTo("city",ed)
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data.add(document.get("tour_name",String.class));
+                                        route_lat.add(document.get("lat",Double.class));
+                                        route_long.add(document.get("long",Double.class));
+                                    }
+                                    List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
+                                    Route_List.setAdapter(RouteListAdapter);
+
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+        }
 
 
 
@@ -125,35 +224,7 @@ public class Route_choose extends AppCompatActivity {
                 intent.putExtra("State",curs);
                 startActivity(intentTo);
 
-                double coff1 = 1.0; // 1차분류 가중치 계수
 
-                // 자연 가중치 적용
-                if(curs[0] == true) {
-                    for(int i = 0; i < 18; i++) {
-                        for(int j = 0; j < 18; j++) {
-                            matrixGN[i][j] += coff1 * max1Nature / weigth1Nature[j];
-                        }
-                    }
-                }
-                
-                // 레저 가중치 적용
-                if(curs[1] == true) {
-                    for(int i = 0; i < 18; i++) {
-                        for(int j = 0; j < 18; j++) {
-                            matrixGN[i][j] += coff1 * max1leisure / weigth1leisure[j];
-                        }
-                    }
-                }
-                
-                // 문화 가중치 적용
-                if(curs[2] == true) {
-                    for(int i = 0; i < 18; i++) {
-                        for(int j = 0; j < 18; j++) {
-                            matrixGN[i][j] += coff1 * max1Culture / weigth1Culture[j];
-                        }
-                    }
-                }
-                Dijkstra dj = new Dijkstra(18, matrixGN);
                 //dj.algorithm('출발지', '도착지');
             }
         });

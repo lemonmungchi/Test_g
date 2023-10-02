@@ -108,6 +108,14 @@
         android:textColor="@color/black"
         android:background="@drawable/edge"
         android:enabled="false"/>
+    <Button
+        android:id="@+id/mapFind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="#27005D"
+        android:text="길찾기"
+        android:textColor="@color/white" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="550dp"
@@ -118,21 +126,12 @@
             android:id="@+id/routeFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#6499E9">
-
-        <Button
-            android:id="@+id/mapFind"
-            android:layout_width="match_parent"
+            android:layout_weight="2">
+        <ListView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="#27005D"
-            android:text="길찾기"
-            android:textColor="@color/white" />
+            android:id="@+id/route_list"/>
+        </FrameLayout>
     </LinearLayout>
+
 </LinearLayout>

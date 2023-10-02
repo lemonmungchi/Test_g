@@ -12,6 +12,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.k_contest.fragments.Testfrag1;
 import com.example.k_contest.fragments.Testfrag2;
@@ -29,10 +31,23 @@ public class HomeActivity extends AppCompatActivity {
     Button MapPoint;
     ImageButton UserPage;
 
+
+    RadioButton natureCheck;
+
+    RadioButton leisureCheck;
+    RadioButton cultureCheck;
+
+
     private Testfrag1 testfrag1;
     private Testfrag2 testfrag2;
     private Button buttontestfrag1;
     private Button buttontestfrag2;
+
+    boolean nature_p;
+
+    boolean leisure_p;
+    boolean culture_p;
+
     
     DrawerLayout drawerLayout;
 
@@ -46,16 +61,36 @@ public class HomeActivity extends AppCompatActivity {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
+        natureCheck=findViewById(R.id.nature_check);
+        leisureCheck=findViewById(R.id.leisure_check);
+        cultureCheck=findViewById(R.id.culture_check);
 
-        CheckBox natureCheck=(CheckBox)findViewById(R.id.nature_check);             //체크박스 이벤트생성
-        CheckBox leisureCheck=(CheckBox)findViewById(R.id.leisure_check);
-        CheckBox cultureCheck=(CheckBox)findViewById(R.id.culture_check);
+       natureCheck.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               nature_p=true;
+               leisure_p=false;
+               culture_p=false;
+           }
+       });
 
-        boolean nature_p=natureCheck.isChecked();
-        boolean leisure_p=leisureCheck.isChecked();
-        boolean culture_p=cultureCheck.isChecked();
+       leisureCheck.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               nature_p=false;
+               leisure_p=true;
+               culture_p=false;
+           }
+       });
 
-        boolean cur_state[]={nature_p,leisure_p,culture_p};
+       cultureCheck.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               nature_p=false;
+               leisure_p=false;
+               culture_p=true;
+           }
+       });
 
         ImageButton backspaceButton = findViewById(R.id.backspaceicon);
             backspaceButton.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +196,7 @@ public class HomeActivity extends AppCompatActivity {
             MapPoint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    boolean [] cur_state={nature_p,leisure_p,culture_p};
                     Intent intent = new Intent(getApplicationContext(), Route_choose.class);
                     intent.putExtra("Start", StartPoint.getText().toString());
                     intent.putExtra("End", EndPoint.getText().toString());
@@ -175,24 +211,23 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void settingList() {
-        searchList.add("창원");
-        searchList.add("진주");
-        searchList.add("통영");
-        searchList.add("사천");
-        searchList.add("김해");
-        searchList.add("밀양");
-        searchList.add("거제");
-        searchList.add("양산");
-        searchList.add("부산");
-        searchList.add("의령");
-        searchList.add("함안");
-        searchList.add("창녕");
-        searchList.add("고성");
-        searchList.add("남해");
-        searchList.add("하동");
-        searchList.add("산청");
-        searchList.add("함양");
-        searchList.add("거창");
-        searchList.add("합천");
+        searchList.add("창원시");
+        searchList.add("진주시");
+        searchList.add("통영시");
+        searchList.add("사천시");
+        searchList.add("김해시");
+        searchList.add("밀양시");
+        searchList.add("거제시");
+        searchList.add("양산시");
+        searchList.add("의령시");
+        searchList.add("함안군");
+        searchList.add("창녕군");
+        searchList.add("고성군");
+        searchList.add("남해군");
+        searchList.add("하동군");
+        searchList.add("산청시");
+        searchList.add("함양시");
+        searchList.add("거창군");
+        searchList.add("합천군");
     }
 }

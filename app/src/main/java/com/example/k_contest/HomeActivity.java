@@ -163,7 +163,7 @@ public class HomeActivity extends AppCompatActivity {
             MapPoint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), Map_Basic.class);
+                    Intent intent = new Intent(getApplicationContext(), Route_choose.class);
                     intent.putExtra("Start", StartPoint.getText().toString());
                     intent.putExtra("End", EndPoint.getText().toString());
                     intent.putExtra("State",cur_state);

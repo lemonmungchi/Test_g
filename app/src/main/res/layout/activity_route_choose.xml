@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_centerHorizontal="false"
+    android:background="#AED2FF"
+    android:orientation="vertical"
+    android:verticalScrollbarPosition="left">
+
+    <!--여행지 사진 스크롤 뷰-->
+    <HorizontalScrollView
+        android:id="@+id/categoryScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <RadioGroup
+            android:id="@+id/themeRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/activity"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="액티비티"
+                android:textColor="@drawable/cate_text_selector" />
+
+            <RadioButton
+                android:id="@+id/play"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="놀거리"
+                android:textColor="@drawable/cate_text_selector" />
+
+            <RadioButton
+                android:id="@+id/ocean"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="바다"
+                android:textColor="@drawable/cate_text_selector" />
+
+            <RadioButton
+                android:id="@+id/river"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="강"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/heritage"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="문화재"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/mountain"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="산과 계곡"
+                android:textColor="@drawable/cate_text_selector" />
+
+        </RadioGroup>
+    </HorizontalScrollView>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="경로추가"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:background="@drawable/edge"
+        android:enabled="false"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:orientation="vertical"
+        android:background="#6499E9">
+
+        <FrameLayout
+            android:id="@+id/routeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#6499E9">
+
+        <Button
+            android:id="@+id/mapFind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="#27005D"
+            android:text="길찾기"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</LinearLayout>

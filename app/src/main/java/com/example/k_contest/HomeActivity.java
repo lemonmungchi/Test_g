@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 
 import com.example.k_contest.fragments.Testfrag1;
@@ -44,13 +45,27 @@ public class HomeActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
 
-            ImageButton backspaceButton = findViewById(R.id.backspaceicon);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+
+        CheckBox natureCheck=(CheckBox)findViewById(R.id.nature_check);             //체크박스 이벤트생성
+        CheckBox leisureCheck=(CheckBox)findViewById(R.id.leisure_check);
+        CheckBox cultureCheck=(CheckBox)findViewById(R.id.culture_check);
+
+        boolean nature_p=natureCheck.isChecked();
+        boolean leisure_p=leisureCheck.isChecked();
+        boolean culture_p=cultureCheck.isChecked();
+
+        boolean cur_state[]={nature_p,leisure_p,culture_p};
+
+        ImageButton backspaceButton = findViewById(R.id.backspaceicon);
             backspaceButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onBackPressed();
                 }
             });
+
             ImageButton homeButton = findViewById(R.id.homeicon);
 
             homeButton.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +98,27 @@ public class HomeActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), UserPageActivity.class);
                     startActivity(intent);
                 }
-            });//하단바
+            });
+
+            drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);  //드로어 레이아웃 선택을 통해 작동
+            drawer = (View)findViewById(R.id.drawer);
+
+            ImageButton openSideBtn = (ImageButton)findViewById(R.id.sideMenuBtn);  // 사이드메뉴 열기 버튼
+
+            openSideBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    drawerLayout.openDrawer(drawer);
+                }
+            });
+
+            Button closeSideBtn = (Button)findViewById(R.id.closeBtn);  //사이드메뉴 닫기
+            closeSideBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    drawerLayout.closeDrawer(drawer);
+                }
+            });
 
             //fragment
             testfrag1 = new Testfrag1();
@@ -113,26 +148,6 @@ public class HomeActivity extends AppCompatActivity {
                 ft2.replace(R.id.fragmentframe, testfrag2);
                 ft2.commit();
             });
-            drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);  //드로어 레이아웃 선택을 통해 작동
-            drawer = (View) findViewById(R.id.drawer);
-
-            ImageButton openSideBtn = (ImageButton) findViewById(R.id.sideMenuBtn);  // 사이드메뉴 열기 버튼
-
-            openSideBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    drawerLayout.openDrawer(drawer);
-                }
-            });
-
-            Button closeSideBtn = (Button) findViewById(R.id.closeBtn);  //사이드메뉴 닫기
-
-            closeSideBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    drawerLayout.closeDrawer(drawer);
-                }
-            });
 
 
             searchList = new ArrayList<>();
@@ -147,22 +162,14 @@ public class HomeActivity extends AppCompatActivity {
             MapPoint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), Map_Basic.class);
+                    Intent intent = new Intent(getApplicationContext(), Route_choose.class);
                     intent.putExtra("Start", StartPoint.getText().toString());
                     intent.putExtra("End", EndPoint.getText().toString());
+                    intent.putExtra("State",cur_state);
                     startActivity(intent);
                 }
             });
 
-            UserPage = findViewById(R.id.profileicon);
-
-            UserPage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(HomeActivity.this, UserPageActivity.class);
-                    startActivity(intent);
-                }
-            });
 
         }
 

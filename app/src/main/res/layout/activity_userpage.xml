@@ -7,14 +7,16 @@
     android:background="#AED2FF"
     android:orientation="vertical"
     android:verticalScrollbarPosition="left">
-
+    <include layout="@layout/topbar_my" />
 
     <TextView
+        android:id="@+id/loginMy"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:gravity="center"
         android:textColor="@color/black"
         android:text="사용자"
+        android:textColor="@color/black"
         android:textSize="24sp" />
 
     <LinearLayout

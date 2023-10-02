@@ -16,7 +16,6 @@
         android:gravity="center"
         android:textColor="@color/black"
         android:text="사용자"
-        android:textColor="@color/black"
         android:textSize="24sp" />
 
     <LinearLayout

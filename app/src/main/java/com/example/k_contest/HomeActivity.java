@@ -33,9 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     private Testfrag2 testfrag2;
     private Button buttontestfrag1;
     private Button buttontestfrag2;
-
-
-
+    
     DrawerLayout drawerLayout;
 
     View drawer;

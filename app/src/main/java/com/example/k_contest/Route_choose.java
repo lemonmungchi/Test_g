@@ -21,10 +21,10 @@ public class Route_choose extends AppCompatActivity {
     }
     float max1Nature = 368; // 자연 가중치 최대값
     float max1Culture = 656; // 문화 가중치 최대값
-    float max1Reger = 104; // 레저 가중치 최대값
+    float max1leisure = 104; // 레저 가중치 최대값
     int[] weigth1Nature = {224, 104, 344, 136, 72, 240, 368, 168, 96, 168, 80, 104, 168, 200, 304, 96, 168, 184};   // 자연 가중치
     int[] weigth1Culture = {472, 400, 424, 416, 384, 352, 464, 656, 440, 312, 360, 392, 264, 464, 296, 208, 344, 384};  // 문화 가중치
-    int[] weigth1Reger = {56, 104, 88, 40, 32, 80, 40, 16, 32, 16, 48, 72, 32, 80, 16, 56, 56}; // 레저 가중치
+    int[] weigth1leisure = {56, 104, 88, 40, 32, 80, 40, 16, 32, 16, 48, 72, 32, 80, 16, 56, 56}; // 레저 가중치
 
     int[][] matrixGN = new int[][]{
             {0,27,Integer.MAX_VALUE,Integer.MAX_VALUE,27,51,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
@@ -96,7 +96,7 @@ public class Route_choose extends AppCompatActivity {
         }
         return x;
     }
-
+    
     private Button mapFind;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +124,37 @@ public class Route_choose extends AppCompatActivity {
                 intent.putExtra("End", ed);
                 intent.putExtra("State",curs);
                 startActivity(intentTo);
+
+                double coff1 = 1.0; // 1차분류 가중치 계수
+
+                // 자연 가중치 적용
+                if(curs[0] == true) {
+                    for(int i = 0; i < 18; i++) {
+                        for(int j = 0; j < 18; j++) {
+                            matrixGN[i][j] += coff1 * max1Nature / weigth1Nature[j];
+                        }
+                    }
+                }
+                
+                // 레저 가중치 적용
+                if(curs[1] == true) {
+                    for(int i = 0; i < 18; i++) {
+                        for(int j = 0; j < 18; j++) {
+                            matrixGN[i][j] += coff1 * max1leisure / weigth1leisure[j];
+                        }
+                    }
+                }
+                
+                // 문화 가중치 적용
+                if(curs[2] == true) {
+                    for(int i = 0; i < 18; i++) {
+                        for(int j = 0; j < 18; j++) {
+                            matrixGN[i][j] += coff1 * max1Culture / weigth1Culture[j];
+                        }
+                    }
+                }
+                Dijkstra dj = new Dijkstra(18, matrixGN);
+                //dj.algorithm('출발지', '도착지');
             }
         });
     }

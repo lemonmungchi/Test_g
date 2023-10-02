@@ -8,4 +8,12 @@
         <item>50대</item>
         <item>60대 이상</item>
     </string-array>
+    <string-array name="stateGroup">
+        <item>서울·인천·경기</item>
+        <item>충청</item>
+        <item>강원</item>
+        <item>전라</item>
+        <item>경상</item>
+        <item>제주</item>
+    </string-array>
 </resources>

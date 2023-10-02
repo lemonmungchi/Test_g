@@ -22,11 +22,10 @@ import com.google.firebase.database.FirebaseDatabase;
 public class signUp extends AppCompatActivity {
 
     TextView back;
-    EditText id,pw,pw2,email;
+    EditText pw,pw2,email;
     Button pwcheck, submit;
 
     private FirebaseAuth mFirebaseAuth;     //파이어베이스 인증처리
-    private DatabaseReference mDatabaseRef; //실시간 데이터베이스
 
 
     @Override
@@ -35,7 +34,6 @@ public class signUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         mFirebaseAuth=FirebaseAuth.getInstance();
-        mDatabaseRef= FirebaseDatabase.getInstance().getReference();
 
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +43,6 @@ public class signUp extends AppCompatActivity {
             }
         });
 
-        id=findViewById(R.id.signID);
         pw=findViewById(R.id.signPW);
         pw2=findViewById(R.id.signPW2);
         email=findViewById(R.id.signmail);
@@ -56,6 +53,7 @@ public class signUp extends AppCompatActivity {
             public void onClick(View view) {
                 if(pw.getText().toString().equals(pw2.getText().toString())){
                     pwcheck.setText("일치");
+                    Toast.makeText(signUp.this, "비밀번호일치", Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(signUp.this, "비밀번호가 다릅니다.", Toast.LENGTH_LONG).show();
                 }
@@ -66,7 +64,6 @@ public class signUp extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String myid=id.getText().toString();
                 String mypw=pw.getText().toString();
                 String myemail=email.getText().toString();
 

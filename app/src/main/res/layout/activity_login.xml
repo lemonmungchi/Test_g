@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#AED2FF"
     tools:context=".Login">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
         android:layout_marginLeft="40dp"
+        android:layout_marginTop="200dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="30dp"
         android:orientation="vertical">
@@ -21,43 +21,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
             android:text="회원 로그인"
-            android:textColor="@color/purple_200"
-            android:textStyle="bold"
-            android:textSize="25dp"
             android:textAlignment="center"
-            android:gravity="center_horizontal" />
+            android:textColor="@color/purple_700"
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editID"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
             android:layout_gravity="center"
-            android:background="@drawable/box_edged"
+            android:layout_marginBottom="10dp"
+            android:background="@color/white"
             android:ems="10"
             android:hint="아이디"
-            android:textColorHint="	#808080"
             android:inputType="textPersonName"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
 
         <EditText
             android:id="@+id/ediPassword"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:background="@drawable/box_edged"
+            android:background="@color/white"
             android:ems="10"
             android:hint="비밀번호"
-            android:textColorHint="	#808080"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/loginbutton"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/cate_button_selector"
             android:text="로그인"
             android:textColor="@color/white"
             android:textSize="13sp"
@@ -67,8 +70,8 @@
             android:id="@+id/signin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:text="회원가입"
             android:textColor="@color/black"
             android:textSize="13dp"

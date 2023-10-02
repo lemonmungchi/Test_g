@@ -7,13 +7,13 @@
     android:background="#AED2FF"
     android:orientation="vertical"
     android:verticalScrollbarPosition="left">
-    <include layout="@layout/topbar_my" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/peopleicon" />
+        android:layout_margin="10dp"
+        app:srcCompat="@drawable/profileimage" />
 
     <TextView
         android:id="@+id/loginMy"
@@ -46,6 +46,8 @@
                     android:id="@+id/privacyBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="20dp"
                     android:text="개인정보"
                     android:textSize="20sp"
                     app:icon="@drawable/assignment_ind" />
@@ -54,6 +56,8 @@
                     android:id="@+id/reviewManagementBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="20dp"
                     android:text="리뷰 관리"
                     android:textSize="20sp"
                     app:icon="@drawable/speaker_notes" />
@@ -62,9 +66,21 @@
                     android:id="@+id/bookmarkBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="20dp"
                     android:text="즐겨찾기"
                     android:textSize="20sp"
                     app:icon="@drawable/star_border" />
+
+                <Button
+                    android:id="@+id/loginbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="20dp"
+                    android:text="로그인"
+                    android:textSize="20sp"
+                    app:icon="@drawable/peopleicon" />
 
             </LinearLayout>
         </ScrollView>

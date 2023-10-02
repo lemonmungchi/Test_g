@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="#AED2FF">
 
 
     <LinearLayout
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.7"
                 android:text="back"
-                android:textColor="@color/purple_200"
+                android:textColor="@color/purple_700"
                 android:textSize="20dp" />
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_weight="2"
                 android:text="회원 가입"
-                android:textColor="@color/purple_200"
+                android:textColor="@color/purple_700"
                 android:textSize="25dp" />
         </LinearLayout>
 
@@ -45,10 +45,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="30dp"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
 
                 <TextView
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="아이디"
-                    android:textColor="@color/purple_200"
+                    android:textColor="@color/purple_700"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -66,14 +66,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/box_edged"
+                    android:background="@color/white"
                     android:ems="10"
                     android:hint=" 아이디"
-                    android:textColorHint="	#808080"
-                    android:textColor="@color/black"
                     android:inputType="textPersonName"
-                    android:text="" />
-
+                    android:text=""
+                    android:textColor="@color/black" />
 
 
                 <TextView
@@ -82,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="비밀번호"
-                    android:textColor="@color/purple_200"
+                    android:textColor="@color/purple_700"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -92,13 +90,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/box_edged"
+                    android:background="@color/white"
                     android:ems="10"
                     android:hint=" 비밀번호"
-                    android:textColor="@color/black"
-                    android:textColorHint="	#808080"
                     android:inputType="textPassword"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/signPW2text"
@@ -106,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="비밀번호 확인"
-                    android:textColor="@color/purple_200"
+                    android:textColor="@color/purple_700"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -120,20 +117,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginBottom="20dp"
-                        android:background="@drawable/box_edged"
+                        android:background="@color/white"
                         android:ems="10"
                         android:hint=" 비밀번호 다시 입력"
-                        android:textColorHint="	#808080"
-                        android:textColor="@color/black"
                         android:inputType="textPassword"
-                        android:text="" />
+                        android:text=""
+                        android:textColor="@color/black" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/pwcheckbutton"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/box_fill"
+                        android:background="@drawable/cate_button_selector"
                         android:text="확인"
                         android:textColor="@color/white"
                         android:textSize="16sp"
@@ -146,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="이메일"
-                    android:textColor="@color/purple_200"
+                    android:textColor="@color/purple_700"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -155,21 +151,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/box_edged"
-                    android:textColor="@color/black"
+                    android:background="@color/white"
                     android:ems="10"
                     android:hint=" 이메일"
-                    android:textColorHint="	#808080"
                     android:inputType="textPersonName"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/black" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/signupbutton"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/box_fill"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/cate_button_selector"
                     android:text="회원가입"
                     android:textColor="@color/white"
                     android:textSize="16sp"

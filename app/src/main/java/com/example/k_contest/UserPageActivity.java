@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,6 +17,8 @@ public class UserPageActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     View drawer;
+
+    TextView loginMy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,16 @@ public class UserPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(UserPageActivity.this, PrivacyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        loginMy=findViewById(R.id.loginMy);
+
+        loginMy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserPageActivity.this, Login.class);
                 startActivity(intent);
             }
         });

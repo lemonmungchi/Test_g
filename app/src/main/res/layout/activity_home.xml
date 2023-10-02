@@ -43,6 +43,46 @@
         android:background="#27005D"
         android:text="Search"
         android:textColor="@color/white" />
+    <LinearLayout
+        android:layout_width="414dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/nature_check"
+            android:layout_width="136dp"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:text="자연관광"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:buttonTint="#000000"/>
+
+        <CheckBox
+            android:id="@+id/leisure_check"
+            android:layout_width="136dp"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:text="레저관광"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:buttonTint="#000000"/>
+
+        <CheckBox
+            android:id="@+id/culture_check"
+            android:layout_width="136dp"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:text="문화관광"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:buttonTint="#000000"/>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

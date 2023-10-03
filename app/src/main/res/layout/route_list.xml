@@ -15,14 +15,6 @@
         android:textColor="#000000"
         android:textSize="16dp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/find_inform"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/gray"
-        android:text="정보보기" />
-
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

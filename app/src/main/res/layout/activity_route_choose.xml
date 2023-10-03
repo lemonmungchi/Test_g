@@ -102,7 +102,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="경로추가"
+        android:hint="경로추가(최대5개)"
         android:textColorHint="@color/black"
         android:textColor="@color/black"
         android:background="@drawable/edge"

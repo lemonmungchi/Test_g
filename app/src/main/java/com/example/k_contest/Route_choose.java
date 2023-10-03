@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Route_choose extends AppCompatActivity {
     // 가중치 곱 함수
@@ -38,12 +40,33 @@ public class Route_choose extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private ListView Route_List;
+
+    private ArrayList<String> mid_data;
+
+    private ArrayList<Double> mid_lat;
+    private ArrayList<Double> mid_long;
     private ArrayList<String> route_data;
+
+    private ArrayList<String> route_data_2;
+    private ArrayList<String> route_data_3;
+    private ArrayList<String> route_data_4;
+    private ArrayList<String> route_data_5;
+
     private ArrayList<Double> route_lat;
+    private ArrayList<Double> route_lat_2;
+    private ArrayList<Double> route_lat_3;
+    private ArrayList<Double> route_lat_4;
+    private ArrayList<Double> route_lat_5;
 
     private ArrayList<Double> route_long;
+    private ArrayList<Double> route_long_2;
+    private ArrayList<Double> route_long_3;
+    private ArrayList<Double> route_long_4;
+    private ArrayList<Double> route_long_5;
 
     private RadioButton activity;
+
+    private String[] rot_name;
 
     private RadioButton play;
     private RadioButton ocean;
@@ -99,8 +122,8 @@ public class Route_choose extends AppCompatActivity {
                     Integer.MAX_VALUE,30,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,31,Integer.MAX_VALUE,27,0}      //합천
     };
 
-    private String[] vertex = {"창원", "진주", "통영", "사천", "김해","밀양", "거제", "양산", "의령",
-            "함양", "창녕", "고성", "남해", "하동", "산청", "함안", "거창", "합천"};
+    private String[] vertex = {"창원시", "진주시", "통영시", "사천시", "김해시","밀양시", "거제시", "양산시", "의령군",
+            "함양군", "창녕군", "고성군", "남해군", "하동군", "산청군", "함안군", "거창군", "합천군"};
 
     private double[][] region_position = {
             {35.2279, 128.6817},        //창원
@@ -190,15 +213,36 @@ public class Route_choose extends AppCompatActivity {
         String[]rot =dj.algorithm(vertex[dj.stringToInt(st)],vertex[dj.stringToInt(ed)]);
         Collections.reverse(Arrays.asList(rot));
 
-        route_data = new ArrayList<String>();
+        route_data = new ArrayList<String>();           //중간 데이터 저장
+        route_data_2=new ArrayList<String>();
+        route_data_3=new ArrayList<String>();
+        route_data_4=new ArrayList<String>();
+        route_data_5=new ArrayList<String>();
+
+
         route_lat=new ArrayList<Double>();
+        route_lat_2=new ArrayList<Double>();
+        route_lat_3=new ArrayList<Double>();
+        route_lat_4=new ArrayList<Double>();
+        route_lat_5=new ArrayList<Double>();
+
+
         route_long=new ArrayList<Double>();
+        route_long_2=new ArrayList<Double>();
+        route_long_3=new ArrayList<Double>();
+        route_long_4=new ArrayList<Double>();
+        route_long_5=new ArrayList<Double>();
+
+
         Route_List = findViewById(R.id.route_list);
+        mid_data=new ArrayList<String>();
+        mid_lat=new ArrayList<Double>();
+        mid_long=new ArrayList<Double>();
 
         if(rot.length-2>0){
-            String[] rot_name=new String[rot.length-2];
+            rot_name=new String[rot.length-2];
 
-            for(int i=1;i<=rot.length-1;i++){
+            for(int i=1;i<=rot.length-2;i++){
                 rot_name[i-1]=rot[i];
             }
         }
@@ -232,6 +276,456 @@ public class Route_choose extends AppCompatActivity {
                                 }
                             }
                         });
+                break;
+            case 1:
+                mid_data.clear();
+                mid_lat.clear();
+                mid_long.clear();
+                route_data.clear();
+                route_lat.clear();
+                route_long.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",rot_name[0])
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data.add(document.get("tour_name",String.class));
+                                        route_lat.add(document.get("lat",Double.class));
+                                        route_long.add(document.get("long",Double.class));
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                route_data_2.clear();
+                route_lat_2.clear();
+                route_long_2.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",ed)
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data_2.add(document.get("tour_name",String.class));
+                                        route_lat_2.add(document.get("lat",Double.class));
+                                        route_long_2.add(document.get("long",Double.class));
+                                    }
+                                    for(int i=0;i<route_data.size();i++){
+                                        mid_data.add(route_data.get(i));
+                                        mid_lat.add(route_lat.get(i));
+                                        mid_long.add(route_long.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    for(int i=0;i<route_data_2.size();i++){
+                                        mid_data.add(route_data_2.get(i));
+                                        mid_lat.add(route_lat_2.get(i));
+                                        mid_long.add(route_long_2.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                    Route_List.setAdapter(RouteListAdapter);
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                break;
+            case 2:
+                mid_data.clear();
+                mid_lat.clear();
+                mid_long.clear();
+                route_data.clear();
+                route_lat.clear();
+                route_long.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",rot_name[0])
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data.add(document.get("tour_name",String.class));
+                                        route_lat.add(document.get("lat",Double.class));
+                                        route_long.add(document.get("long",Double.class));
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                route_data_2.clear();
+                route_lat_2.clear();
+                route_long_2.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",rot_name[1])
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data_2.add(document.get("tour_name",String.class));
+                                        route_lat_2.add(document.get("lat",Double.class));
+                                        route_long_2.add(document.get("long",Double.class));
+                                    }
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                route_data_3.clear();
+                route_lat_3.clear();
+                route_long_3.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",ed)
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data_3.add(document.get("tour_name",String.class));
+                                        route_lat_3.add(document.get("lat",Double.class));
+                                        route_long_3.add(document.get("long",Double.class));
+                                    }
+                                    for(int i=0;i<route_data.size();i++){
+                                        mid_data.add(route_data.get(i));
+                                        mid_lat.add(route_lat.get(i));
+                                        mid_long.add(route_long.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    for(int i=0;i<route_data_2.size();i++){
+                                        mid_data.add(route_data_2.get(i));
+                                        mid_lat.add(route_lat_2.get(i));
+                                        mid_long.add(route_long_2.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    for(int i=0;i<route_data_3.size();i++){
+                                        mid_data.add(route_data_3.get(i));
+                                        mid_lat.add(route_lat_3.get(i));
+                                        mid_long.add(route_long_3.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                    Route_List.setAdapter(RouteListAdapter);
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                break;
+            case 3:
+                mid_data.clear();
+                mid_lat.clear();
+                mid_long.clear();
+                route_data.clear();
+                route_lat.clear();
+                route_long.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",rot_name[0])
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data.add(document.get("tour_name",String.class));
+                                        route_lat.add(document.get("lat",Double.class));
+                                        route_long.add(document.get("long",Double.class));
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                route_data_2.clear();
+                route_lat_2.clear();
+                route_long_2.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",rot_name[1])
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data_2.add(document.get("tour_name",String.class));
+                                        route_lat_2.add(document.get("lat",Double.class));
+                                        route_long_2.add(document.get("long",Double.class));
+                                    }
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                route_data_3.clear();
+                route_lat_3.clear();
+                route_long_3.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",rot_name[2])
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data_3.add(document.get("tour_name",String.class));
+                                        route_lat_3.add(document.get("lat",Double.class));
+                                        route_long_3.add(document.get("long",Double.class));
+                                    }
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                route_data_4.clear();
+                route_lat_4.clear();
+                route_long_4.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",ed)
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data_4.add(document.get("tour_name",String.class));
+                                        route_lat_4.add(document.get("lat",Double.class));
+                                        route_long_4.add(document.get("long",Double.class));
+                                    }
+                                    for(int i=0;i<route_data.size();i++){
+                                        mid_data.add(route_data.get(i));
+                                        mid_lat.add(route_lat.get(i));
+                                        mid_long.add(route_long.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    for(int i=0;i<route_data_2.size();i++){
+                                        mid_data.add(route_data_2.get(i));
+                                        mid_lat.add(route_lat_2.get(i));
+                                        mid_long.add(route_long_2.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    for(int i=0;i<route_data_3.size();i++){
+                                        mid_data.add(route_data_3.get(i));
+                                        mid_lat.add(route_lat_3.get(i));
+                                        mid_long.add(route_long_3.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    for(int i=0;i<route_data_4.size();i++){
+                                        mid_data.add(route_data_4.get(i));
+                                        mid_lat.add(route_lat_4.get(i));
+                                        mid_long.add(route_long_4.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                    Route_List.setAdapter(RouteListAdapter);
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                break;
+            case 4:
+                mid_data.clear();
+                mid_lat.clear();
+                mid_long.clear();
+                route_data.clear();
+                route_lat.clear();
+                route_long.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",rot_name[0])
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data.add(document.get("tour_name",String.class));
+                                        route_lat.add(document.get("lat",Double.class));
+                                        route_long.add(document.get("long",Double.class));
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                route_data_2.clear();
+                route_lat_2.clear();
+                route_long_2.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",rot_name[1])
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data_2.add(document.get("tour_name",String.class));
+                                        route_lat_2.add(document.get("lat",Double.class));
+                                        route_long_2.add(document.get("long",Double.class));
+                                    }
+
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                route_data_3.clear();
+                route_lat_3.clear();
+                route_long_3.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",rot_name[2])
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data_3.add(document.get("tour_name",String.class));
+                                        route_lat_3.add(document.get("lat",Double.class));
+                                        route_long_3.add(document.get("long",Double.class));
+                                    }
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                route_data_4.clear();
+                route_lat_4.clear();
+                route_long_4.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",rot_name[3])
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data_4.add(document.get("tour_name",String.class));
+                                        route_lat_4.add(document.get("lat",Double.class));
+                                        route_long_4.add(document.get("long",Double.class));
+                                    }
+
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                route_data_5.clear();
+                route_lat_5.clear();
+                route_long_5.clear();
+                db.collection("tour_data")
+                        .whereEqualTo("city",ed)
+                        .whereEqualTo("first_category",first_ca)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        route_data_5.add(document.get("tour_name",String.class));
+                                        route_lat_5.add(document.get("lat",Double.class));
+                                        route_long_5.add(document.get("long",Double.class));
+                                    }
+
+                                    for(int i=0;i<route_data.size();i++){
+                                        mid_data.add(route_data.get(i));
+                                        mid_lat.add(route_lat.get(i));
+                                        mid_long.add(route_long.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    for(int i=0;i<route_data_2.size();i++){
+                                        mid_data.add(route_data_2.get(i));
+                                        mid_lat.add(route_lat_2.get(i));
+                                        mid_long.add(route_long_2.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    for(int i=0;i<route_data_3.size();i++){
+                                        mid_data.add(route_data_3.get(i));
+                                        mid_lat.add(route_lat_3.get(i));
+                                        mid_long.add(route_long_3.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    for(int i=0;i<route_data_4.size();i++){
+                                        mid_data.add(route_data_4.get(i));
+                                        mid_lat.add(route_lat_4.get(i));
+                                        mid_long.add(route_long_4.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    for(int i=0;i<route_data_5.size();i++){
+                                        mid_data.add(route_data_5.get(i));
+                                        mid_lat.add(route_lat_5.get(i));
+                                        mid_long.add(route_long_5.get(i));
+                                        if(i==5)
+                                            break;
+                                    }
+                                    List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                    Route_List.setAdapter(RouteListAdapter);
+
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                break;
+
         }
         activity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,6 +750,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_lat.add(document.get("lat",Double.class));
                                                 route_long.add(document.get("long",Double.class));
                                             }
+
                                             List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -265,6 +760,469 @@ public class Route_choose extends AppCompatActivity {
                                         }
                                     }
                                 });
+                        break;
+                    case 1:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 2:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 3:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 4:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[3])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_5.clear();
+                        route_lat_5.clear();
+                        route_long_5.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","액티비티")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_5.add(document.get("tour_name",String.class));
+                                                route_lat_5.add(document.get("lat",Double.class));
+                                                route_long_5.add(document.get("long",Double.class));
+                                            }
+
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_5.size();i++){
+                                                mid_data.add(route_data_5.get(i));
+                                                mid_lat.add(route_lat_5.get(i));
+                                                mid_long.add(route_long_5.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
                 }
             }
         });
@@ -291,6 +1249,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_lat.add(document.get("lat",Double.class));
                                                 route_long.add(document.get("long",Double.class));
                                             }
+
                                             List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -300,6 +1259,469 @@ public class Route_choose extends AppCompatActivity {
                                         }
                                     }
                                 });
+                        break;
+                    case 1:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 2:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 3:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 4:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[3])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_5.clear();
+                        route_lat_5.clear();
+                        route_long_5.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","놀거리")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_5.add(document.get("tour_name",String.class));
+                                                route_lat_5.add(document.get("lat",Double.class));
+                                                route_long_5.add(document.get("long",Double.class));
+                                            }
+
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_5.size();i++){
+                                                mid_data.add(route_data_5.get(i));
+                                                mid_lat.add(route_lat_5.get(i));
+                                                mid_long.add(route_long_5.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
                 }
             }
         });
@@ -326,6 +1748,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_lat.add(document.get("lat",Double.class));
                                                 route_long.add(document.get("long",Double.class));
                                             }
+
                                             List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -335,6 +1758,469 @@ public class Route_choose extends AppCompatActivity {
                                         }
                                     }
                                 });
+                        break;
+                    case 1:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 2:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 3:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 4:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[3])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_5.clear();
+                        route_lat_5.clear();
+                        route_long_5.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","바다")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_5.add(document.get("tour_name",String.class));
+                                                route_lat_5.add(document.get("lat",Double.class));
+                                                route_long_5.add(document.get("long",Double.class));
+                                            }
+
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_5.size();i++){
+                                                mid_data.add(route_data_5.get(i));
+                                                mid_lat.add(route_lat_5.get(i));
+                                                mid_long.add(route_long_5.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
                 }
             }
         });
@@ -361,6 +2247,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_lat.add(document.get("lat",Double.class));
                                                 route_long.add(document.get("long",Double.class));
                                             }
+
                                             List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -370,6 +2257,469 @@ public class Route_choose extends AppCompatActivity {
                                         }
                                     }
                                 });
+                        break;
+                    case 1:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 2:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 3:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 4:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[3])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_5.clear();
+                        route_lat_5.clear();
+                        route_long_5.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","강")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_5.add(document.get("tour_name",String.class));
+                                                route_lat_5.add(document.get("lat",Double.class));
+                                                route_long_5.add(document.get("long",Double.class));
+                                            }
+
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_5.size();i++){
+                                                mid_data.add(route_data_5.get(i));
+                                                mid_lat.add(route_lat_5.get(i));
+                                                mid_long.add(route_long_5.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
                 }
             }
         });
@@ -396,6 +2746,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_lat.add(document.get("lat",Double.class));
                                                 route_long.add(document.get("long",Double.class));
                                             }
+
                                             List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -405,6 +2756,469 @@ public class Route_choose extends AppCompatActivity {
                                         }
                                     }
                                 });
+                        break;
+                    case 1:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 2:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 3:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 4:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[3])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_5.clear();
+                        route_lat_5.clear();
+                        route_long_5.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","문화재")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_5.add(document.get("tour_name",String.class));
+                                                route_lat_5.add(document.get("lat",Double.class));
+                                                route_long_5.add(document.get("long",Double.class));
+                                            }
+
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_5.size();i++){
+                                                mid_data.add(route_data_5.get(i));
+                                                mid_lat.add(route_lat_5.get(i));
+                                                mid_long.add(route_long_5.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
                 }
             }
         });
@@ -419,7 +3233,7 @@ public class Route_choose extends AppCompatActivity {
                         db.collection("tour_data")
                                 .whereEqualTo("city",ed)
                                 .whereEqualTo("first_category",first_ca)
-                                .whereEqualTo("second_category","산과 계곡")
+                                .whereEqualTo("second_category","산과계곡")
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
@@ -431,6 +3245,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_lat.add(document.get("lat",Double.class));
                                                 route_long.add(document.get("long",Double.class));
                                             }
+
                                             List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -440,6 +3255,469 @@ public class Route_choose extends AppCompatActivity {
                                         }
                                     }
                                 });
+                        break;
+                    case 1:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 2:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 3:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
+                    case 4:
+                        mid_data.clear();
+                        mid_lat.clear();
+                        mid_long.clear();
+                        route_data.clear();
+                        route_lat.clear();
+                        route_long.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[0])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data.add(document.get("tour_name",String.class));
+                                                route_lat.add(document.get("lat",Double.class));
+                                                route_long.add(document.get("long",Double.class));
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_2.clear();
+                        route_lat_2.clear();
+                        route_long_2.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[1])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_2.add(document.get("tour_name",String.class));
+                                                route_lat_2.add(document.get("lat",Double.class));
+                                                route_long_2.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_3.clear();
+                        route_lat_3.clear();
+                        route_long_3.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[2])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_3.add(document.get("tour_name",String.class));
+                                                route_lat_3.add(document.get("lat",Double.class));
+                                                route_long_3.add(document.get("long",Double.class));
+                                            }
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_4.clear();
+                        route_lat_4.clear();
+                        route_long_4.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",rot_name[3])
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_4.add(document.get("tour_name",String.class));
+                                                route_lat_4.add(document.get("lat",Double.class));
+                                                route_long_4.add(document.get("long",Double.class));
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        route_data_5.clear();
+                        route_lat_5.clear();
+                        route_long_5.clear();
+                        db.collection("tour_data")
+                                .whereEqualTo("city",ed)
+                                .whereEqualTo("first_category",first_ca)
+                                .whereEqualTo("second_category","산과계곡")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                route_data_5.add(document.get("tour_name",String.class));
+                                                route_lat_5.add(document.get("lat",Double.class));
+                                                route_long_5.add(document.get("long",Double.class));
+                                            }
+
+                                            for(int i=0;i<route_data.size();i++){
+                                                mid_data.add(route_data.get(i));
+                                                mid_lat.add(route_lat.get(i));
+                                                mid_long.add(route_long.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_2.size();i++){
+                                                mid_data.add(route_data_2.get(i));
+                                                mid_lat.add(route_lat_2.get(i));
+                                                mid_long.add(route_long_2.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_3.size();i++){
+                                                mid_data.add(route_data_3.get(i));
+                                                mid_lat.add(route_lat_3.get(i));
+                                                mid_long.add(route_long_3.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_4.size();i++){
+                                                mid_data.add(route_data_4.get(i));
+                                                mid_lat.add(route_lat_4.get(i));
+                                                mid_long.add(route_long_4.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            for(int i=0;i<route_data_5.size();i++){
+                                                mid_data.add(route_data_5.get(i));
+                                                mid_lat.add(route_lat_5.get(i));
+                                                mid_long.add(route_long_5.get(i));
+                                                if(i==5)
+                                                    break;
+                                            }
+                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            Route_List.setAdapter(RouteListAdapter);
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                        break;
                 }
             }
         });

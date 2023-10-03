@@ -219,14 +219,14 @@ public class HomeActivity extends AppCompatActivity {
         searchList.add("밀양시");
         searchList.add("거제시");
         searchList.add("양산시");
-        searchList.add("의령시");
+        searchList.add("의령군");
         searchList.add("함안군");
         searchList.add("창녕군");
         searchList.add("고성군");
         searchList.add("남해군");
         searchList.add("하동군");
-        searchList.add("산청시");
-        searchList.add("함양시");
+        searchList.add("산청군");
+        searchList.add("함양군");
         searchList.add("거창군");
         searchList.add("합천군");
     }

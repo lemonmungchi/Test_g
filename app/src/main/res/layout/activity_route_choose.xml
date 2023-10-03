@@ -35,7 +35,6 @@
                 android:layout_weight="1"
                 android:background="@drawable/cate_button_selector"
                 android:button="@null"
-                android:checked="true"
                 android:gravity="center"
                 android:text="액티비티"
                 android:textColor="@drawable/cate_text_selector" />

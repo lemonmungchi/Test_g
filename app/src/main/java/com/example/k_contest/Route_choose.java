@@ -9,12 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
-import com.example.k_contest.fragments.List_Adapter_Route;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,8 +26,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 
 public class Route_choose extends AppCompatActivity {
     // 가중치 곱 함수
@@ -42,6 +42,8 @@ public class Route_choose extends AppCompatActivity {
     private ListView Route_List;
 
     private ArrayList<String> mid_data;
+
+    private List_Adapter_Route RouteListAdapter;
 
     private ArrayList<Double> mid_lat;
     private ArrayList<Double> mid_long;
@@ -74,14 +76,16 @@ public class Route_choose extends AppCompatActivity {
     private RadioButton heritage;
     private RadioButton mountain;
 
-    private
+    private EditText route_text;
+
+    private CheckBox route_check;
 
     float max1Nature = 368; // 자연 가중치 최대값
     float max1Culture = 656; // 문화 가중치 최대값
     float max1leisure = 104; // 레저 가중치 최대값
     int[] weigth1Nature = {224, 104, 344, 136, 72, 240, 368, 168, 96, 168, 80, 104, 168, 200, 304, 96, 168, 184};   // 자연 가중치
     int[] weigth1Culture = {472, 400, 424, 416, 384, 352, 464, 656, 440, 312, 360, 392, 264, 464, 296, 208, 344, 384};  // 문화 가중치
-    int[] weigth1leisure = {56, 104, 88, 40, 32, 80, 40, 16, 32, 16, 48, 72, 32, 80, 16, 56, 56}; // 레저 가중치
+    int[] weigth1leisure = {56,24, 104, 88, 40, 32, 80, 40, 16, 32, 16, 48, 72, 32, 80, 16, 56, 56}; // 레저 가중치
 
     int[][] matrixGN = new int[][]{
             {0,27,Integer.MAX_VALUE,Integer.MAX_VALUE,27,51,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,
@@ -155,6 +159,9 @@ public class Route_choose extends AppCompatActivity {
     }
     private String first_ca;
     private Button mapFind;
+
+    private ArrayList<Double> result_lat;
+    private ArrayList<Double> result_long;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,12 +169,17 @@ public class Route_choose extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        route_text=findViewById(R.id.route_text);
+
         activity=findViewById(R.id.activity);
         play=findViewById(R.id.play);
         ocean=findViewById(R.id.ocean);
         river=findViewById(R.id.river);
         heritage=findViewById(R.id.heritage);
         mountain=findViewById(R.id.mountain);
+
+        result_lat=new ArrayList<Double>();
+        result_long=new ArrayList<Double>();
 
 
         Intent intent = getIntent();
@@ -267,7 +279,7 @@ public class Route_choose extends AppCompatActivity {
                                         route_long.add(document.get("long",Double.class));
                                     }
 
-                                    List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
+                                    RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                     Route_List.setAdapter(RouteListAdapter);
 
 
@@ -334,7 +346,7 @@ public class Route_choose extends AppCompatActivity {
                                         if(i==5)
                                             break;
                                     }
-                                    List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                    RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                     Route_List.setAdapter(RouteListAdapter);
 
                                 } else {
@@ -430,7 +442,7 @@ public class Route_choose extends AppCompatActivity {
                                         if(i==5)
                                             break;
                                     }
-                                    List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                    RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                     Route_List.setAdapter(RouteListAdapter);
 
                                 } else {
@@ -556,7 +568,7 @@ public class Route_choose extends AppCompatActivity {
                                         if(i==5)
                                             break;
                                     }
-                                    List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                    RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                     Route_List.setAdapter(RouteListAdapter);
 
                                 } else {
@@ -715,7 +727,7 @@ public class Route_choose extends AppCompatActivity {
                                         if(i==5)
                                             break;
                                     }
-                                    List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                    RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                     Route_List.setAdapter(RouteListAdapter);
 
 
@@ -751,7 +763,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_long.add(document.get("long",Double.class));
                                             }
 
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -820,7 +832,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -919,7 +931,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -1049,7 +1061,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -1213,7 +1225,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -1250,7 +1262,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_long.add(document.get("long",Double.class));
                                             }
 
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -1319,7 +1331,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -1418,7 +1430,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -1548,7 +1560,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -1712,7 +1724,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -1749,7 +1761,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_long.add(document.get("long",Double.class));
                                             }
 
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -1818,7 +1830,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -1917,7 +1929,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -2047,7 +2059,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -2211,7 +2223,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -2248,7 +2260,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_long.add(document.get("long",Double.class));
                                             }
 
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -2317,7 +2329,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -2416,7 +2428,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -2546,7 +2558,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -2710,7 +2722,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -2747,7 +2759,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_long.add(document.get("long",Double.class));
                                             }
 
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -2816,7 +2828,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -2915,7 +2927,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -3045,7 +3057,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -3209,7 +3221,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -3246,7 +3258,7 @@ public class Route_choose extends AppCompatActivity {
                                                 route_long.add(document.get("long",Double.class));
                                             }
 
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -3315,7 +3327,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -3414,7 +3426,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -3544,7 +3556,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
                                         } else {
@@ -3708,7 +3720,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
-                                            List_Adapter_Route RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
+                                            RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
 
@@ -3722,7 +3734,14 @@ public class Route_choose extends AppCompatActivity {
             }
         });
 
-
+        Route_List.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String it = (String) RouteListAdapter.getItem(position);
+                Toast.makeText(Route_choose.this,it.toString(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG,it.toString());
+            }
+        });
 
 
         mapFind=findViewById(R.id.mapFind);

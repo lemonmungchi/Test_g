@@ -1,4 +1,4 @@
-package com.example.k_contest.fragments;
+package com.example.k_contest;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.k_contest.R;
@@ -43,11 +45,13 @@ public class List_Adapter_Route extends BaseAdapter {
         return position;
     }
 
+
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.route_list, null);
 
-        TextView title = view.findViewById(R.id.title);
-        title.setText(data.get(position));
+        CheckBox route_ch=view.findViewById(R.id.mid_check);
+        route_ch.setText(data.get(position));
+        EditText route_text=view.findViewById(R.id.route_text);
 
         return view;
     }

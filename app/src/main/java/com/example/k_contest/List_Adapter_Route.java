@@ -49,9 +49,8 @@ public class List_Adapter_Route extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.route_list, null);
 
-        CheckBox route_ch=view.findViewById(R.id.mid_check);
-        route_ch.setText(data.get(position));
-        EditText route_text=view.findViewById(R.id.route_text);
+        TextView title=view.findViewById(R.id.title);
+        title.setText(data.get(position));
 
         return view;
     }

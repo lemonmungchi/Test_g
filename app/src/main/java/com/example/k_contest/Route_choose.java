@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -79,6 +82,8 @@ public class Route_choose extends AppCompatActivity {
     private EditText route_text;
 
     private CheckBox route_check;
+
+    private ArrayList<Boolean> is_Checked;
 
     float max1Nature = 368; // 자연 가중치 최대값
     float max1Culture = 656; // 문화 가중치 최대값
@@ -252,6 +257,8 @@ public class Route_choose extends AppCompatActivity {
         mid_lat=new ArrayList<Double>();
         mid_long=new ArrayList<Double>();
 
+        is_Checked=new ArrayList<Boolean>();
+
         if(rot.length-2>0){
             rot_name=new String[rot.length-2];
 
@@ -265,6 +272,7 @@ public class Route_choose extends AppCompatActivity {
                 route_data.clear();
                 route_lat.clear();
                 route_long.clear();
+                is_Checked.clear();
                 db.collection("tour_data")
                         .whereEqualTo("city",ed)
                         .whereEqualTo("first_category",first_ca)
@@ -279,7 +287,9 @@ public class Route_choose extends AppCompatActivity {
                                         route_lat.add(document.get("lat",Double.class));
                                         route_long.add(document.get("long",Double.class));
                                     }
-
+                                    for(int i=0;i<route_data.size();i++){
+                                        is_Checked.add(false);
+                                    }
                                     RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                     Route_List.setAdapter(RouteListAdapter);
 
@@ -297,6 +307,7 @@ public class Route_choose extends AppCompatActivity {
                 route_data.clear();
                 route_lat.clear();
                 route_long.clear();
+                is_Checked.clear();
                 db.collection("tour_data")
                         .whereEqualTo("city",rot_name[0])
                         .whereEqualTo("first_category",first_ca)
@@ -337,6 +348,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data.get(i));
                                         mid_lat.add(route_lat.get(i));
                                         mid_long.add(route_long.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -344,6 +356,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data_2.get(i));
                                         mid_lat.add(route_lat_2.get(i));
                                         mid_long.add(route_long_2.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -363,6 +376,7 @@ public class Route_choose extends AppCompatActivity {
                 route_data.clear();
                 route_lat.clear();
                 route_long.clear();
+                is_Checked.clear();
                 db.collection("tour_data")
                         .whereEqualTo("city",rot_name[0])
                         .whereEqualTo("first_category",first_ca)
@@ -426,6 +440,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data.get(i));
                                         mid_lat.add(route_lat.get(i));
                                         mid_long.add(route_long.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -433,6 +448,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data_2.get(i));
                                         mid_lat.add(route_lat_2.get(i));
                                         mid_long.add(route_long_2.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -440,6 +456,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data_3.get(i));
                                         mid_lat.add(route_lat_3.get(i));
                                         mid_long.add(route_long_3.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -459,6 +476,7 @@ public class Route_choose extends AppCompatActivity {
                 route_data.clear();
                 route_lat.clear();
                 route_long.clear();
+                is_Checked.clear();
                 db.collection("tour_data")
                         .whereEqualTo("city",rot_name[0])
                         .whereEqualTo("first_category",first_ca)
@@ -545,6 +563,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data.get(i));
                                         mid_lat.add(route_lat.get(i));
                                         mid_long.add(route_long.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -552,6 +571,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data_2.get(i));
                                         mid_lat.add(route_lat_2.get(i));
                                         mid_long.add(route_long_2.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -559,6 +579,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data_3.get(i));
                                         mid_lat.add(route_lat_3.get(i));
                                         mid_long.add(route_long_3.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -566,6 +587,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data_4.get(i));
                                         mid_lat.add(route_lat_4.get(i));
                                         mid_long.add(route_long_4.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -585,6 +607,7 @@ public class Route_choose extends AppCompatActivity {
                 route_data.clear();
                 route_lat.clear();
                 route_long.clear();
+                is_Checked.clear();
                 db.collection("tour_data")
                         .whereEqualTo("city",rot_name[0])
                         .whereEqualTo("first_category",first_ca)
@@ -697,6 +720,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data.get(i));
                                         mid_lat.add(route_lat.get(i));
                                         mid_long.add(route_long.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -704,6 +728,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data_2.get(i));
                                         mid_lat.add(route_lat_2.get(i));
                                         mid_long.add(route_long_2.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -711,6 +736,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data_3.get(i));
                                         mid_lat.add(route_lat_3.get(i));
                                         mid_long.add(route_long_3.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -718,6 +744,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data_4.get(i));
                                         mid_lat.add(route_lat_4.get(i));
                                         mid_long.add(route_long_4.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -725,6 +752,7 @@ public class Route_choose extends AppCompatActivity {
                                         mid_data.add(route_data_5.get(i));
                                         mid_lat.add(route_lat_5.get(i));
                                         mid_long.add(route_long_5.get(i));
+                                        is_Checked.add(false);
                                         if(i==5)
                                             break;
                                     }
@@ -748,6 +776,7 @@ public class Route_choose extends AppCompatActivity {
                         route_data.clear();
                         route_lat.clear();
                         route_long.clear();
+                        is_Checked.clear();
                         db.collection("tour_data")
                                 .whereEqualTo("city",ed)
                                 .whereEqualTo("first_category",first_ca)
@@ -764,6 +793,9 @@ public class Route_choose extends AppCompatActivity {
                                                 route_long.add(document.get("long",Double.class));
                                             }
 
+                                            for(int i=0;i<route_data.size();i++){
+                                                is_Checked.add(false);
+                                            }
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -823,6 +855,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data.get(i));
                                                 mid_lat.add(route_lat.get(i));
                                                 mid_long.add(route_long.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -830,9 +863,11 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_2.get(i));
                                                 mid_lat.add(route_lat_2.get(i));
                                                 mid_long.add(route_long_2.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
+
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -849,6 +884,7 @@ public class Route_choose extends AppCompatActivity {
                         route_data.clear();
                         route_lat.clear();
                         route_long.clear();
+                        is_Checked.clear();
                         db.collection("tour_data")
                                 .whereEqualTo("city",rot_name[0])
                                 .whereEqualTo("first_category",first_ca)
@@ -915,6 +951,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data.get(i));
                                                 mid_lat.add(route_lat.get(i));
                                                 mid_long.add(route_long.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -922,6 +959,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_2.get(i));
                                                 mid_lat.add(route_lat_2.get(i));
                                                 mid_long.add(route_long_2.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -929,9 +967,11 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_3.get(i));
                                                 mid_lat.add(route_lat_3.get(i));
                                                 mid_long.add(route_long_3.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
+
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -948,6 +988,7 @@ public class Route_choose extends AppCompatActivity {
                         route_data.clear();
                         route_lat.clear();
                         route_long.clear();
+                        is_Checked.clear();
                         db.collection("tour_data")
                                 .whereEqualTo("city",rot_name[0])
                                 .whereEqualTo("first_category",first_ca)
@@ -1038,6 +1079,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data.get(i));
                                                 mid_lat.add(route_lat.get(i));
                                                 mid_long.add(route_long.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1045,6 +1087,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_2.get(i));
                                                 mid_lat.add(route_lat_2.get(i));
                                                 mid_long.add(route_long_2.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1052,6 +1095,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_3.get(i));
                                                 mid_lat.add(route_lat_3.get(i));
                                                 mid_long.add(route_long_3.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1059,6 +1103,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_4.get(i));
                                                 mid_lat.add(route_lat_4.get(i));
                                                 mid_long.add(route_long_4.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1078,6 +1123,7 @@ public class Route_choose extends AppCompatActivity {
                         route_data.clear();
                         route_lat.clear();
                         route_long.clear();
+                        is_Checked.clear();
                         db.collection("tour_data")
                                 .whereEqualTo("city",rot_name[0])
                                 .whereEqualTo("first_category",first_ca)
@@ -1195,6 +1241,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data.get(i));
                                                 mid_lat.add(route_lat.get(i));
                                                 mid_long.add(route_long.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1202,6 +1249,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_2.get(i));
                                                 mid_lat.add(route_lat_2.get(i));
                                                 mid_long.add(route_long_2.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1209,6 +1257,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_3.get(i));
                                                 mid_lat.add(route_lat_3.get(i));
                                                 mid_long.add(route_long_3.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1216,6 +1265,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_4.get(i));
                                                 mid_lat.add(route_lat_4.get(i));
                                                 mid_long.add(route_long_4.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1223,6 +1273,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_5.get(i));
                                                 mid_lat.add(route_lat_5.get(i));
                                                 mid_long.add(route_long_5.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1247,6 +1298,7 @@ public class Route_choose extends AppCompatActivity {
                         route_data.clear();
                         route_lat.clear();
                         route_long.clear();
+                        is_Checked.clear();
                         db.collection("tour_data")
                                 .whereEqualTo("city",ed)
                                 .whereEqualTo("first_category",first_ca)
@@ -1263,6 +1315,9 @@ public class Route_choose extends AppCompatActivity {
                                                 route_long.add(document.get("long",Double.class));
                                             }
 
+                                            for(int i=0;i<route_data.size();i++){
+                                                is_Checked.add(false);
+                                            }
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -1280,6 +1335,7 @@ public class Route_choose extends AppCompatActivity {
                         route_data.clear();
                         route_lat.clear();
                         route_long.clear();
+                        is_Checked.clear();
                         db.collection("tour_data")
                                 .whereEqualTo("city",rot_name[0])
                                 .whereEqualTo("first_category",first_ca)
@@ -1322,6 +1378,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data.get(i));
                                                 mid_lat.add(route_lat.get(i));
                                                 mid_long.add(route_long.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1329,6 +1386,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_2.get(i));
                                                 mid_lat.add(route_lat_2.get(i));
                                                 mid_long.add(route_long_2.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1348,6 +1406,7 @@ public class Route_choose extends AppCompatActivity {
                         route_data.clear();
                         route_lat.clear();
                         route_long.clear();
+                        is_Checked.clear();
                         db.collection("tour_data")
                                 .whereEqualTo("city",rot_name[0])
                                 .whereEqualTo("first_category",first_ca)
@@ -1414,6 +1473,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data.get(i));
                                                 mid_lat.add(route_lat.get(i));
                                                 mid_long.add(route_long.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1421,6 +1481,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_2.get(i));
                                                 mid_lat.add(route_lat_2.get(i));
                                                 mid_long.add(route_long_2.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1428,6 +1489,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_3.get(i));
                                                 mid_lat.add(route_lat_3.get(i));
                                                 mid_long.add(route_long_3.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1447,6 +1509,7 @@ public class Route_choose extends AppCompatActivity {
                         route_data.clear();
                         route_lat.clear();
                         route_long.clear();
+                        is_Checked.clear();
                         db.collection("tour_data")
                                 .whereEqualTo("city",rot_name[0])
                                 .whereEqualTo("first_category",first_ca)
@@ -1537,6 +1600,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data.get(i));
                                                 mid_lat.add(route_lat.get(i));
                                                 mid_long.add(route_long.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1544,6 +1608,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_2.get(i));
                                                 mid_lat.add(route_lat_2.get(i));
                                                 mid_long.add(route_long_2.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1551,6 +1616,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_3.get(i));
                                                 mid_lat.add(route_lat_3.get(i));
                                                 mid_long.add(route_long_3.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1558,6 +1624,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_4.get(i));
                                                 mid_lat.add(route_lat_4.get(i));
                                                 mid_long.add(route_long_4.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1577,6 +1644,7 @@ public class Route_choose extends AppCompatActivity {
                         route_data.clear();
                         route_lat.clear();
                         route_long.clear();
+                        is_Checked.clear();
                         db.collection("tour_data")
                                 .whereEqualTo("city",rot_name[0])
                                 .whereEqualTo("first_category",first_ca)
@@ -1694,6 +1762,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data.get(i));
                                                 mid_lat.add(route_lat.get(i));
                                                 mid_long.add(route_long.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1701,6 +1770,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_2.get(i));
                                                 mid_lat.add(route_lat_2.get(i));
                                                 mid_long.add(route_long_2.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1708,6 +1778,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_3.get(i));
                                                 mid_lat.add(route_lat_3.get(i));
                                                 mid_long.add(route_long_3.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1715,6 +1786,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_4.get(i));
                                                 mid_lat.add(route_lat_4.get(i));
                                                 mid_long.add(route_long_4.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1722,6 +1794,7 @@ public class Route_choose extends AppCompatActivity {
                                                 mid_data.add(route_data_5.get(i));
                                                 mid_lat.add(route_lat_5.get(i));
                                                 mid_long.add(route_long_5.get(i));
+                                                is_Checked.add(false);
                                                 if(i==5)
                                                     break;
                                             }
@@ -1746,6 +1819,7 @@ public class Route_choose extends AppCompatActivity {
                         route_data.clear();
                         route_lat.clear();
                         route_long.clear();
+                        is_Checked.clear();
                         db.collection("tour_data")
                                 .whereEqualTo("city",ed)
                                 .whereEqualTo("first_category",first_ca)
@@ -1761,7 +1835,9 @@ public class Route_choose extends AppCompatActivity {
                                                 route_lat.add(document.get("lat",Double.class));
                                                 route_long.add(document.get("long",Double.class));
                                             }
-
+                                            for(int i=0;i<route_data.size();i++){
+                                                is_Checked.add(false);
+                                            }
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -1831,6 +1907,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -1930,6 +2007,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -2060,6 +2138,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -2224,6 +2303,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -2260,7 +2340,6 @@ public class Route_choose extends AppCompatActivity {
                                                 route_lat.add(document.get("lat",Double.class));
                                                 route_long.add(document.get("long",Double.class));
                                             }
-
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -2330,6 +2409,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -2429,6 +2509,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -2559,6 +2640,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -2723,6 +2805,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -2759,7 +2842,6 @@ public class Route_choose extends AppCompatActivity {
                                                 route_lat.add(document.get("lat",Double.class));
                                                 route_long.add(document.get("long",Double.class));
                                             }
-
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -2829,6 +2911,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -2928,6 +3011,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -3058,6 +3142,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -3222,6 +3307,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -3258,7 +3344,6 @@ public class Route_choose extends AppCompatActivity {
                                                 route_lat.add(document.get("lat",Double.class));
                                                 route_long.add(document.get("long",Double.class));
                                             }
-
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,route_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -3328,6 +3413,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -3427,6 +3513,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -3557,6 +3644,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -3721,6 +3809,7 @@ public class Route_choose extends AppCompatActivity {
                                                 if(i==5)
                                                     break;
                                             }
+                                            is_Checked=new boolean[mid_data.size()];
                                             RouteListAdapter=new List_Adapter_Route(Route_choose.this,mid_data);
                                             Route_List.setAdapter(RouteListAdapter);
 
@@ -3735,13 +3824,26 @@ public class Route_choose extends AppCompatActivity {
             }
         });
 
-
+        for(int i=0;i<is_Checked.length;i++){
+            is_Checked[i]=false;
+        }
 
         Route_List.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-                String item=(String) RouteListAdapter.getItem(position).toString();
-                Toast.makeText(getApplicationContext(),item.length(),Toast.LENGTH_LONG).show();
+                TextView text_title=view.findViewById(R.id.title);
+                TextView route_choice=view.findViewById(R.id.route_choice);
+                if(is_Checked[position]==false){
+                    is_Checked[position]=true;
+                    text_title.setBackgroundColor(Color.parseColor("#27005D"));
+                    route_choice.setBackgroundColor(Color.parseColor("#27005D"));
+                }
+                else{
+                    is_Checked[position]=false;
+                    text_title.setBackgroundColor(Color.parseColor("#AED2FF"));
+                    route_choice.setBackgroundColor(Color.parseColor("#AED2FF"));
+                }
+
             }
         });
 

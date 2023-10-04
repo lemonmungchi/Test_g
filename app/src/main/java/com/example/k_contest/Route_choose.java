@@ -167,6 +167,7 @@ public class Route_choose extends AppCompatActivity {
 
     private ArrayList<Double> result_lat;
     private ArrayList<Double> result_long;
+    private ArrayList<String> result_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,6 +187,7 @@ public class Route_choose extends AppCompatActivity {
 
         result_lat=new ArrayList<Double>();
         result_long=new ArrayList<Double>();
+        result_name=new ArrayList<String>();
 
 
         Intent intent = getIntent();
@@ -3903,7 +3905,7 @@ public class Route_choose extends AppCompatActivity {
                     is_Checked.set(position,true);
                     route_choice.setBackgroundColor(Color.parseColor("#27005D"));
                     String item=text_title.getText().toString();
-
+                    result_name.add(item);
                     if((rot.length-2)>0){
                         int item_n=mid_data.indexOf(item);
                         result_lat.add(mid_lat.get(item_n));
@@ -3921,6 +3923,7 @@ public class Route_choose extends AppCompatActivity {
                     text_title.setBackgroundColor(Color.parseColor("#AED2FF"));
                     route_choice.setBackgroundColor(Color.parseColor("#AED2FF"));
                     String item=text_title.getText().toString();
+                    result_name.remove(item);
                     String remove_item=route_text.getText().toString();
                     remove_item=remove_item.replaceAll(item,"");
                     route_text.setText(remove_item);
@@ -3962,11 +3965,22 @@ public class Route_choose extends AppCompatActivity {
                     }else {
                         Intent intentTo = new Intent(getApplicationContext(), Map_Basic.class);
                         intentTo.putExtra("Start", st);
-                        Double[] res_lat=result_lat.toArray(new Double[result_lat.size()]);
-                        Double[] res_long=result_lat.toArray(new Double[result_long.size()]);
-                        intentTo.putExtra("rot_lat", res_lat);
+                        String[] res_name=result_name.toArray(new String[result_name.size()]);
+                        //소문자 더블로 넘겨야함
+                        Double res_lat[]=result_lat.toArray(new Double[result_lat.size()]);
+                        double res_lat_d[]=new double[res_lat.length];
+                        for(int i=0;i<res_lat.length;i++){
+                            res_lat_d[i]=res_lat[i];
+                        }
+                        Double res_long[]=result_long.toArray(new Double[result_long.size()]);
+                        double res_long_d[]=new double[res_long.length];
+                        for(int i=0;i<res_long.length;i++){
+                            res_long_d[i]=res_long[i];
+                        }
+                        intentTo.putExtra("rot_lat", res_lat_d);
                         intentTo.putExtra("num",rot_n);
-                        intentTo.putExtra("rot_long", res_long);
+                        intentTo.putExtra("rot_name",res_name);
+                        intentTo.putExtra("rot_long", res_long_d);
                         intentTo.putExtra("End", ed);
                         startActivity(intentTo);
                     }

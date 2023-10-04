@@ -37,7 +37,7 @@
             android:background="@color/white"
             android:ems="10"
             android:hint="아이디"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:text=""
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />

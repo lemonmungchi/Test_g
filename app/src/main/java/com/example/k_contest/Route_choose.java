@@ -177,6 +177,7 @@ public class Route_choose extends AppCompatActivity {
         river=findViewById(R.id.river);
         heritage=findViewById(R.id.heritage);
         mountain=findViewById(R.id.mountain);
+        Route_List = findViewById(R.id.route_list);
 
         result_lat=new ArrayList<Double>();
         result_long=new ArrayList<Double>();
@@ -246,7 +247,7 @@ public class Route_choose extends AppCompatActivity {
         route_long_5=new ArrayList<Double>();
 
 
-        Route_List = findViewById(R.id.route_list);
+
         mid_data=new ArrayList<String>();
         mid_lat=new ArrayList<Double>();
         mid_long=new ArrayList<Double>();
@@ -3734,12 +3735,13 @@ public class Route_choose extends AppCompatActivity {
             }
         });
 
+
+
         Route_List.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String it = (String) RouteListAdapter.getItem(position);
-                Toast.makeText(Route_choose.this,it.toString(), Toast.LENGTH_SHORT).show();
-                Log.d(TAG,it.toString());
+            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
+                String item=(String) RouteListAdapter.getItem(position).toString();
+                Toast.makeText(getApplicationContext(),item.length(),Toast.LENGTH_LONG).show();
             }
         });
 

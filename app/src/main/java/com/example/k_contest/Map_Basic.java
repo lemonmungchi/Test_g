@@ -43,6 +43,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     private NaverMap naverMap;
 
     private ListView List;
+
     private ArrayList<String> dataSample;
 
     private String NavaApIKey="nowdd7jigt";
@@ -195,33 +196,33 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {                                        //맵객체 매서드 사용시 여기서 작성
 
+
         Intent intent = getIntent();
         String st = intent.getStringExtra("Start");          //출발지 받아오기
+        int num=intent.getIntExtra("num",0);
+        if(num>2) {
+            double[] result_lat = intent.getDoubleArrayExtra("rot_lat");
+            double[] result_long = intent.getDoubleArrayExtra("rot_long");
+        }
+
+
         String ed = intent.getStringExtra("End");             //목적지 받아오기
 
-        Dijkstra dj=new Dijkstra(18, matrixGN);
-        String[]rot =dj.algorithm(vertex[dj.stringToInt(st)],vertex[dj.stringToInt(ed)]);
-        Collections.reverse(Arrays.asList(rot));
-        Marker[] markers= new Marker[rot.length];
-        int mid_n=rot.length-2;
-        double[][] mid_lotlng=new double[mid_n][2];
-        double start_lot= region_position[dj.stringToInt(st)][0];           //출발지 위도경도
-        double start_lng= region_position[dj.stringToInt(st)][1];
-        for(int i=0;i<mid_n;i++){
-                mid_lotlng[i][0]=region_position[dj.stringToInt(rot[i+1])][0];
-                mid_lotlng[i][1]=region_position[dj.stringToInt(rot[i+1])][1];
-        }
-        double end_lot= region_position[dj.stringToInt(ed)][0];          //목적지 위도경도
-        double end_lng= region_position[dj.stringToInt(ed)][1];
+
+        Marker[] markers= new Marker[num];
+        double start_lot= region_position[stringToInt(st)][0];           //출발지 위도경도
+        double start_lng= region_position[stringToInt(st)][1];
+        double end_lot= region_position[stringToInt(ed)][0];          //목적지 위도경도
+        double end_lng= region_position[stringToInt(ed)][1];
 
         this.naverMap=naverMap;
-
+        /*
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://naveropenapi.apigw.ntruss.com/map-direction/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         RouteFind routeFind = retrofit.create(RouteFind.class);
-        switch (mid_n){
+        switch (result_long.size()){
             case 0:
                 Retrofit retrofit0 = new Retrofit.Builder()
                         .baseUrl("https://naveropenapi.apigw.ntruss.com/map-direction/")
@@ -471,6 +472,8 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
         }
         List_Adapter buttonListAdapter = new List_Adapter(this, dataSample);
         List.setAdapter(buttonListAdapter);
+
+         */
     }
 
 

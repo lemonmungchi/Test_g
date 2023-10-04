@@ -40,6 +40,7 @@ public class Route_choose extends AppCompatActivity {
         }
     }
 
+    private int rot_n;
     private FirebaseFirestore db;
 
     private ListView Route_List;
@@ -81,7 +82,6 @@ public class Route_choose extends AppCompatActivity {
 
     private TextView route_text;
 
-    private CheckBox route_check;
 
     private ArrayList<Boolean> is_Checked;
 
@@ -3893,6 +3893,7 @@ public class Route_choose extends AppCompatActivity {
         });
 
 
+
         Route_List.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
@@ -3902,33 +3903,75 @@ public class Route_choose extends AppCompatActivity {
                     is_Checked.set(position,true);
                     route_choice.setBackgroundColor(Color.parseColor("#27005D"));
                     String item=text_title.getText().toString();
-                    int item_n=mid_data.indexOf(item);
-                    result_lat.add(mid_lat.get(item_n));
-                    result_long.add(mid_long.get(item_n));
+
+                    if((rot.length-2)>0){
+                        int item_n=mid_data.indexOf(item);
+                        result_lat.add(mid_lat.get(item_n));
+                        result_long.add(mid_long.get(item_n));
+                    }else {
+                        int item_n=route_data.indexOf(item);
+                        result_lat.add(route_lat.get(item_n));
+                        result_long.add(route_long.get(item_n));
+                    }
+
                     route_text.append(" "+item);
                 }
                 else{
                     is_Checked.set(position,false);
                     text_title.setBackgroundColor(Color.parseColor("#AED2FF"));
                     route_choice.setBackgroundColor(Color.parseColor("#AED2FF"));
+                    String item=text_title.getText().toString();
+                    String remove_item=route_text.getText().toString();
+                    remove_item=remove_item.replaceAll(item,"");
+                    route_text.setText(remove_item);
+                    if((rot.length-2)>0){
+                        int item_n=mid_data.indexOf(item);
+                        result_lat.add(mid_lat.get(item_n));
+                        result_long.add(mid_long.get(item_n));
+                    }else {
+                        int item_n=route_data.indexOf(item);
+                        result_lat.add(route_lat.get(item_n));
+                        result_long.add(route_long.get(item_n));
+                    }
                 }
 
             }
         });
 
 
-        mapFind=findViewById(R.id.mapFind);
 
+        mapFind=findViewById(R.id.mapFind);
         mapFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentTo = new Intent(getApplicationContext(), Map_Basic.class);
-                intent.putExtra("Start", st);
-                intent.putExtra("End", ed);
-                intent.putExtra("State",curs);
-                startActivity(intentTo);
+                if(result_lat.size()>0){                 //선택된 경유지가 있음
+                    rot_n=result_lat.size()+2;
+                }else{
+                    rot_n=2;                    //선택된 경유지 없음
+                }
+                if(result_lat.size()>5){
+                    Toast.makeText(getApplicationContext(),"경유지추가는 최대 5개까지 입니다.",Toast.LENGTH_LONG);
+                }
+                else {
+                    if(result_lat.size()==0){
+                        Intent intentTo = new Intent(getApplicationContext(), Map_Basic.class);
+                        intentTo.putExtra("Start", st);
+                        intentTo.putExtra("num",rot_n);
+                        intentTo.putExtra("End", ed);
+                        startActivity(intentTo);
+                    }else {
+                        Intent intentTo = new Intent(getApplicationContext(), Map_Basic.class);
+                        intentTo.putExtra("Start", st);
+                        Double[] res_lat=result_lat.toArray(new Double[result_lat.size()]);
+                        Double[] res_long=result_lat.toArray(new Double[result_long.size()]);
+                        intentTo.putExtra("rot_lat", res_lat);
+                        intentTo.putExtra("num",rot_n);
+                        intentTo.putExtra("rot_long", res_long);
+                        intentTo.putExtra("End", ed);
+                        startActivity(intentTo);
+                    }
 
-
+                }
                 //dj.algorithm('출발지', '도착지');
             }
         });

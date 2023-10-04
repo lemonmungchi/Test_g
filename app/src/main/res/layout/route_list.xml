@@ -14,13 +14,17 @@
         android:text="경유지"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:background="#AED2FF"
+        android:background="#27005D"
         android:textSize="16dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
         android:text="경유지선택"
         android:id="@+id/route_choice"
-        android:background="#AED2FF"/>
+        android:gravity="center_vertical"
+        android:textAlignment="center"
+        android:background="#AED2FF"
+        android:textColor="@color/white"
+        android:textSize="16dp"/>
 </LinearLayout>

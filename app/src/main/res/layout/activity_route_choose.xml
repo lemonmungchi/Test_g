@@ -99,15 +99,14 @@
 
         </RadioGroup>
     </HorizontalScrollView>
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:id="@+id/route_text"
         android:layout_height="50dp"
         android:hint="경로추가(최대5개)"
         android:textColorHint="@color/black"
         android:textColor="@color/black"
-        android:background="@drawable/edge"
-        android:enabled="false"/>
+        android:background="@drawable/edge" />
     <Button
         android:id="@+id/mapFind"
         android:layout_width="match_parent"

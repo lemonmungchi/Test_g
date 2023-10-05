@@ -301,9 +301,9 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                             markers[0].setPosition(new LatLng(start_lot,start_lng));
                             markers[0].setCaptionText("출발지");
                             markers[0].setMap(naverMap);
-                            for(int i=1;i< num-2;i++){
+                            for(int i=1;i< num-1;i++){
                                 markers[i]=new Marker();
-                                markers[i].setPosition(new LatLng(result_lat[i],result_long[i]));
+                                markers[i].setPosition(new LatLng(result_lat[i-1],result_long[i-1]));
                                 markers[i].setCaptionText("경유지");
                                 markers[i].setMap(naverMap);
                             }
@@ -346,9 +346,9 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                             markers[0].setPosition(new LatLng(start_lot,start_lng));
                             markers[0].setCaptionText("출발지");
                             markers[0].setMap(naverMap);
-                            for(int i=1;i< num-2;i++){
+                            for(int i=1;i< num-1;i++){
                                 markers[i]=new Marker();
-                                markers[i].setPosition(new LatLng(result_lat[i],result_long[i]));
+                                markers[i].setPosition(new LatLng(result_lat[i-1],result_long[i-1]));
                                 markers[i].setCaptionText("경유지");
                                 markers[i].setMap(naverMap);
                             }
@@ -389,9 +389,9 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                             markers[0].setPosition(new LatLng(start_lot,start_lng));
                             markers[0].setCaptionText("출발지");
                             markers[0].setMap(naverMap);
-                            for(int i=1;i< num-2;i++){
+                            for(int i=1;i< num-1;i++){
                                 markers[i]=new Marker();
-                                markers[i].setPosition(new LatLng(result_lat[i],result_long[i]));
+                                markers[i].setPosition(new LatLng(result_lat[i-1],result_long[i-1]));
                                 markers[i].setCaptionText("경유지");
                                 markers[i].setMap(naverMap);
                             }
@@ -413,8 +413,92 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
                 });
                 break;
             case 6:
+                Retrofit retrofit4 = new Retrofit.Builder()
+                        .baseUrl("https://naveropenapi.apigw.ntruss.com/map-direction/")
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build();
+                RouteFind routeFind4 = retrofit4.create(RouteFind.class);
+                Call<RoutePath> call4 = routeFind4.getData(NavaApIKey,secret,start_lng+","+start_lot,end_lng+","+end_lot,result_long[0]+","+result_lat[0]+"|"+result_long[1]+","+result_lat[1]+"|"+result_long[2]+","+result_lat[2]+"|"+result_long[3]+","+result_lat[3]);        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
+                call4.enqueue(new Callback<RoutePath>() {
+                    @Override
+                    public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
+                        if(response.isSuccessful()) {
+                            RoutePath routePath=response.body();
+                            List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
+                            PathOverlay line_path=new PathOverlay();       //길 선 표시할 path 배열
+                            for(int i=0;i<path.size();i++) {
+                                list.add(new LatLng(path.get(i).get(1), path.get(i).get(0)));
+                            }
+                            markers[0]=new Marker();
+                            markers[0].setPosition(new LatLng(start_lot,start_lng));
+                            markers[0].setCaptionText("출발지");
+                            markers[0].setMap(naverMap);
+                            for(int i=1;i< num-1;i++){
+                                markers[i]=new Marker();
+                                markers[i].setPosition(new LatLng(result_lat[i-1],result_long[i-1]));
+                                markers[i].setCaptionText("경유지");
+                                markers[i].setMap(naverMap);
+                            }
+                            markers[num-1]=new Marker();
+                            markers[num-1].setPosition(new LatLng(end_lot,end_lng));
+                            markers[num-1].setCaptionText("목적지");
+                            markers[num-1].setMap(naverMap);
+                            line_path.setCoords(list);
+                            line_path.setMap(naverMap);
+
+                        }
+                    }
+
+                    @Override
+
+                    public void onFailure(Call<RoutePath> call, Throwable t) {
+                        Log.d(TAG,"실패");
+                    }
+                });
                 break;
             case 7:
+                Retrofit retrofit5 = new Retrofit.Builder()
+                        .baseUrl("https://naveropenapi.apigw.ntruss.com/map-direction/")
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build();
+                RouteFind routeFind5 = retrofit5.create(RouteFind.class);
+                Call<RoutePath> call5 = routeFind5.getData(NavaApIKey,secret,start_lng+","+start_lot,end_lng+","+end_lot,result_long[0]+","+result_lat[0]+"|"+result_long[1]+","+result_lat[1]+"|"+result_long[2]+","+result_lat[2]+"|"+result_long[3]+","+result_lat[3]+"|"+result_long[4]+","+result_lat[4]);        //네이버 길찾기 rest api 시작 출발점 찍으면 됨
+                call5.enqueue(new Callback<RoutePath>() {
+                    @Override
+                    public void onResponse(Call<RoutePath> call, Response<RoutePath> response) {
+                        if(response.isSuccessful()) {
+                            RoutePath routePath=response.body();
+                            List<List<Double>> path=routePath.getRoute().getTraoptimal().get(0).getPath();
+                            PathOverlay line_path=new PathOverlay();       //길 선 표시할 path 배열
+                            for(int i=0;i<path.size();i++) {
+                                list.add(new LatLng(path.get(i).get(1), path.get(i).get(0)));
+                            }
+                            markers[0]=new Marker();
+                            markers[0].setPosition(new LatLng(start_lot,start_lng));
+                            markers[0].setCaptionText("출발지");
+                            markers[0].setMap(naverMap);
+                            for(int i=1;i< num-1;i++){
+                                markers[i]=new Marker();
+                                markers[i].setPosition(new LatLng(result_lat[i-1],result_long[i-1]));
+                                markers[i].setCaptionText("경유지");
+                                markers[i].setMap(naverMap);
+                            }
+                            markers[num-1]=new Marker();
+                            markers[num-1].setPosition(new LatLng(end_lot,end_lng));
+                            markers[num-1].setCaptionText("목적지");
+                            markers[num-1].setMap(naverMap);
+                            line_path.setCoords(list);
+                            line_path.setMap(naverMap);
+
+                        }
+                    }
+
+                    @Override
+
+                    public void onFailure(Call<RoutePath> call, Throwable t) {
+                        Log.d(TAG,"실패");
+                    }
+                });
                 break;
 
         }

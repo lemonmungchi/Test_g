@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/title"
         android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_height="match_parent"
         android:layout_weight="4"
         android:gravity="center_vertical"
         android:text="경유지"
@@ -18,13 +18,23 @@
         android:textSize="16dp" />
 
     <TextView
-        android:layout_width="300dp"
-        android:layout_height="80dp"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
         android:text="경유지선택"
         android:id="@+id/route_choice"
         android:gravity="center_vertical"
         android:textAlignment="center"
         android:background="#AED2FF"
         android:textColor="@color/white"
-        android:textSize="16dp"/>
+        android:textSize="16dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/inform_b"
+        android:layout_width="130dp"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        android:layout_weight="4"
+        android:background="#A2A2A2"
+        android:textColor="#000000"
+        android:text="정보보기" />
 </LinearLayout>

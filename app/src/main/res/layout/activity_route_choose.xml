@@ -28,7 +28,7 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/activity"
+                android:id="@+id/river_h"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_margin="12dp"
@@ -36,11 +36,11 @@
                 android:background="@drawable/cate_button_selector"
                 android:button="@null"
                 android:gravity="center"
-                android:text="액티비티"
+                android:text="강과호수"
                 android:textColor="@drawable/cate_text_selector" />
 
             <RadioButton
-                android:id="@+id/play"
+                android:id="@+id/golf"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_margin="12dp"
@@ -48,11 +48,11 @@
                 android:background="@drawable/cate_button_selector"
                 android:button="@null"
                 android:gravity="center"
-                android:text="놀거리"
+                android:text="골프"
                 android:textColor="@drawable/cate_text_selector" />
 
             <RadioButton
-                android:id="@+id/ocean"
+                android:id="@+id/park"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_margin="12dp"
@@ -60,11 +60,11 @@
                 android:background="@drawable/cate_button_selector"
                 android:button="@null"
                 android:gravity="center"
-                android:text="바다"
+                android:text="공원과유원지"
                 android:textColor="@drawable/cate_text_selector" />
 
             <RadioButton
-                android:id="@+id/river"
+                android:id="@+id/cele"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_margin="12dp"
@@ -72,10 +72,10 @@
                 android:background="@drawable/cate_button_selector"
                 android:button="@null"
                 android:gravity="center"
-                android:text="강"
+                android:text="기념물"
                 android:textColor="@drawable/cate_text_selector" />
             <RadioButton
-                android:id="@+id/heritage"
+                android:id="@+id/nak"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_margin="12dp"
@@ -83,7 +83,62 @@
                 android:background="@drawable/cate_button_selector"
                 android:button="@null"
                 android:gravity="center"
-                android:text="문화재"
+                android:text="낚시"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/road"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="다리와도로"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/activiy"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="레프팅과활동"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/culture"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="문화체험장"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/museum"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="박물관과문화채널"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/temple"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="사찰과건축물"
                 android:textColor="@drawable/cate_text_selector" />
             <RadioButton
                 android:id="@+id/mountain"
@@ -94,7 +149,106 @@
                 android:background="@drawable/cate_button_selector"
                 android:button="@null"
                 android:gravity="center"
-                android:text="산과 계곡"
+                android:text="산과계곡"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/nature"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="생태관광"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/island"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="섬과바다"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/ski"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="스키장"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/camp"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="오토캠핑장"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/cave"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="온천과동굴"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/na_park"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="자연공원"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/sport"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="종합레포츠시설"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/camera"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="촬영지"
+                android:textColor="@drawable/cate_text_selector" />
+            <RadioButton
+                android:id="@+id/camp_s"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/cate_button_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="캠프장과수련시설"
                 android:textColor="@drawable/cate_text_selector" />
 
         </RadioGroup>

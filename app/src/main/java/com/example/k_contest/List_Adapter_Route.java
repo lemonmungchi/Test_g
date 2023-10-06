@@ -37,6 +37,10 @@ public class List_Adapter_Route extends BaseAdapter {
     LayoutInflater layoutInflater;
     static ArrayList<String> data;
 
+    ArrayList<String> fileurl;
+
+    ArrayList<String> data_con;
+
     String fileurl1;
 
     String data_content;
@@ -65,6 +69,8 @@ public class List_Adapter_Route extends BaseAdapter {
         View view = layoutInflater.inflate(R.layout.route_list, null);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        fileurl=new ArrayList<String>();
+        data_con=new ArrayList<String>();
         TextView title=view.findViewById(R.id.title);
         title.setText(data.get(position));
 
@@ -82,81 +88,83 @@ public class List_Adapter_Route extends BaseAdapter {
                                 if (task.isSuccessful()) {
 
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        fileurl1=document.get("fileurl1",String.class);
-                                        data_content=document.get("data_content",String.class);
-                                        Intent intent=new Intent(context, City_Page_Activity.class);
-                                        if(data_content.length()>0 && fileurl1.length()>0 ){
-                                            data_content=data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-                                            data_content=data_content.replaceAll("<[^>]*>", " ");
-                                            intent.putExtra("fileurl1",fileurl1);
-                                            intent.putExtra("data_content",data_content);
-                                            intent.putExtra("name",i);
-                                        }
+                                        fileurl.add(document.get("fileurl1",String.class));
+                                        data_con.add(document.get("data_content",String.class));
+                                    }
+                                    fileurl1=fileurl.get(0);
+                                    data_content=data_con.get(0);
+                                    Intent intent=new Intent(context, City_Page_Activity.class);
+                                    if(data_content.length()>0 && fileurl1.length()>0 ){
+                                        data_content=data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+                                        data_content=data_content.replaceAll("<[^>]*>", " ");
+                                        intent.putExtra("fileurl1",fileurl1);
+                                        intent.putExtra("data_content",data_content);
+                                        intent.putExtra("name",i);
                                         context.startActivity(intent);
+                                    }else {
+                                        db.collection("nature_data")
+                                                .whereEqualTo("data_title",i)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                fileurl.add(document.get("fileurl1",String.class));
+                                                                data_con.add(document.get("data_content",String.class));
+                                                            }
+                                                            fileurl1=fileurl.get(0);
+                                                            data_content=data_con.get(0);
+                                                            Intent intent=new Intent(context, City_Page_Activity.class);
+                                                            if(data_content.length()>0 && fileurl1.length()>0 ){
+                                                                data_content=data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+                                                                data_content=data_content.replaceAll("<[^>]*>", " ");
+                                                                intent.putExtra("fileurl1",fileurl1);
+                                                                intent.putExtra("data_content",data_content);
+                                                                intent.putExtra("name",i);
+                                                                context.startActivity(intent);
+                                                            }else {
+                                                                db.collection("leisure_data")
+                                                                        .whereEqualTo("data_title",i)
+                                                                        .get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                        fileurl.add(document.get("fileurl1",String.class));
+                                                                                        data_con.add(document.get("data_content",String.class));
+                                                                                    }
+                                                                                    fileurl1=fileurl.get(0);
+                                                                                    data_content=data_con.get(0);
+                                                                                    Intent intent=new Intent(context, City_Page_Activity.class);
+                                                                                    if(data_content.length()>0 && fileurl1.length()>0 ){
+                                                                                        data_content=data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+                                                                                        data_content=data_content.replaceAll("<[^>]*>", " ");
+                                                                                        intent.putExtra("fileurl1",fileurl1);
+                                                                                        intent.putExtra("data_content",data_content);
+                                                                                        intent.putExtra("name",i);
+                                                                                        context.startActivity(intent);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        });
+                                                            }
+
+
+                                                        }
+                                                    }
+                                                });
                                     }
 
 
-                                } else {
 
                                 }
                             }
                         });
-                db.collection("nature_data")
-                        .whereEqualTo("data_title",i)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        fileurl1=document.get("fileurl1",String.class);
-                                        data_content=document.get("data_content",String.class);
-                                        Intent intent=new Intent(context, City_Page_Activity.class);
-                                        if(data_content.length()>0 && fileurl1.length()>0 ){
-                                            data_content=data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-                                            data_content=data_content.replaceAll("<[^>]*>", " ");
-                                            intent.putExtra("fileurl1",fileurl1);
-                                            intent.putExtra("data_content",data_content);
-                                            intent.putExtra("name",i);
-                                        }
-                                        context.startActivity(intent);
-                                    }
 
 
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
-                db.collection("leisure_data")
-                        .whereEqualTo("data_title",i)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        fileurl1=document.get("fileurl1",String.class);
-                                        data_content=document.get("data_content",String.class);
-                                        Intent intent=new Intent(context, City_Page_Activity.class);
-                                        if(data_content.length()>0 && fileurl1.length()>0 ){
-                                            data_content=data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-                                            data_content=data_content.replaceAll("<[^>]*>", " ");
-                                            intent.putExtra("fileurl1",fileurl1);
-                                            intent.putExtra("data_content",data_content);
-                                            intent.putExtra("name",i);
-                                        }
-                                        context.startActivity(intent);
-                                    }
-
-
-                                } else {
-
-                                }
-                            }
-                        });
             }
         });
 

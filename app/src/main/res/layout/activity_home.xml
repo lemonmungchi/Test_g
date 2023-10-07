@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_centerHorizontal="false"
     android:background="#AED2FF"
     android:orientation="vertical"
@@ -15,12 +15,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/border_radius"
+        android:textColor="#000000"
         android:ems="10"
         android:hint="출발지"
+        android:textColorHint="@color/black"
         android:inputType="text"
-        android:padding="5dp"
-        android:textColor="#000000"
-        android:textColorHint="@color/black" />
+        android:padding="5dp" />
 
     <AutoCompleteTextView
         android:id="@+id/EndPoint"
@@ -28,12 +28,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/border_radius"
+        android:textColor="#000000"
         android:ems="10"
         android:hint="도착지"
+        android:textColorHint="@color/black"
         android:inputType="text"
-        android:padding="5dp"
-        android:textColor="#000000"
-        android:textColorHint="@color/black" />
+        android:padding="5dp" />
 
     <Button
         android:id="@+id/MapPoint"
@@ -48,50 +48,48 @@
         android:layout_width="414dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/rg">
+        <RadioButton
+            android:id="@+id/nature_check"
+            android:layout_width="136dp"
+            android:layout_height="match_parent"
+            android:text="자연관광"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:buttonTint="#000000"/>
 
-        <RadioGroup
-            android:id="@+id/rg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/leisure_check"
+            android:layout_width="136dp"
+            android:layout_height="match_parent"
+            android:text="레저관광"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:buttonTint="#000000"/>
 
-            <RadioButton
-                android:id="@+id/nature_check"
-                android:layout_width="136dp"
-                android:layout_height="match_parent"
-                android:buttonTint="#000000"
-                android:text="자연관광"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
-            <RadioButton
-                android:id="@+id/leisure_check"
-                android:layout_width="136dp"
-                android:layout_height="match_parent"
-                android:buttonTint="#000000"
-                android:text="레저관광"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
-            <RadioButton
-                android:id="@+id/culture_check"
-                android:layout_width="136dp"
-                android:layout_height="match_parent"
-                android:buttonTint="#000000"
-                android:text="문화관광"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-        </RadioGroup>
+        <RadioButton
+            android:id="@+id/culture_check"
+            android:layout_width="136dp"
+            android:layout_height="match_parent"
+            android:text="문화관광"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:buttonTint="#000000"/>
+    </RadioGroup>
 
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="419dp"
+        android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
 
@@ -100,88 +98,44 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/todayRecommandText"
-                android:layout_width="300dp"
-                android:layout_height="match_parent"
+            <Button
+                android:id="@+id/buttontestfrag1"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:background="@color/material_dynamic_primary90"
-                android:gravity="center"
-                android:text="오늘의 추천"
-                android:textColor="@color/black"
-                android:textSize="30sp" />
+                android:text="testfrag1"
+                android:textColor="#FFFFFF" />
 
-            <ImageButton
-                android:id="@+id/refreshBtn"
-                android:layout_width="30dp"
-                android:layout_height="60dp"
+            <Button
+                android:id="@+id/buttontestfrag2"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:background="@color/material_dynamic_primary90"
-                android:src="@drawable/replay" />
+                android:text="testfrag2"
+                android:textColor="#FFFFFF" />
+
         </LinearLayout>
 
-        <ScrollView
+        <FrameLayout
+            android:id="@+id/fragmentframe"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="2">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+        </FrameLayout>
 
-                <ImageButton
-                    android:id="@+id/recommandImgBtn1"
-                    android:layout_width="match_parent"
-                    android:layout_height="176dp" />
-
-                <TextView
-                    android:id="@+id/recommandText1"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:text="추천지"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <ImageButton
-                    android:id="@+id/recommandImgBtn2"
-                    android:layout_width="match_parent"
-                    android:layout_height="176dp" />
-
-                <TextView
-                    android:id="@+id/recommandText2"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:text="추천지"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <ImageButton
-                    android:id="@+id/recommandImgBtn3"
-                    android:layout_width="match_parent"
-                    android:layout_height="176dp" />
-
-                <TextView
-                    android:id="@+id/recommandText3"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:text="추천지"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </ScrollView>
-
+        <include
+            layout="@layout/bottombar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|center"
+            android:layout_weight="8" />
     </LinearLayout>
 
-    <include
-        layout="@layout/bottombar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_weight="8" />
 
 
 </LinearLayout>

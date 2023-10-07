@@ -15,6 +15,9 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.example.k_contest.fragments.Testfrag1;
+import com.example.k_contest.fragments.Testfrag2;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,12 @@ public class HomeActivity extends AppCompatActivity {
 
     RadioButton leisureCheck;
     RadioButton cultureCheck;
+
+
+    private Testfrag1 testfrag1;
+    private Testfrag2 testfrag2;
+    private Button buttontestfrag1;
+    private Button buttontestfrag2;
 
     boolean nature_p;
 
@@ -143,6 +152,35 @@ public class HomeActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     drawerLayout.closeDrawer(drawer);
                 }
+            });
+
+            //fragment
+            testfrag1 = new Testfrag1();
+            testfrag2 = new Testfrag2();
+            //프래그먼트 매니저 획득
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            //프래그먼트 Transaction(프래그먼트를 올리거나 교체하는 작업)
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            //프래그먼트를 FrameLayout의 자식으로 등록
+            fragmentTransaction.add(R.id.fragmentframe, testfrag1);
+            fragmentTransaction.commit();
+
+            buttontestfrag1 = findViewById(R.id.buttontestfrag1);
+            buttontestfrag2 = findViewById(R.id.buttontestfrag2);
+
+            buttontestfrag1.setOnClickListener(v -> {
+                FragmentManager fm1 = getSupportFragmentManager();
+                FragmentTransaction ft1 = fragmentManager.beginTransaction();
+                ft1.replace(R.id.fragmentframe, testfrag1);
+                ft1.commit();
+            });
+
+            buttontestfrag2.setOnClickListener(v -> {
+                FragmentManager fm2 = getSupportFragmentManager();
+                FragmentTransaction ft2 = fragmentManager.beginTransaction();
+                ft2.replace(R.id.fragmentframe, testfrag2);
+                ft2.commit();
             });
 
 

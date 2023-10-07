@@ -503,7 +503,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
         }
         LatLng m_p=new LatLng((start_lot+end_lot)/2,(start_lng+end_lng)/2);
-        CameraPosition cameraPosition=new CameraPosition(m_p,8);
+        CameraPosition cameraPosition=new CameraPosition(m_p,7);
         naverMap.setCameraPosition(cameraPosition);
         dataSample = new ArrayList<String>();
         List = findViewById(R.id.listView);

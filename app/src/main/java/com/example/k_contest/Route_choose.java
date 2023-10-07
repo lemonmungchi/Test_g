@@ -11250,13 +11250,15 @@ public class Route_choose extends AppCompatActivity {
         mapFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String mid=route_text.getText().toString();
+                String[] m=mid.split(" ");
                 if(result_lat.size()>0){                 //선택된 경유지가 있음
                     rot_n=result_lat.size()+2;
                 }else{
                     rot_n=2;                    //선택된 경유지 없음
                 }
                 if(result_lat.size()>5){
-                    Toast.makeText(getApplicationContext(),"경유지추가는 최대 5개까지 입니다.",Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(),"경유지추가는 최대 5개까지 입니다.",Toast.LENGTH_LONG).show();
                 }
                 else {
                     if(result_lat.size()==0){

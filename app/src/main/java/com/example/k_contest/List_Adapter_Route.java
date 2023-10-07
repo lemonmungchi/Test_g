@@ -78,6 +78,8 @@ public class List_Adapter_Route extends BaseAdapter {
         inform_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                fileurl.clear();
+                data_con.clear();
                 String i=title.getText().toString();
                 db.collection("nature_data")
                         .whereEqualTo("data_title",i)
@@ -104,7 +106,7 @@ public class List_Adapter_Route extends BaseAdapter {
                                             context.startActivity(intent);
                                         }
                                         }else {
-                                            db.collection("nature_data")
+                                            db.collection("culture_data")
                                                     .whereEqualTo("data_title",i)
                                                     .get()
                                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -89,7 +89,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical">
 
@@ -98,35 +98,78 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/buttontestfrag1"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:text="testfrag1"
-                android:textColor="#FFFFFF" />
+            <TextView
+                android:id="@+id/todayRecommandText"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:background="@color/material_dynamic_primary90"
+                android:gravity="center"
+                android:text="오늘의 추천"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
 
-            <Button
-                android:id="@+id/buttontestfrag2"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+            <ImageButton
+                android:id="@+id/refreshBtn"
+                android:layout_width="30dp"
+                android:layout_height="60dp"
                 android:layout_weight="1"
-                android:text="testfrag2"
-                android:textColor="#FFFFFF" />
-
+                android:background="@color/material_dynamic_primary90"
+                android:src="@drawable/replay" />
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/fragmentframe"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2">
 
-        </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/recommandImgBtn1"
+                    android:layout_width="match_parent"
+                    android:layout_height="176dp" />
+
+                <TextView
+                    android:id="@+id/recommandText1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="추천지"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/recommandImgBtn2"
+                    android:layout_width="match_parent"
+                    android:layout_height="176dp" />
+
+                <TextView
+                    android:id="@+id/recommandText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="추천지"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/recommandImgBtn3"
+                    android:layout_width="match_parent"
+                    android:layout_height="176dp" />
+
+                <TextView
+                    android:id="@+id/recommandText3"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="추천지"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </ScrollView>
 
         <include
             layout="@layout/bottombar"
@@ -135,7 +178,5 @@
             android:layout_gravity="bottom|center"
             android:layout_weight="8" />
     </LinearLayout>
-
-
 
 </LinearLayout>

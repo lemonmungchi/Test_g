@@ -20,7 +20,8 @@
         <ImageView
             android:id="@+id/imageV"
             android:layout_width="match_parent"
-            android:layout_height="216dp" />
+            android:layout_height="216dp"
+            android:scaleType="centerCrop"/>
 
         <ScrollView
             android:layout_width="match_parent"

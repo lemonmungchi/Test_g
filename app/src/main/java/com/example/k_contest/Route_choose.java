@@ -7,14 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -217,7 +214,7 @@ public class Route_choose extends AppCompatActivity {
         camp_s=findViewById(R.id.camp_s);
 
 
-        Route_List = findViewById(R.id.route_list);
+        Route_List = findViewById(R.id.search_list);
 
         result_lat=new ArrayList<Double>();
         result_long=new ArrayList<Double>();

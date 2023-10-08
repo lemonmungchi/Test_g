@@ -9,50 +9,45 @@
 
     <include layout="@layout/topbar" />
 
-    <EditText
-        android:id="@+id/editTextText2"
+    <AutoCompleteTextView
+        android:id="@+id/Search_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/border_radius"
+        android:textColor="#000000"
         android:ems="10"
         android:hint="검색"
+        android:textColorHint="@color/black"
         android:inputType="text"
         android:padding="5dp" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/search_Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:text="Search"
         android:textColor="@color/white" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/textView9"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="test text" />
-        </ScrollView>
+                android:layout_height="570dp"
+                android:orientation="vertical"
+                android:background="#6499E9">
 
-        <include
-            layout="@layout/bottombar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom|center"
-            android:layout_weight="8" />
-    </LinearLayout>
+                <FrameLayout
+                    android:id="@+id/routeFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2">
+                    <ListView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/search_list"/>
+                </FrameLayout>
+            </LinearLayout>
+
 
 
 </LinearLayout>

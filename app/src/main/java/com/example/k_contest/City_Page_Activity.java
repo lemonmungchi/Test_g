@@ -70,5 +70,14 @@ public class City_Page_Activity extends AppCompatActivity {
                 }
             }
         });
+
+        Button reviewpagebutton = findViewById(R.id.reviewpagebutton);
+        reviewpagebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ReviewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

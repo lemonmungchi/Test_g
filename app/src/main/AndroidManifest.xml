@@ -55,6 +55,8 @@
         <activity android:name=".fragments.Testfrag1" />
         <activity android:name=".fragments.Testfrag2" />
         <activity android:name=".City_Page_Activity" />
+        <activity android:name=".ReviewActivity" />
+
 
     </application>
 

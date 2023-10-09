@@ -18,12 +18,12 @@
         android:textSize="16dp" />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/delete_tour"
-        android:layout_width="70dp"
+        android:layout_width="80dp"
         android:layout_height="match_parent"
+        android:layout_marginBottom="1dp"
+        android:background="#B61D12"
         android:focusableInTouchMode="true"
-        android:layout_weight="4"
-        android:background="#A2A2A2"
-        android:textColor="#000000"
-        android:text="삭제" />
+        android:text="삭제"
+        android:textColor="@color/black" />
 
 </LinearLayout>

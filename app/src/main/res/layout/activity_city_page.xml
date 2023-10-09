@@ -25,7 +25,7 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="300dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:gravity="center"
@@ -40,6 +40,7 @@
             android:layout_margin="5dp"
             android:background="@color/transparent_color"
             android:onClick="onClick"
+            android:padding="5dp"
             android:scaleType="fitCenter"
             android:src="@drawable/emptyheart" />
 
@@ -67,10 +68,10 @@
                     android:id="@+id/infor"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:text="관광지 설명없음"
+                    android:layout_margin="10dp"
+                    android:text="설명없음"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
         </ScrollView>

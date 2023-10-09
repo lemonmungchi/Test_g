@@ -68,14 +68,7 @@ public class UserPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });//하단바
-        Button loginbutton=findViewById(R.id.loginbutton);
-        loginbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),Login.class);
-                startActivity(intent);
-            }
-        });
+
         Privacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

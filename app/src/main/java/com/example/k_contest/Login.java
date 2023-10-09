@@ -3,6 +3,7 @@ package com.example.k_contest;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ public class Login extends AppCompatActivity {
 
     private Button loginbutton;
     private FirebaseAuth mAuth;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,17 @@ public class Login extends AppCompatActivity {
         loginbutton=findViewById(R.id.loginbutton);
 
         mAuth=FirebaseAuth.getInstance();
+
+        TextView back3;
+
+        back3 = findViewById(R.id.loginbackbutton);
+        back3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
 
         sign.setOnClickListener(new View.OnClickListener() {
             @Override

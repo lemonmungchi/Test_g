@@ -37,7 +37,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="강과호수"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
 
             <RadioButton
                 android:id="@+id/golf"
@@ -49,7 +49,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="골프"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
 
             <RadioButton
                 android:id="@+id/park"
@@ -61,7 +61,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="공원과유원지"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
 
             <RadioButton
                 android:id="@+id/cele"
@@ -73,7 +73,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="기념물"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/nak"
                 android:layout_width="100dp"
@@ -84,7 +85,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="낚시"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/road"
                 android:layout_width="100dp"
@@ -95,7 +97,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="다리와도로"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/activiy"
                 android:layout_width="100dp"
@@ -106,7 +109,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="레프팅과활동"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/culture"
                 android:layout_width="100dp"
@@ -117,7 +121,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="문화체험장"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/museum"
                 android:layout_width="100dp"
@@ -128,7 +133,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="박물관과문화채널"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/temple"
                 android:layout_width="100dp"
@@ -139,7 +145,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="사찰과건축물"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/mountain"
                 android:layout_width="100dp"
@@ -150,7 +157,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="산과계곡"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/nature"
                 android:layout_width="100dp"
@@ -161,7 +169,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="생태관광"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/island"
                 android:layout_width="100dp"
@@ -172,7 +181,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="섬과바다"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/ski"
                 android:layout_width="100dp"
@@ -183,7 +193,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="스키장"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/camp"
                 android:layout_width="100dp"
@@ -194,7 +205,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="오토캠핑장"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/cave"
                 android:layout_width="100dp"
@@ -205,7 +217,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="온천과동굴"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/na_park"
                 android:layout_width="100dp"
@@ -216,7 +229,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="자연공원"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/sport"
                 android:layout_width="100dp"
@@ -227,7 +241,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="종합레포츠시설"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/camera"
                 android:layout_width="100dp"
@@ -238,7 +253,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="촬영지"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
+
             <RadioButton
                 android:id="@+id/camp_s"
                 android:layout_width="100dp"
@@ -249,7 +265,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="캠프장과수련시설"
-                android:textColor="@drawable/cate_text_selector" />
+                android:textColor="@color/white" />
 
         </RadioGroup>
     </HorizontalScrollView>
@@ -261,29 +277,32 @@
         android:textColorHint="@color/black"
         android:textColor="@color/black"
         android:background="@drawable/edge" />
+
     <Button
         android:id="@+id/mapFind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="#27005D"
+        android:background="@drawable/border_radius"
         android:text="길찾기"
         android:textColor="@color/white" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="550dp"
-        android:orientation="vertical"
-        android:background="#6499E9">
+        android:layout_height="wrap_content"
+        android:background="#3F51B5"
+        android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/routeFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2">
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/search_list"/>
+
+            <ListView
+                android:id="@+id/search_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </FrameLayout>
     </LinearLayout>
 

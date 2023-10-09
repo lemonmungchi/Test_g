@@ -19,10 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="5dp"
-        android:background="#FFFFFF"
+        android:background="#AED2FF"
         android:ems="10"
         android:gravity="center"
-        android:hint="사용자"
+        android:text="사용자"
+        android:textColor="@color/black"
         android:textSize="24sp" />
 
     <Space
@@ -39,12 +40,14 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/gray">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/white"
+                android:background="@color/transparent_color"
                 android:orientation="vertical">
 
                 <Space
@@ -54,8 +57,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:background="@drawable/edge"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
@@ -65,15 +68,16 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="연령대"
+                        android:textColor="@color/black"
                         android:textSize="24sp" />
 
                     <Spinner
                         android:id="@+id/ageSpinner"
                         android:layout_width="140dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/edge"
                         android:layout_marginStart="10dp"
-                        android:entries="@array/ageGroup"/>
+                        android:background="@drawable/edge"
+                        android:entries="@array/ageGroup" />
 
                 </LinearLayout>
 
@@ -84,8 +88,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:background="@drawable/edge"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
@@ -95,15 +99,16 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="지역"
+                        android:textColor="@color/black"
                         android:textSize="24sp" />
 
                     <Spinner
                         android:id="@+id/stateSpinner"
                         android:layout_width="140dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/edge"
                         android:layout_marginStart="10dp"
-                        android:entries="@array/stateGroup"/>
+                        android:background="@drawable/edge"
+                        android:entries="@array/stateGroup" />
 
                 </LinearLayout>
             </LinearLayout>

@@ -227,7 +227,7 @@ public class HomeActivity extends AppCompatActivity {
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), City_Page_Activity.class);//수정
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);//수정
                     startActivity(intent);
                 }
             });

@@ -7,6 +7,10 @@ android {
     namespace 'com.example.k_contest'
     compileSdk 33
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId "com.example.k_contest"
         minSdk 24
@@ -14,12 +18,19 @@ android {
         versionCode 1
         versionName "1.0"
 
+        Properties properties=new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        buildConfigField "String","NAVER_KEY","\"${properties.getProperty("naver_api_key")}\""
+        buildConfigField "String","SECRET_KEY","\"${properties.getProperty("naver_secret")}\""
+        buildConfigField "String","FIREBASE_KEY","\"${properties.getProperty("firebase_key")}\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

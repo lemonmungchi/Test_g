@@ -5,15 +5,38 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
+
 public class City_Page_Activity extends AppCompatActivity {
+
+    private ImageView imageV;
+    private TextView g_name;
+    private TextView infor;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_page);
+
+        imageV=findViewById(R.id.imageV);
+        g_name=findViewById(R.id.name);
+        infor=findViewById(R.id.infor);
+
+
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+        String fileurl1 = intent.getStringExtra("fileurl1");          //출발지 받아오기
+        String data_content = intent.getStringExtra("data_content");             //목적지 받아오기
+
+        g_name.setText(name);
+        infor.setText(data_content);
+
+        Glide.with(this).load(fileurl1).into(imageV);
 
         ImageButton backspaceButton = findViewById(R.id.backspaceicon);
         backspaceButton.setOnClickListener(new View.OnClickListener() {
@@ -59,14 +82,14 @@ public class City_Page_Activity extends AppCompatActivity {
 
         ImageButton emptyheart = findViewById(R.id.emptyheart);
         emptyheart.setOnClickListener(new View.OnClickListener() {
-            int i=1;
+            int heart=1;
             public void onClick(View view) {
-                if (i==1) {
+                if (heart==1) {
                     emptyheart.setImageResource(R.drawable.fullheart);
-                    i=0;
+                    heart=0;
                 } else {
                     emptyheart.setImageResource(R.drawable.emptyheart);
-                    i=1;
+                    heart=1;
                 }
             }
         });

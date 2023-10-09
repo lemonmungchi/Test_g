@@ -6,31 +6,21 @@
     android:descendantFocusability="blocksDescendants">
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="100dp"
+        android:id="@+id/search_name"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_weight="4"
         android:gravity="center_vertical"
-        android:text="경유지"
+        android:text="관광지명"
         android:textAlignment="center"
-        android:textColor="@color/white"
-        android:background="#27005D"
+        android:textColor="@color/black"
+        android:background="@color/white"
         android:textSize="16dp" />
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:text="경유지선택"
-        android:id="@+id/route_choice"
-        android:gravity="center_vertical"
-        android:textAlignment="center"
-        android:background="#AED2FF"
-        android:textColor="@color/white"
-        android:textSize="16dp" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/inform_b"
-        android:layout_width="130dp"
+        android:id="@+id/search_inform"
+        android:layout_width="230dp"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true"
         android:layout_weight="4"

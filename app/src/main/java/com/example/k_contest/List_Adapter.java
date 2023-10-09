@@ -22,8 +22,8 @@ public class List_Adapter extends BaseAdapter{
     LayoutInflater layoutInflater;
     static ArrayList<String> data;
 
-    private String[] vertex = {"창원", "진주", "통영", "사천", "김해","밀양", "거제", "양산", "의령",
-            "함양", "창녕", "고성", "남해", "하동", "산청", "함안", "거창", "합천"};
+    private String[] vertex = {"창원시", "진주시", "통영시", "사천시", "김해시","밀양시", "거제시", "양산시", "의령군",
+            "함양군", "창녕군", "고성군", "남해군", "하동군", "산청군", "함안군", "거창군", "합천군"};
 
     public int stringToInt(String s) {              // String to Int
         int x = 0;

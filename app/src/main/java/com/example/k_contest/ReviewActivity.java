@@ -53,15 +53,14 @@ public class ReviewActivity extends AppCompatActivity {
         String name= intent.getStringExtra("name");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         review=new ArrayList<String>();
-        review_List=findViewById(R.id.search_list);
+        review_List=findViewById(R.id.review_rlist);
 
         cityName=findViewById(R.id.cityName);
 
         cityName.setText(name);
 
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> Review_Data = new HashMap<>();
         Review_Data.put("리뷰", null);
@@ -87,47 +86,6 @@ public class ReviewActivity extends AppCompatActivity {
 
 
 
-
-
-
-        //기존 문서와 병합
-        /*Map<String, Object> data = new HashMap<>();
-        data.put("capital", true);
-
-        db.collection("Review_Data").document("reviewtext")
-                .set(data, SetOptions.merge());
-
-        //문서 데이터 유형
-        Map<String, Object> docData = new HashMap<>();
-        docData.put("stringExample", "Hello world!");
-        docData.put("booleanExample", true);
-        docData.put("numberExample", 3.14159265);
-        docData.put("dateExample", new Timestamp(new Date()));
-        docData.put("listExample", Arrays.asList(1, 2, 3));
-        docData.put("nullExample", null);
-
-        Map<String, Object> nestedData = new HashMap<>();
-        nestedData.put("a", 5);
-        nestedData.put("b", true);
-
-        docData.put("objectExample", nestedData);
-
-        db.collection("Review_Data").document("reviewtext ")
-                .set(docData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
-        */
-
         Button reviewbutton = findViewById(R.id.reviewbutton);
         reviewbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +103,7 @@ public class ReviewActivity extends AppCompatActivity {
                     adddata.put("con_name",name);
 
 
+
                     db.collection("Review_Data")
                             .add(adddata)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -159,6 +118,21 @@ public class ReviewActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                     if (task.isSuccessful()) {
+                                                        adddata.put("document_id",documentReference.getId());
+                                                        db.collection("Review_Data").document(documentReference.getId())
+                                                                .set(adddata)
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+
+                                                                    }
+                                                                })
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                    }
+                                                                });
+
 
                                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                                             review.add(document.get("review_text",String.class));
@@ -180,67 +154,13 @@ public class ReviewActivity extends AppCompatActivity {
                             });
 
 
-                    /*DocumentReference docRef = db.collection("reviewtext").document("리뷰");
-                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                } else {
-                                    Log.d(TAG, "No such document");
-                                }
-                            } else {
-                                Log.d(TAG, "get failed with ", task.getException());
-                            }
-                        }
-                    });
-
-                     */
 
 
                 }
                 }
 
         });
-//문서 추가 add()를 이용해 id 자동생성 방식
-        /*Map<String, Object> adddata = new HashMap<>();
-        adddata.put("review", "reviewtextbox");
 
-        db.collection("Review_Data")
-                .add(adddata)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-*/
-//업데이트
-        DocumentReference washingtonRef = db.collection("Review_Data").document("review");
-
-// Set the "isCapital" field of the city 'DC'
-        washingtonRef
-                .update("capital", true)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating document", e);
-                    }
-                });
     }
 
 }

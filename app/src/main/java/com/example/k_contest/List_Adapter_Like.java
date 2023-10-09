@@ -25,13 +25,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class List_Adapter_Review extends BaseAdapter {
+public class List_Adapter_Like extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater;
     static ArrayList<String> data;
     FirebaseFirestore db;
 
-    public List_Adapter_Review(Context context, ArrayList<String> data){
+    public List_Adapter_Like(Context context, ArrayList<String> data){
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
@@ -49,24 +49,23 @@ public class List_Adapter_Review extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        View view = layoutInflater.inflate(R.layout.like_list, null);
 
-        View view = layoutInflater.inflate(R.layout.review_rlist, null);
-
-        TextView Review=view.findViewById(R.id.Review);
+        TextView Review=view.findViewById(R.id.tour_name);
         Review.setText(data.get(position));
-        Button delete_m=view.findViewById(R.id.delete);
-        db=FirebaseFirestore.getInstance();
-        ArrayList<String> doc_id=new ArrayList<String>();
 
-        delete_m.setOnClickListener(new View.OnClickListener() {
+        Button delete_tour=view.findViewById(R.id.delete_tour);
+
+        ArrayList<String> doc_id=new ArrayList<String>();
+        db=FirebaseFirestore.getInstance();
+
+        delete_tour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String item= data.get(position);
-                db.collection("Review_Data")
-                        .whereEqualTo("review_text",item)
+                db.collection("like_data")
+                        .whereEqualTo("con_name",item)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -75,13 +74,13 @@ public class List_Adapter_Review extends BaseAdapter {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         doc_id.add(document.get("document_id",String.class));
                                     }
-                                    db.collection("Review_Data").document(doc_id.get(0))
+                                    db.collection("like_data").document(doc_id.get(0))
                                             .delete()
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Toast.makeText(context,"삭제 성공",Toast.LENGTH_LONG).show();
-                                                    Intent intent=new Intent(context,ReviewActivity.class);
+                                                    Intent intent=new Intent(context,like_l.class);
                                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TOP);//액티비티 스택제거
                                                     context.startActivity(intent);
                                                 }
@@ -99,6 +98,7 @@ public class List_Adapter_Review extends BaseAdapter {
                         });
             }
         });
+
         return view;
     }
 }

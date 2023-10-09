@@ -1,23 +1,44 @@
 package com.example.k_contest;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class City_Page_Activity extends AppCompatActivity {
 
     private ImageView imageV;
     private TextView g_name;
     private TextView infor;
+
+    private ArrayList<String> heart_value;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +47,44 @@ public class City_Page_Activity extends AppCompatActivity {
         imageV=findViewById(R.id.imageV);
         g_name=findViewById(R.id.name);
         infor=findViewById(R.id.infor);
+        ImageButton emptyheart = findViewById(R.id.emptyheart);
+
+        heart_value=new ArrayList<String>();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         String fileurl1 = intent.getStringExtra("fileurl1");          //출발지 받아오기
         String data_content = intent.getStringExtra("data_content");             //목적지 받아오기
+
+        db.collection("like_data")
+                .whereEqualTo("con_name",name)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                heart_value.add(document.get("heart_value",String.class));
+                            }
+                            if(heart_value.size()>0){
+                                if(heart_value.get(0).equals("true")){
+                                    emptyheart.setImageResource(R.drawable.fullheart);
+                                }else {
+                                    emptyheart.setImageResource(R.drawable.emptyheart);
+                                }
+                            }else {
+                                emptyheart.setImageResource(R.drawable.emptyheart);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
         g_name.setText(name);
         infor.setText(data_content);
@@ -80,14 +133,84 @@ public class City_Page_Activity extends AppCompatActivity {
             }
         });
 
-        ImageButton emptyheart = findViewById(R.id.emptyheart);
+
+
+
         emptyheart.setOnClickListener(new View.OnClickListener() {
             int heart=1;
             public void onClick(View view) {
                 if (heart==1) {
-                    emptyheart.setImageResource(R.drawable.fullheart);
+                    if (user == null) {
+                        Toast.makeText(getApplicationContext(),"로그인을 하세요",Toast.LENGTH_LONG).show();
+                        Intent go_intent=new Intent(City_Page_Activity.this, Login.class);
+                        startActivity(go_intent);
+                    } else {
+                        emptyheart.setImageResource(R.drawable.fullheart);
+                        String email=user.getEmail();
+                        Map<String, Object> adddata = new HashMap<>();
+                        adddata.put("user_email",email);
+                        adddata.put("con_name",name);
+                        adddata.put("heart_value","true");
+
+                        db.collection("like_data")
+                                .add(adddata)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        adddata.put("document_id",documentReference.getId());
+                                        db.collection("like_data").document(documentReference.getId())
+                                                .set(adddata)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                    }
+                                                });
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error adding document", e);
+                                    }
+                                });
+                    }
                     heart=0;
                 } else {
+                    ArrayList<String> doc_id=new ArrayList<String>();
+                    db.collection("like_data")
+                            .whereEqualTo("con_name",name)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            doc_id.add(document.get("document_id",String.class));
+                                        }
+                                        db.collection("like_data").document(doc_id.get(0))
+                                                .delete()
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error deleting document", e);
+                                                    }
+                                                });
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
                     emptyheart.setImageResource(R.drawable.emptyheart);
                     heart=1;
                 }

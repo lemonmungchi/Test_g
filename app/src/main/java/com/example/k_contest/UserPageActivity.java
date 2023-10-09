@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class UserPageActivity extends AppCompatActivity {
 
     Button Privacy;
@@ -18,14 +21,28 @@ public class UserPageActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     View drawer;
 
-    TextView loginMy;
+
+    private Button reviewManagementBtn;
+    private TextView loginMy;
+
+    public Button bookmarkBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userpage);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        bookmarkBtn=findViewById(R.id.bookmarkBtn);
+        loginMy=findViewById(R.id.loginMy);
+        if(user==null){
+            loginMy.setText("로그인 하세요");
+        }else {
+            loginMy.setText("사용자1");
+        }
+
         Privacy = findViewById(R.id.privacyBtn);
+        reviewManagementBtn=findViewById(R.id.reviewManagementBtn);
 
         //하단바
         ImageButton backspaceButton=findViewById(R.id.backspaceicon);
@@ -77,12 +94,18 @@ public class UserPageActivity extends AppCompatActivity {
             }
         });
 
-        loginMy=findViewById(R.id.loginMy);
-
-        loginMy.setOnClickListener(new View.OnClickListener() {
+        reviewManagementBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserPageActivity.this, Login.class);
+                Intent intent=new Intent(UserPageActivity.this,Review_manage.class);
+                startActivity(intent);
+            }
+        });
+
+        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(UserPageActivity.this,like_l.class);
                 startActivity(intent);
             }
         });

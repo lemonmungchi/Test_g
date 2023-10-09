@@ -2054,6 +2054,7 @@ public class HomeActivity extends AppCompatActivity {
                                         if(data_content.length()>0 && fileurl1.length()>0 ) {
                                             data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                             data_content = data_content.replaceAll("<[^>]*>", " ");
+                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
                                             intent.putExtra("fileurl1", fileurl1);
                                             intent.putExtra("data_content", data_content);
                                             intent.putExtra("name", i_name);
@@ -2079,6 +2080,7 @@ public class HomeActivity extends AppCompatActivity {
                                                                 if (data_content.length() > 0 && fileurl1.length() > 0) {
                                                                     data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                                                     data_content = data_content.replaceAll("<[^>]*>", " ");
+                                                                    data_content = data_content.replace("/(<([^>]+)>)/", "");
                                                                     intent.putExtra("fileurl1", fileurl1);
                                                                     intent.putExtra("data_content", data_content);
                                                                     intent.putExtra("name", i_name);
@@ -2103,6 +2105,7 @@ public class HomeActivity extends AppCompatActivity {
                                                                                         if (data_content.length() > 0 && fileurl1.length() > 0) {
                                                                                             data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                                                                             data_content = data_content.replaceAll("<[^>]*>", " ");
+                                                                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
                                                                                             intent.putExtra("fileurl1", fileurl1);
                                                                                             intent.putExtra("data_content", data_content);
                                                                                             intent.putExtra("name", i_name);
@@ -2155,6 +2158,7 @@ public class HomeActivity extends AppCompatActivity {
                                         if(data_content.length()>0 && fileurl1.length()>0 ) {
                                             data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                             data_content = data_content.replaceAll("<[^>]*>", " ");
+                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
                                             intent.putExtra("fileurl1", fileurl1);
                                             intent.putExtra("data_content", data_content);
                                             intent.putExtra("name", i_name2);
@@ -2180,6 +2184,7 @@ public class HomeActivity extends AppCompatActivity {
                                                                 if (data_content.length() > 0 && fileurl1.length() > 0) {
                                                                     data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                                                     data_content = data_content.replaceAll("<[^>]*>", " ");
+                                                                    data_content = data_content.replace("/(<([^>]+)>)/", "");
                                                                     intent.putExtra("fileurl1", fileurl1);
                                                                     intent.putExtra("data_content", data_content);
                                                                     intent.putExtra("name", i_name2);
@@ -2204,6 +2209,7 @@ public class HomeActivity extends AppCompatActivity {
                                                                                         if (data_content.length() > 0 && fileurl1.length() > 0) {
                                                                                             data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                                                                             data_content = data_content.replaceAll("<[^>]*>", " ");
+                                                                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
                                                                                             intent.putExtra("fileurl1", fileurl1);
                                                                                             intent.putExtra("data_content", data_content);
                                                                                             intent.putExtra("name", i_name2);
@@ -2256,6 +2262,7 @@ public class HomeActivity extends AppCompatActivity {
                                         if(data_content.length()>0 && fileurl1.length()>0 ) {
                                             data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                             data_content = data_content.replaceAll("<[^>]*>", " ");
+                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
                                             intent.putExtra("fileurl1", fileurl1);
                                             intent.putExtra("data_content", data_content);
                                             intent.putExtra("name", i_name);
@@ -2281,6 +2288,7 @@ public class HomeActivity extends AppCompatActivity {
                                                                 if (data_content.length() > 0 && fileurl1.length() > 0) {
                                                                     data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                                                     data_content = data_content.replaceAll("<[^>]*>", " ");
+                                                                    data_content = data_content.replace("/(<([^>]+)>)/", "");
                                                                     intent.putExtra("fileurl1", fileurl1);
                                                                     intent.putExtra("data_content", data_content);
                                                                     intent.putExtra("name", i_name);
@@ -2305,6 +2313,7 @@ public class HomeActivity extends AppCompatActivity {
                                                                                         if (data_content.length() > 0 && fileurl1.length() > 0) {
                                                                                             data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                                                                             data_content = data_content.replaceAll("<[^>]*>", " ");
+                                                                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
                                                                                             intent.putExtra("fileurl1", fileurl1);
                                                                                             intent.putExtra("data_content", data_content);
                                                                                             intent.putExtra("name", i_name);

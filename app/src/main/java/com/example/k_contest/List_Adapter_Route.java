@@ -100,6 +100,7 @@ public class List_Adapter_Route extends BaseAdapter {
                                         if(data_content.length()>0 && fileurl1.length()>0 ) {
                                             data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                             data_content = data_content.replaceAll("<[^>]*>", " ");
+                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
                                             intent.putExtra("fileurl1", fileurl1);
                                             intent.putExtra("data_content", data_content);
                                             intent.putExtra("name", i);
@@ -125,6 +126,7 @@ public class List_Adapter_Route extends BaseAdapter {
                                                                     if (data_content.length() > 0 && fileurl1.length() > 0) {
                                                                         data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                                                         data_content = data_content.replaceAll("<[^>]*>", " ");
+                                                                        data_content = data_content.replace("/(<([^>]+)>)/", "");
                                                                         intent.putExtra("fileurl1", fileurl1);
                                                                         intent.putExtra("data_content", data_content);
                                                                         intent.putExtra("name", i);
@@ -149,6 +151,7 @@ public class List_Adapter_Route extends BaseAdapter {
                                                                                                 if (data_content.length() > 0 && fileurl1.length() > 0) {
                                                                                                     data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
                                                                                                     data_content = data_content.replaceAll("<[^>]*>", " ");
+                                                                                                    data_content = data_content.replace("/(<([^>]+)>)/", "");
                                                                                                     intent.putExtra("fileurl1", fileurl1);
                                                                                                     intent.putExtra("data_content", data_content);
                                                                                                     intent.putExtra("name", i);

@@ -30,15 +30,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/reviewtext"
+        <FrameLayout
+            android:id="@+id/routeFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="2"
-            android:text="리 뷰"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:layout_weight="2">
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/search_list"/>
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

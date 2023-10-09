@@ -9,12 +9,17 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class PrivacyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 //하단바
         ImageButton backspaceButton=findViewById(R.id.backspaceicon);
         backspaceButton.setOnClickListener(new View.OnClickListener() {

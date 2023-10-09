@@ -143,6 +143,7 @@ public class City_Page_Activity extends AppCompatActivity {
                     if (user == null) {
                         Toast.makeText(getApplicationContext(),"로그인을 하세요",Toast.LENGTH_LONG).show();
                         Intent go_intent=new Intent(City_Page_Activity.this, Login.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TOP);//액티비티 스택제거
                         startActivity(go_intent);
                     } else {
                         emptyheart.setImageResource(R.drawable.fullheart);
@@ -193,19 +194,22 @@ public class City_Page_Activity extends AppCompatActivity {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             doc_id.add(document.get("document_id",String.class));
                                         }
-                                        db.collection("like_data").document(doc_id.get(0))
-                                                .delete()
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.w(TAG, "Error deleting document", e);
-                                                    }
-                                                });
+                                        if(doc_id.size()>0){
+                                            db.collection("like_data").document(doc_id.get(0))
+                                                    .delete()
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.w(TAG, "Error deleting document", e);
+                                                        }
+                                                    });
+                                        }
+
                                     } else {
                                         Log.d(TAG, "Error getting documents: ", task.getException());
                                     }

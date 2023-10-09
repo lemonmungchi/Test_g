@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -89,24 +90,42 @@ public class UserPageActivity extends AppCompatActivity {
         Privacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserPageActivity.this, PrivacyActivity.class);
-                startActivity(intent);
+                if(user==null){
+                    Toast.makeText(getApplicationContext(),"로그인을 하세요",Toast.LENGTH_LONG).show();
+                    Intent go_intent=new Intent(UserPageActivity.this, Login.class);
+                    startActivity(go_intent);
+                }else {
+                    Intent intent = new Intent(UserPageActivity.this, PrivacyActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
         reviewManagementBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(UserPageActivity.this,Review_manage.class);
-                startActivity(intent);
+                if(user==null){
+                    Toast.makeText(getApplicationContext(),"로그인을 하세요",Toast.LENGTH_LONG).show();
+                    Intent go_intent=new Intent(UserPageActivity.this, Login.class);
+                    startActivity(go_intent);
+                }else{
+                    Intent intent=new Intent(UserPageActivity.this,Review_manage.class);
+                    startActivity(intent);
+                }
             }
         });
 
         bookmarkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(UserPageActivity.this,like_l.class);
-                startActivity(intent);
+                if(user==null){
+                    Toast.makeText(getApplicationContext(),"로그인을 하세요",Toast.LENGTH_LONG).show();
+                    Intent go_intent=new Intent(UserPageActivity.this, Login.class);
+                    startActivity(go_intent);
+                }else {
+                    Intent intent=new Intent(UserPageActivity.this,like_l.class);
+                    startActivity(intent);
+                }
             }
         });
 

@@ -86,16 +86,16 @@ public class HomeActivity extends AppCompatActivity {
 
     private ImageView recommandImgBtn1;       //추천 이미지버튼
     private ImageView recommandImgBtn2;
-    private ImageView recommandImgBtn3;
-
     private TextView recommandText1;        //추천관광지명
     private TextView recommandText2;
-    private TextView recommandText3;
 
     private ImageButton refreshBtn;     //이미지 새로고침
 
     private ArrayList<String> recommand_name_list;
     private ArrayList<String> recommand_Img_list;
+
+    private ArrayList<String> recommand_name_list2;
+    private ArrayList<String> recommand_Img_list2;
 
 
     private ArrayList<String> route_name;
@@ -110,6 +110,9 @@ public class HomeActivity extends AppCompatActivity {
 
     boolean leisure_p;
     boolean culture_p;
+
+    private String[] cities = {"창원시", "진주시", "통영시", "사천시", "김해시","밀양시", "거제시", "양산시", "의령군",
+            "함양군", "창녕군", "고성군", "남해군", "하동군", "산청군", "함안군", "거창군", "합천군"};
 
     
     DrawerLayout drawerLayout;
@@ -156,13 +159,13 @@ public class HomeActivity extends AppCompatActivity {
 
         recommand_name_list=new ArrayList<String>();        //서버에서 이름받아올 리스트
         recommand_Img_list=new ArrayList<String>();         //서버에서 이미지받아올 리스트
+        recommand_name_list2=new ArrayList<String>();        //서버에서 이름받아올 리스트
+        recommand_Img_list2=new ArrayList<String>();         //서버에서 이미지받아올 리스트
 
         recommandImgBtn1=findViewById(R.id.recommandImgBtn1);
         recommandText1=findViewById(R.id.recommandText1);
         recommandImgBtn2=findViewById(R.id.recommandImgBtn2);
         recommandText2=findViewById(R.id.recommandText2);
-        recommandImgBtn3=findViewById(R.id.recommandImgBtn3);
-        recommandText3=findViewById(R.id.recommandText3);
         refreshBtn=findViewById(R.id.refreshBtn);
 
 
@@ -1704,9 +1707,14 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         Random random=new Random();
+        int ci_n1=random.nextInt(cities.length);
+        int ci_n2=random.nextInt(cities.length);
+        String ci1=cities[ci_n1];
+        String ci2=cities[ci_n2];
 
         //추천 리스트 데이터 받아오기
         db.collection("nature_data")
+                .whereEqualTo("category_name2",ci1)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -1718,11 +1726,7 @@ public class HomeActivity extends AppCompatActivity {
                                 recommand_name_list.add(document.get("data_title", String.class));
                             }
                             int n1=random.nextInt(recommand_name_list.size());
-                            int n2=random.nextInt(recommand_name_list.size());
-                            int n3=random.nextInt(recommand_name_list.size());
                             String url1=recommand_Img_list.get(n1);
-                            String url2=recommand_Img_list.get(n2);
-                            String url3=recommand_Img_list.get(n3);
                             Thread uThread = new Thread() {
                                 @Override
                                 public void run(){
@@ -1760,83 +1764,67 @@ public class HomeActivity extends AppCompatActivity {
                             }catch (InterruptedException e){
                                 e.printStackTrace();
                             }           //끝
-                            Thread uThread2 = new Thread() {
-                                @Override
-                                public void run(){
-                                    try{
-                                        // 이미지 URL 경로
-                                        URL url = new URL(url2);
 
-                                        // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
-                                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                                        conn.setDoInput(true); // 서버로부터 응답 수신
-                                        conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
-
-                                        InputStream is = conn.getInputStream(); //inputStream 값 가져오기
-                                        bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
-
-                                    }catch (MalformedURLException e){
-                                        e.printStackTrace();
-                                    }catch (IOException e){
-                                        e.printStackTrace();
-                                    }
-                                }
-                            };
-
-                            uThread2.start(); // 작업 Thread 실행
-
-                            try{
-                                //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
-                                //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
-                                //join() 메서드는 InterruptedException을 발생시킨다.
-                                uThread2.join();
-
-                                //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
-                                //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
-                                recommandImgBtn2.setImageBitmap(bitmap);
-                            }catch (InterruptedException e){
-                                e.printStackTrace();
-                            }           //끝
-                            Thread uThread3 = new Thread() {
-                                @Override
-                                public void run(){
-                                    try{
-                                        // 이미지 URL 경로
-                                        URL url = new URL(url3);
-
-                                        // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
-                                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                                        conn.setDoInput(true); // 서버로부터 응답 수신
-                                        conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
-
-                                        InputStream is = conn.getInputStream(); //inputStream 값 가져오기
-                                        bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
-
-                                    }catch (MalformedURLException e){
-                                        e.printStackTrace();
-                                    }catch (IOException e){
-                                        e.printStackTrace();
-                                    }
-                                }
-                            };
-
-                            uThread3.start(); // 작업 Thread 실행
-
-                            try{
-                                //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
-                                //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
-                                //join() 메서드는 InterruptedException을 발생시킨다.
-                                uThread3.join();
-
-                                //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
-                                //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
-                                recommandImgBtn3.setImageBitmap(bitmap);
-                            }catch (InterruptedException e){
-                                e.printStackTrace();
-                            }           //끝
                             recommandText1.setText(recommand_name_list.get(n1));
-                            recommandText2.setText(recommand_name_list.get(n2));
-                            recommandText3.setText(recommand_name_list.get(n3));
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        db.collection("nature_data")
+                .whereEqualTo("category_name2",ci2)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                recommand_Img_list2.add(document.get("fileurl1",String.class));
+                                recommand_name_list2.add(document.get("data_title", String.class));
+                            }
+                            int n1=random.nextInt(recommand_name_list.size());
+                            String url1=recommand_Img_list.get(n1);
+                            Thread uThread = new Thread() {
+                                @Override
+                                public void run(){
+                                    try{
+                                        // 이미지 URL 경로
+                                        URL url = new URL(url1);
+
+                                        // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
+                                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                                        conn.setDoInput(true); // 서버로부터 응답 수신
+                                        conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
+
+                                        InputStream is = conn.getInputStream(); //inputStream 값 가져오기
+                                        bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
+
+                                    }catch (MalformedURLException e){
+                                        e.printStackTrace();
+                                    }catch (IOException e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+
+                            uThread.start(); // 작업 Thread 실행
+
+                            try{
+                                //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
+                                //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
+                                //join() 메서드는 InterruptedException을 발생시킨다.
+                                uThread.join();
+
+                                //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
+                                //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
+                                recommandImgBtn1.setImageBitmap(bitmap);
+                            }catch (InterruptedException e){
+                                e.printStackTrace();
+                            }           //끝
+
+                            recommandText1.setText(recommand_name_list.get(n1));
 
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -1848,11 +1836,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int n1=random.nextInt(recommand_name_list.size());
-                int n2=random.nextInt(recommand_name_list.size());
-                int n3=random.nextInt(recommand_name_list.size());
+                int n2=random.nextInt(recommand_name_list2.size());
                 String url1=recommand_Img_list.get(n1);
                 String url2=recommand_Img_list.get(n2);
-                String url3=recommand_Img_list.get(n3);
                 Thread uThread = new Thread() {
                     @Override
                     public void run(){
@@ -1927,46 +1913,8 @@ public class HomeActivity extends AppCompatActivity {
                 }catch (InterruptedException e){
                     e.printStackTrace();
                 }           //끝
-                Thread uThread3 = new Thread() {
-                    @Override
-                    public void run(){
-                        try{
-                            // 이미지 URL 경로
-                            URL url = new URL(url3);
-
-                            // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
-                            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                            conn.setDoInput(true); // 서버로부터 응답 수신
-                            conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
-
-                            InputStream is = conn.getInputStream(); //inputStream 값 가져오기
-                            bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
-
-                        }catch (MalformedURLException e){
-                            e.printStackTrace();
-                        }catch (IOException e){
-                            e.printStackTrace();
-                        }
-                    }
-                };
-
-                uThread3.start(); // 작업 Thread 실행
-
-                try{
-                    //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
-                    //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
-                    //join() 메서드는 InterruptedException을 발생시킨다.
-                    uThread3.join();
-
-                    //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
-                    //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
-                    recommandImgBtn3.setImageBitmap(bitmap);
-                }catch (InterruptedException e){
-                    e.printStackTrace();
-                }           //끝
                 recommandText1.setText(recommand_name_list.get(n1));
                 recommandText2.setText(recommand_name_list.get(n2));
-                recommandText3.setText(recommand_name_list.get(n3));
 
             }
         });
@@ -2202,110 +2150,7 @@ public class HomeActivity extends AppCompatActivity {
                         });
             }
         });
-        recommandImgBtn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fileurl.clear();
-                data_con.clear();
-                String i_name=recommandText3.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("data_title",i_name)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
 
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        fileurl.add(document.get("fileurl1",String.class));
-                                        data_con.add(document.get("data_content",String.class));
-                                    }
-                                    if(fileurl.size()>0&&data_con.size()>0){
-                                        fileurl1=fileurl.get(0);
-                                        data_content=data_con.get(0);
-                                        Intent intent=new Intent(getApplicationContext(), City_Page_Activity.class);
-                                        if(data_content.length()>0 && fileurl1.length()>0 ) {
-                                            data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-                                            data_content = data_content.replaceAll("<[^>]*>", " ");
-                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
-                                            intent.putExtra("fileurl1", fileurl1);
-                                            intent.putExtra("data_content", data_content);
-                                            intent.putExtra("name", i_name);
-                                            startActivity(intent);
-                                        }
-                                    }else {
-                                        db.collection("culture_data")
-                                                .whereEqualTo("data_title",i_name)
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        if (task.isSuccessful()) {
-
-                                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                fileurl.add(document.get("fileurl1", String.class));
-                                                                data_con.add(document.get("data_content", String.class));
-                                                            }
-                                                            if (fileurl.size() > 0 && data_con.size() > 0) {
-                                                                fileurl1 = fileurl.get(0);
-                                                                data_content = data_con.get(0);
-                                                                Intent intent = new Intent(getApplicationContext(), City_Page_Activity.class);
-                                                                if (data_content.length() > 0 && fileurl1.length() > 0) {
-                                                                    data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-                                                                    data_content = data_content.replaceAll("<[^>]*>", " ");
-                                                                    data_content = data_content.replace("/(<([^>]+)>)/", "");
-                                                                    intent.putExtra("fileurl1", fileurl1);
-                                                                    intent.putExtra("data_content", data_content);
-                                                                    intent.putExtra("name", i_name);
-                                                                    startActivity(intent);
-                                                                }
-                                                            } else {
-                                                                db.collection("leisure_data")
-                                                                        .whereEqualTo("data_title", i_name)
-                                                                        .get()
-                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                                if (task.isSuccessful()) {
-                                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                                        fileurl.add(document.get("fileurl1", String.class));
-                                                                                        data_con.add(document.get("data_content", String.class));
-                                                                                    }
-                                                                                    if (fileurl.size() > 0 && data_con.size() > 0) {
-                                                                                        fileurl1 = fileurl.get(0);
-                                                                                        data_content = data_con.get(0);
-                                                                                        Intent intent = new Intent(getApplicationContext(), City_Page_Activity.class);
-                                                                                        if (data_content.length() > 0 && fileurl1.length() > 0) {
-                                                                                            data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-                                                                                            data_content = data_content.replaceAll("<[^>]*>", " ");
-                                                                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
-                                                                                            intent.putExtra("fileurl1", fileurl1);
-                                                                                            intent.putExtra("data_content", data_content);
-                                                                                            intent.putExtra("name", i_name);
-                                                                                            startActivity(intent);
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-
-                                                                        });
-                                                            }
-
-
-                                                        }
-                                                    }
-
-                                                });
-                                    }
-
-
-
-                                }
-                            }
-
-                        });
-            }
-        });
 
         searchList = new ArrayList<>();
             settingList();

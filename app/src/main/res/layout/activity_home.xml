@@ -159,19 +159,6 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
-                <ImageView
-                    android:id="@+id/recommandImgBtn3"
-                    android:layout_width="match_parent"
-                    android:layout_height="176dp"
-                    android:scaleType="centerCrop" />
-
-                <TextView
-                    android:id="@+id/recommandText3"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
 

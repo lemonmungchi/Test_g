@@ -39,6 +39,7 @@ public class City_Page_Activity extends AppCompatActivity {
     private TextView infor;
 
     private ArrayList<String> heart_value;
+    private ArrayList<String> heart_count;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +51,7 @@ public class City_Page_Activity extends AppCompatActivity {
         ImageButton emptyheart = findViewById(R.id.emptyheart);
 
         heart_value=new ArrayList<String>();
+        heart_count=new ArrayList<String>();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -59,6 +61,25 @@ public class City_Page_Activity extends AppCompatActivity {
         String name = intent.getStringExtra("name");
         String fileurl1 = intent.getStringExtra("fileurl1");          //출발지 받아오기
         String data_content = intent.getStringExtra("data_content");             //목적지 받아오기
+
+        db.collection("like_data")
+                .whereEqualTo("con_name",name)
+                .whereEqualTo("heart_value","true")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                heart_count.add(document.get("heart_value",String.class));
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
         db.collection("like_data")
                 .whereEqualTo("con_name",name)

@@ -1717,167 +1717,132 @@ public class HomeActivity extends AppCompatActivity {
                                 recommand_Img_list.add(document.get("fileurl1",String.class));
                                 recommand_name_list.add(document.get("data_title", String.class));
                             }
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        db.collection("leisure_data")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                recommand_Img_list.add(document.get("fileurl1",String.class));
-                                recommand_name_list.add(document.get("data_title", String.class));
-                            }
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        db.collection("culture_data")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                recommand_Img_list.add(document.get("fileurl1",String.class));
-                                recommand_name_list.add(document.get("data_title", String.class));
-                            }
                             int n1=random.nextInt(recommand_name_list.size());
                             int n2=random.nextInt(recommand_name_list.size());
                             int n3=random.nextInt(recommand_name_list.size());
                             String url1=recommand_Img_list.get(n1);
                             String url2=recommand_Img_list.get(n2);
                             String url3=recommand_Img_list.get(n3);
-                                Thread uThread = new Thread() {
-                                    @Override
-                                    public void run(){
-                                        try{
-                                            // 이미지 URL 경로
-                                            URL url = new URL(url1);
+                            Thread uThread = new Thread() {
+                                @Override
+                                public void run(){
+                                    try{
+                                        // 이미지 URL 경로
+                                        URL url = new URL(url1);
 
-                                            // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
-                                            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                                            conn.setDoInput(true); // 서버로부터 응답 수신
-                                            conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
+                                        // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
+                                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                                        conn.setDoInput(true); // 서버로부터 응답 수신
+                                        conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
 
-                                            InputStream is = conn.getInputStream(); //inputStream 값 가져오기
-                                            bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
+                                        InputStream is = conn.getInputStream(); //inputStream 값 가져오기
+                                        bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
 
-                                        }catch (MalformedURLException e){
-                                            e.printStackTrace();
-                                        }catch (IOException e){
-                                            e.printStackTrace();
-                                        }
+                                    }catch (MalformedURLException e){
+                                        e.printStackTrace();
+                                    }catch (IOException e){
+                                        e.printStackTrace();
                                     }
-                                };
+                                }
+                            };
 
-                                uThread.start(); // 작업 Thread 실행
+                            uThread.start(); // 작업 Thread 실행
 
-                                try{
-                                    //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
-                                    //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
-                                    //join() 메서드는 InterruptedException을 발생시킨다.
-                                    uThread.join();
+                            try{
+                                //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
+                                //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
+                                //join() 메서드는 InterruptedException을 발생시킨다.
+                                uThread.join();
 
-                                    //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
-                                    //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
-                                    recommandImgBtn1.setImageBitmap(bitmap);
-                                }catch (InterruptedException e){
-                                    e.printStackTrace();
-                                }           //끝
-                                Thread uThread2 = new Thread() {
-                                    @Override
-                                    public void run(){
-                                        try{
-                                            // 이미지 URL 경로
-                                            URL url = new URL(url2);
+                                //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
+                                //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
+                                recommandImgBtn1.setImageBitmap(bitmap);
+                            }catch (InterruptedException e){
+                                e.printStackTrace();
+                            }           //끝
+                            Thread uThread2 = new Thread() {
+                                @Override
+                                public void run(){
+                                    try{
+                                        // 이미지 URL 경로
+                                        URL url = new URL(url2);
 
-                                            // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
-                                            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                                            conn.setDoInput(true); // 서버로부터 응답 수신
-                                            conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
+                                        // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
+                                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                                        conn.setDoInput(true); // 서버로부터 응답 수신
+                                        conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
 
-                                            InputStream is = conn.getInputStream(); //inputStream 값 가져오기
-                                            bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
+                                        InputStream is = conn.getInputStream(); //inputStream 값 가져오기
+                                        bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
 
-                                        }catch (MalformedURLException e){
-                                            e.printStackTrace();
-                                        }catch (IOException e){
-                                            e.printStackTrace();
-                                        }
+                                    }catch (MalformedURLException e){
+                                        e.printStackTrace();
+                                    }catch (IOException e){
+                                        e.printStackTrace();
                                     }
-                                };
+                                }
+                            };
 
-                                uThread2.start(); // 작업 Thread 실행
+                            uThread2.start(); // 작업 Thread 실행
 
-                                try{
-                                    //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
-                                    //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
-                                    //join() 메서드는 InterruptedException을 발생시킨다.
-                                    uThread2.join();
+                            try{
+                                //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
+                                //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
+                                //join() 메서드는 InterruptedException을 발생시킨다.
+                                uThread2.join();
 
-                                    //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
-                                    //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
-                                    recommandImgBtn2.setImageBitmap(bitmap);
-                                }catch (InterruptedException e){
-                                    e.printStackTrace();
-                                }           //끝
-                                Thread uThread3 = new Thread() {
-                                    @Override
-                                    public void run(){
-                                        try{
-                                            // 이미지 URL 경로
-                                            URL url = new URL(url3);
+                                //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
+                                //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
+                                recommandImgBtn2.setImageBitmap(bitmap);
+                            }catch (InterruptedException e){
+                                e.printStackTrace();
+                            }           //끝
+                            Thread uThread3 = new Thread() {
+                                @Override
+                                public void run(){
+                                    try{
+                                        // 이미지 URL 경로
+                                        URL url = new URL(url3);
 
-                                            // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
-                                            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                                            conn.setDoInput(true); // 서버로부터 응답 수신
-                                            conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
+                                        // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
+                                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                                        conn.setDoInput(true); // 서버로부터 응답 수신
+                                        conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
 
-                                            InputStream is = conn.getInputStream(); //inputStream 값 가져오기
-                                            bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
+                                        InputStream is = conn.getInputStream(); //inputStream 값 가져오기
+                                        bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
 
-                                        }catch (MalformedURLException e){
-                                            e.printStackTrace();
-                                        }catch (IOException e){
-                                            e.printStackTrace();
-                                        }
+                                    }catch (MalformedURLException e){
+                                        e.printStackTrace();
+                                    }catch (IOException e){
+                                        e.printStackTrace();
                                     }
-                                };
+                                }
+                            };
 
-                                uThread3.start(); // 작업 Thread 실행
+                            uThread3.start(); // 작업 Thread 실행
 
-                                try{
-                                    //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
-                                    //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
-                                    //join() 메서드는 InterruptedException을 발생시킨다.
-                                    uThread3.join();
+                            try{
+                                //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
+                                //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
+                                //join() 메서드는 InterruptedException을 발생시킨다.
+                                uThread3.join();
 
-                                    //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
-                                    //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
-                                    recommandImgBtn3.setImageBitmap(bitmap);
-                                }catch (InterruptedException e){
-                                    e.printStackTrace();
-                                }           //끝
-                                recommandText1.setText(recommand_name_list.get(n1));
-                                recommandText2.setText(recommand_name_list.get(n2));
-                                recommandText3.setText(recommand_name_list.get(n3));
+                                //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
+                                //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
+                                recommandImgBtn3.setImageBitmap(bitmap);
+                            }catch (InterruptedException e){
+                                e.printStackTrace();
+                            }           //끝
+                            recommandText1.setText(recommand_name_list.get(n1));
+                            recommandText2.setText(recommand_name_list.get(n2));
+                            recommandText3.setText(recommand_name_list.get(n3));
 
-                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
-
+                    }
                 });
-
-
 
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -7,47 +7,70 @@
     android:orientation="vertical"
     android:verticalScrollbarPosition="left">
 
-    <include layout="@layout/topbar" />
-
-    <AutoCompleteTextView
-        android:id="@+id/Search_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/border_radius"
-        android:textColor="#000000"
-        android:ems="10"
-        android:hint="지역검색"
-        android:textColorHint="@color/black"
-        android:inputType="text"
-        android:padding="5dp" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/search_Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="Search"
-        android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="지역을 검색해주세요"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
-            <LinearLayout
+        <AutoCompleteTextView
+            android:id="@+id/Search_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/border_radius"
+            android:ems="10"
+            android:hint="검색"
+            android:inputType="text"
+            android:padding="5dp"
+            android:textColor="#000000"
+            android:textColorHint="@color/black" />
+
+        <Button
+            android:id="@+id/search_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="검 색"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="570dp"
+            android:background="#FFFFF0"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/routeFragment"
                 android:layout_width="match_parent"
-                android:layout_height="570dp"
-                android:orientation="vertical"
-                android:background="#6499E9">
+                android:layout_height="match_parent"
+                android:layout_weight="2">
 
-                <FrameLayout
-                    android:id="@+id/routeFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2">
-                    <ListView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/search_list"/>
-                </FrameLayout>
-            </LinearLayout>
+                <ListView
+                    android:id="@+id/search_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
 
+    <include
+        layout="@layout/bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_weight="8" />
 
 
 </LinearLayout>

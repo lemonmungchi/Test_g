@@ -12,7 +12,6 @@
             android:layout_width="match_parent" />
     </RelativeLayout>
 
-    <include
-        layout="@layout/side_contents"></include>
+    <include layout="@layout/side_contents"></include>
 
 </androidx.drawerlayout.widget.DrawerLayout>

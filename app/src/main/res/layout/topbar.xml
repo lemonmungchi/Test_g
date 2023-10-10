@@ -7,21 +7,28 @@
 
     <ImageButton
         android:id="@+id/sideMenuBtn"
-        android:layout_width="match_parent"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:layout_weight="5"
         android:background="#AED2FF"
         android:scaleType="fitCenter"
         android:src="@drawable/menuimage" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="#AED2FF"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/gndrlogo" />
 
 </LinearLayout>

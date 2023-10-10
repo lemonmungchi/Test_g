@@ -5,52 +5,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="false"
-    android:background="@color/white"
+    android:background="#FFFFF0"
     android:orientation="vertical"
     android:verticalScrollbarPosition="left">
-
-    <ImageView
-        android:id="@+id/imageV"
-        android:layout_width="match_parent"
-        android:layout_height="176dp"
-        android:layout_weight="1"
-        android:scaleType="centerCrop" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="관광지 이름"
-            android:textColor="@color/black"
-            android:textSize="24sp" />
-
-        <ImageButton
-            android:id="@+id/emptyheart"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="5dp"
-            android:background="@color/transparent_color"
-            android:onClick="onClick"
-            android:padding="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/emptyheart" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="9"
+        android:layout_weight="1"
         android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageV"
+            android:layout_width="match_parent"
+            android:layout_height="176dp"
+            android:layout_weight="1"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="관광지 이름"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <ImageButton
+                android:id="@+id/emptyheart"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:background="@color/transparent_color"
+                android:onClick="onClick"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/emptyheart" />
+
+            <TextView
+                android:id="@+id/countheart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:padding="5dp"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+        </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -81,18 +93,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@drawable/category_button"
+            android:background="@drawable/border_radius"
             android:text="리뷰보기"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <include
-            layout="@layout/bottombar"
-            android:layout_width="match_parent"
-            android:layout_height="176dp"
-            android:layout_gravity="bottom|center"
-            android:layout_weight="8" />
-
-
     </LinearLayout>
+
+    <include
+        layout="@layout/bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_weight="8" />
 
 </LinearLayout>

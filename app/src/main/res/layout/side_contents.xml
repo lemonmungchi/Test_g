@@ -5,17 +5,8 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:background="#A5CBFB"
+    android:gravity="center"
     android:orientation="vertical">
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/closeBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="#8CBAF4"
-        android:text="닫기"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,6 +17,19 @@
             android:layout_height="wrap_content"
             android:background="@color/gray"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sidecitylist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="#AED2FF"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="도시별 추천"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/side_btn_changwon"

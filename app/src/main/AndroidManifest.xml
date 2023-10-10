@@ -48,7 +48,7 @@
             android:name=".ProfileActivity"
             android:exported="true" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".Loading"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,9 +57,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UserPageActivity" />
-        <activity android:name=".PrivacyActivity" />
-        <activity android:name=".fragments.Testfrag1" />
-        <activity android:name=".fragments.Testfrag2" />
+        <activity android:name=".HomeActivity" />
         <activity android:name=".City_Page_Activity" />
         <activity android:name=".ReviewActivity" />
     </application>

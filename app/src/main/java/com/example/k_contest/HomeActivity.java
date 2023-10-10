@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -125,6 +126,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drawer);        //실행페이지
 
 
+
+
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         natureCheck=findViewById(R.id.nature_check);
@@ -164,8 +167,6 @@ public class HomeActivity extends AppCompatActivity {
 
         recommandImgBtn1=findViewById(R.id.recommandImgBtn1);
         recommandText1=findViewById(R.id.recommandText1);
-        recommandImgBtn2=findViewById(R.id.recommandImgBtn2);
-        recommandText2=findViewById(R.id.recommandText2);
         refreshBtn=findViewById(R.id.refreshBtn);
 
 
@@ -252,14 +253,6 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     drawerLayout.openDrawer(drawer);
-                }
-            });
-
-            Button closeSideBtn = (Button)findViewById(R.id.closeBtn);  //사이드메뉴 닫기
-            closeSideBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    drawerLayout.closeDrawer(drawer);
                 }
             });
 
@@ -1713,6 +1706,7 @@ public class HomeActivity extends AppCompatActivity {
         String ci2=cities[ci_n2];
 
         //추천 리스트 데이터 받아오기
+        /*
         db.collection("culture_data")
                 .whereEqualTo("category_name2",ci1)
                 .get()
@@ -2045,111 +2039,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         });
             }
-        });
-        recommandImgBtn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fileurl.clear();
-                data_con.clear();
-                String i_name2=recommandText2.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("data_title",i_name2)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        fileurl.add(document.get("fileurl1",String.class));
-                                        data_con.add(document.get("data_content",String.class));
-                                    }
-                                    if(fileurl.size()>0&&data_con.size()>0){
-                                        fileurl1=fileurl.get(0);
-                                        data_content=data_con.get(0);
-                                        Intent intent=new Intent(getApplicationContext(), City_Page_Activity.class);
-                                        if(data_content.length()>0 && fileurl1.length()>0 ) {
-                                            data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-                                            data_content = data_content.replaceAll("<[^>]*>", " ");
-                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
-                                            intent.putExtra("fileurl1", fileurl1);
-                                            intent.putExtra("data_content", data_content);
-                                            intent.putExtra("name", i_name2);
-                                            startActivity(intent);
-                                        }
-                                    }else {
-                                        db.collection("culture_data")
-                                                .whereEqualTo("data_title",i_name2)
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        if (task.isSuccessful()) {
-
-                                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                fileurl.add(document.get("fileurl1", String.class));
-                                                                data_con.add(document.get("data_content", String.class));
-                                                            }
-                                                            if (fileurl.size() > 0 && data_con.size() > 0) {
-                                                                fileurl1 = fileurl.get(0);
-                                                                data_content = data_con.get(0);
-                                                                Intent intent = new Intent(getApplicationContext(), City_Page_Activity.class);
-                                                                if (data_content.length() > 0 && fileurl1.length() > 0) {
-                                                                    data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-                                                                    data_content = data_content.replaceAll("<[^>]*>", " ");
-                                                                    data_content = data_content.replace("/(<([^>]+)>)/", "");
-                                                                    intent.putExtra("fileurl1", fileurl1);
-                                                                    intent.putExtra("data_content", data_content);
-                                                                    intent.putExtra("name", i_name2);
-                                                                    startActivity(intent);
-                                                                }
-                                                            } else {
-                                                                db.collection("leisure_data")
-                                                                        .whereEqualTo("data_title", i_name2)
-                                                                        .get()
-                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                                if (task.isSuccessful()) {
-                                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                                        fileurl.add(document.get("fileurl1", String.class));
-                                                                                        data_con.add(document.get("data_content", String.class));
-                                                                                    }
-                                                                                    if (fileurl.size() > 0 && data_con.size() > 0) {
-                                                                                        fileurl1 = fileurl.get(0);
-                                                                                        data_content = data_con.get(0);
-                                                                                        Intent intent = new Intent(getApplicationContext(), City_Page_Activity.class);
-                                                                                        if (data_content.length() > 0 && fileurl1.length() > 0) {
-                                                                                            data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-                                                                                            data_content = data_content.replaceAll("<[^>]*>", " ");
-                                                                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
-                                                                                            intent.putExtra("fileurl1", fileurl1);
-                                                                                            intent.putExtra("data_content", data_content);
-                                                                                            intent.putExtra("name", i_name2);
-                                                                                            startActivity(intent);
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-
-                                                                        });
-                                                            }
-
-
-                                                        }
-                                                    }
-
-                                                });
-                                    }
-
-
-
-                                }
-                            }
-
-                        });
-            }
-        });
+        });*/
 
 
         searchList = new ArrayList<>();

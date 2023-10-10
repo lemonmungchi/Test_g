@@ -9,11 +9,11 @@
 
     <TextView
         android:id="@+id/loginbackbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_margin="20dp"
         android:layout_weight="1.7"
-        android:text="back"
+        android:background="@drawable/backspaceimage"
         android:textColor="@color/purple_700"
         android:textSize="20dp" />
 

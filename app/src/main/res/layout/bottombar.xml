@@ -60,5 +60,5 @@
         android:layout_weight="1"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
-        android:src="@drawable/profileimage" />
+        android:src="@drawable/peopleicon" />
 </LinearLayout>

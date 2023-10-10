@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -28,6 +29,9 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Route_choose extends AppCompatActivity {
+
+
+
     // 가중치 곱 함수
     public void multiplyMatix(int[][] newGN, double[][] map) {
         for(int i = 0; i < 18; i++){
@@ -186,6 +190,51 @@ public class Route_choose extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ImageButton backspaceButton = findViewById(R.id.backspaceicon);
+        backspaceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        ImageButton homeButton = findViewById(R.id.homeicon);
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton mapButton = findViewById(R.id.mapicon);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Map_myloc.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton searchButton = findViewById(R.id.searchicon);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton profileButton = findViewById(R.id.profileicon);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UserPageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
         setContentView(R.layout.activity_route_choose);
 
         db = FirebaseFirestore.getInstance();

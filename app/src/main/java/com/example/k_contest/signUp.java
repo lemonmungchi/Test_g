@@ -22,8 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 public class signUp extends AppCompatActivity {
 
     TextView back;
-    EditText pw,pw2,email;
+    EditText pw,pw2,email,name;
     Button pwcheck, submit;
+
 
     private FirebaseAuth mFirebaseAuth;     //파이어베이스 인증처리
 
@@ -46,8 +47,8 @@ public class signUp extends AppCompatActivity {
         pw=findViewById(R.id.signPW);
         pw2=findViewById(R.id.signPW2);
         email=findViewById(R.id.signmail);
-
         pwcheck = findViewById(R.id.pwcheckbutton);
+        name=findViewById(R.id.signID);
         pwcheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +67,7 @@ public class signUp extends AppCompatActivity {
             public void onClick(View view) {
                 String mypw=pw.getText().toString();
                 String myemail=email.getText().toString();
+                String myname=name.getText().toString();
 
                 mFirebaseAuth.createUserWithEmailAndPassword(myemail, mypw)
                         .addOnCompleteListener(signUp.this, new OnCompleteListener<AuthResult>() {

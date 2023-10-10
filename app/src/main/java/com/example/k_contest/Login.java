@@ -34,8 +34,6 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         sign=findViewById(R.id.signin);
-
-        sign=findViewById(R.id.signin);
         my_Id=findViewById(R.id.my_Id);
         my_pw=findViewById(R.id.my_pw);
         loginbutton=findViewById(R.id.loginbutton);

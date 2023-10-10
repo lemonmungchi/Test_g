@@ -1713,7 +1713,7 @@ public class HomeActivity extends AppCompatActivity {
         String ci2=cities[ci_n2];
 
         //추천 리스트 데이터 받아오기
-        db.collection("nature_data")
+        db.collection("culture_data")
                 .whereEqualTo("category_name2",ci1)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -1772,7 +1772,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
                 });
-        db.collection("nature_data")
+        db.collection("culture_data")
                 .whereEqualTo("category_name2",ci2)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

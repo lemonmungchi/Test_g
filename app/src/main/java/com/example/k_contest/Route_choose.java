@@ -191,7 +191,8 @@ public class Route_choose extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ImageButton backspaceButton = findViewById(R.id.backspaceicon);
+
+        /*ImageButton backspaceButton = findViewById(R.id.backspaceicon);
         backspaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -232,6 +233,10 @@ public class Route_choose extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+         */
+
+
 
 
 
@@ -11270,7 +11275,7 @@ public class Route_choose extends AppCompatActivity {
                 }
                 else{
                     is_Checked.set(position,false);
-                    route_choice.setBackgroundColor(Color.parseColor("#AED2FF"));
+                    route_choice.setBackgroundColor(Color.parseColor("#FFFFF0"));
                     String item=text_title.getText().toString();
                     result_name.remove(item);
                     String remove_item=route_text.getText().toString();

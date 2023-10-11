@@ -202,6 +202,19 @@ public class HomeActivity extends AppCompatActivity {
            }
        });
 
+        MapPoint = findViewById(R.id.MapPoint);
+        MapPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean [] cur_state={nature_p,leisure_p,culture_p};
+                Intent intent = new Intent(getApplicationContext(), Route_choose.class);
+                intent.putExtra("Start", StartPoint.getText().toString());
+                intent.putExtra("End", EndPoint.getText().toString());
+                intent.putExtra("State",cur_state);
+                startActivity(intent);
+            }
+        });
+
         ImageButton backspaceButton = findViewById(R.id.backspaceicon);
             backspaceButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2050,18 +2063,7 @@ public class HomeActivity extends AppCompatActivity {
             EndPoint = findViewById(R.id.EndPoint);
             EndPoint.setAdapter(new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, searchList));
 
-            MapPoint = findViewById(R.id.MapPoint);
-            MapPoint.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    boolean [] cur_state={nature_p,leisure_p,culture_p};
-                    Intent intent = new Intent(getApplicationContext(), Route_choose.class);
-                    intent.putExtra("Start", StartPoint.getText().toString());
-                    intent.putExtra("End", EndPoint.getText().toString());
-                    intent.putExtra("State",cur_state);
-                    startActivity(intent);
-                }
-            });
+
 
 
         }

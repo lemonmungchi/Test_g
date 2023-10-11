@@ -315,20 +315,8 @@
                 </ListView>
             </FrameLayout>
         </LinearLayout>
-
-        <include
-            layout="@layout/bottombar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_weight="8" />
     </LinearLayout>
 
-    <include
-        layout="@layout/bottombar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_weight="8" />
+
 
 </LinearLayout>

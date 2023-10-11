@@ -76,7 +76,7 @@ public class City_Page_Activity extends AppCompatActivity {
 
         db.collection("like_data")
                 .whereEqualTo("con_name",name)
-                .whereEqualTo("heart_value","true")
+                .whereEqualTo("heart_value","on")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -111,7 +111,7 @@ public class City_Page_Activity extends AppCompatActivity {
                                 heart_value.add(document.get("heart_value",String.class));
                             }
                             if(heart_value.size()>0){
-                                if(heart_value.get(0).equals("true")){
+                                if(heart_value.get(0).equals("on")){
                                     emptyheart.setImageResource(R.drawable.fullheart);
                                     heart=1;
                                 }else {
@@ -194,7 +194,7 @@ public class City_Page_Activity extends AppCompatActivity {
                         Map<String, Object> adddata = new HashMap<>();
                         adddata.put("user_email",email);
                         adddata.put("con_name",name);
-                        adddata.put("heart_value","true");
+                        adddata.put("heart_value","on");
 
                         db.collection("like_data")
                                 .add(adddata)

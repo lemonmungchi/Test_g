@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -201,17 +202,28 @@ public class HomeActivity extends AppCompatActivity {
                culture_p=true;
            }
        });
-
+       String i1=StartPoint.getText().toString();
+       String i2=EndPoint.getText().toString();
         MapPoint = findViewById(R.id.MapPoint);
         MapPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean [] cur_state={nature_p,leisure_p,culture_p};
-                Intent intent = new Intent(getApplicationContext(), Route_choose.class);
-                intent.putExtra("Start", StartPoint.getText().toString());
-                intent.putExtra("End", EndPoint.getText().toString());
-                intent.putExtra("State",cur_state);
-                startActivity(intent);
+                if(i1.length()>0&&i2.length()>0){
+                    if(nature_p==true||leisure_p==true||culture_p==true){
+                        boolean [] cur_state={nature_p,leisure_p,culture_p};
+                        Intent intent = new Intent(getApplicationContext(), Route_choose.class);
+                        intent.putExtra("Start", StartPoint.getText().toString());
+                        intent.putExtra("End", EndPoint.getText().toString());
+                        intent.putExtra("State",cur_state);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "테마를 선택해주세요", Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(),"출발지 또는 목적지를 입력하세요",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 

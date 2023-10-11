@@ -39,7 +39,7 @@ public class UserPageActivity extends AppCompatActivity {
         if(user==null){
             loginMy.setText("로그인 하세요");
         }else {
-            String name= user.getEmail();
+            String name= user.getDisplayName();
             loginMy.setText(name+" 님");
         }
 

@@ -1,5 +1,7 @@
 package com.example.k_contest;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -66,24 +69,43 @@ public class signUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String mypw=pw.getText().toString();
+                String mypw2=pw2.getText().toString();
                 String myemail=email.getText().toString();
                 String myname=name.getText().toString();
+                if(mypw.equals(mypw2)){
+                    mFirebaseAuth.createUserWithEmailAndPassword(myemail, mypw)
+                            .addOnCompleteListener(signUp.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Toast.makeText(signUp.this, "회원가입성공",Toast.LENGTH_LONG).show();
+                                        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(myname).build();
+                                        user.updateProfile(profileUpdates)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
 
-                mFirebaseAuth.createUserWithEmailAndPassword(myemail, mypw)
-                        .addOnCompleteListener(signUp.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(signUp.this, "회원가입성공",Toast.LENGTH_LONG).show();
-                                    FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                                    onBackPressed();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(signUp.this, "회원가입 실패",Toast.LENGTH_LONG).show();
+                                                        }else{
+                                                            Log.d(TAG, "실패.");
+                                                        }
+                                                    }
+                                                });
+
+                                        onBackPressed();
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Toast.makeText(signUp.this, "회원가입 실패",Toast.LENGTH_LONG).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }else{
+                    Toast.makeText(signUp.this, "비밀번호가 중복체크 실패",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }

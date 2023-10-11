@@ -37,9 +37,14 @@ public class City_Page_Activity extends AppCompatActivity {
     private ImageView imageV;
     private TextView g_name;
     private TextView infor;
+    private String email;
 
     private ArrayList<String> heart_value;
     private ArrayList<String> heart_count;
+    private FirebaseUser user;
+    private int heart;
+
+    private TextView countheart;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,18 +54,25 @@ public class City_Page_Activity extends AppCompatActivity {
         g_name=findViewById(R.id.name);
         infor=findViewById(R.id.infor);
         ImageButton emptyheart = findViewById(R.id.emptyheart);
+        countheart=findViewById(R.id.countheart);
 
         heart_value=new ArrayList<String>();
         heart_count=new ArrayList<String>();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         String fileurl1 = intent.getStringExtra("fileurl1");          //출발지 받아오기
         String data_content = intent.getStringExtra("data_content");             //목적지 받아오기
+
+        if(user==null){
+
+        }else{
+           email=user.getEmail();
+        }
+
 
         db.collection("like_data")
                 .whereEqualTo("con_name",name)
@@ -73,8 +85,13 @@ public class City_Page_Activity extends AppCompatActivity {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 heart_count.add(document.get("heart_value",String.class));
-                            }
 
+                            }
+                            if(heart_count.size()>0){
+                                int i=heart_count.size();
+                                String n=String.valueOf(i);
+                                countheart.setText(n);
+                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -83,6 +100,7 @@ public class City_Page_Activity extends AppCompatActivity {
 
         db.collection("like_data")
                 .whereEqualTo("con_name",name)
+                .whereEqualTo("user_email",email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -95,11 +113,14 @@ public class City_Page_Activity extends AppCompatActivity {
                             if(heart_value.size()>0){
                                 if(heart_value.get(0).equals("true")){
                                     emptyheart.setImageResource(R.drawable.fullheart);
+                                    heart=1;
                                 }else {
                                     emptyheart.setImageResource(R.drawable.emptyheart);
+                                    heart=0;
                                 }
                             }else {
                                 emptyheart.setImageResource(R.drawable.emptyheart);
+                                heart=0;
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -161,6 +182,7 @@ public class City_Page_Activity extends AppCompatActivity {
             int heart=1;
             public void onClick(View view) {
                 if (heart==1) {
+                    user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user == null) {
                         Toast.makeText(getApplicationContext(),"로그인을 하세요",Toast.LENGTH_LONG).show();
                         Intent go_intent=new Intent(City_Page_Activity.this, Login.class);
@@ -201,8 +223,13 @@ public class City_Page_Activity extends AppCompatActivity {
                                         Log.w(TAG, "Error adding document", e);
                                     }
                                 });
+                        String n=countheart.getText().toString();
+                        int i=Integer.valueOf(n);
+                        i+=1;
+                        String num=String.valueOf(i);
+                        countheart.setText(num);
+                        heart=0;
                     }
-                    heart=0;
                 } else {
                     ArrayList<String> doc_id=new ArrayList<String>();
                     db.collection("like_data")
@@ -237,6 +264,11 @@ public class City_Page_Activity extends AppCompatActivity {
                                 }
                             });
                     emptyheart.setImageResource(R.drawable.emptyheart);
+                    String n=countheart.getText().toString();
+                    int i=Integer.valueOf(n);
+                    i-=1;
+                    String num=String.valueOf(i);
+                    countheart.setText(num);
                     heart=1;
                 }
             }

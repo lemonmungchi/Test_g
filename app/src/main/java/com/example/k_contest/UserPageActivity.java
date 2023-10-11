@@ -34,13 +34,26 @@ public class UserPageActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         bookmarkBtn=findViewById(R.id.bookmarkBtn);
         loginMy=findViewById(R.id.loginMy);
-        String name= user.getEmail();
+
 
         if(user==null){
             loginMy.setText("로그인 하세요");
         }else {
+            String name= user.getEmail();
             loginMy.setText(name+" 님");
         }
+
+        loginMy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(user==null){
+                    Toast.makeText(getApplicationContext(),"로그인을 하세요",Toast.LENGTH_LONG).show();
+                    Intent go_intent=new Intent(UserPageActivity.this, Login.class);
+                    go_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TOP);//액티비티 스택제거
+                    startActivity(go_intent);
+                }
+            }
+        });
 
         reviewManagementBtn=findViewById(R.id.reviewManagementBtn);
         reviewManagementBtn.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +63,7 @@ public class UserPageActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"로그인을 하세요",Toast.LENGTH_LONG).show();
                     Intent go_intent=new Intent(UserPageActivity.this, Login.class);
                     startActivity(go_intent);
+
                 }else{
                     Intent intent=new Intent(UserPageActivity.this,Review_manage.class);
                     startActivity(intent);
@@ -84,8 +98,18 @@ public class UserPageActivity extends AppCompatActivity {
                 }else{
                     FirebaseAuth auth = FirebaseAuth.getInstance();
                     auth.getInstance().signOut();//로그아웃 수정+++++++++++++++++++++++++
-                    Intent intent = new Intent(UserPageActivity.this, UserPageActivity.class);
-                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(),"로그아웃 완료",Toast.LENGTH_LONG).show();
+                    try {
+                        //TODO 액티비티 화면 재갱신 시키는 코드
+                        Intent intent = getIntent();
+                        finish(); //현재 액티비티 종료 실시
+                        overridePendingTransition(0, 0); //인텐트 애니메이션 없애기
+                        startActivity(intent); //현재 액티비티 재실행 실시
+                        overridePendingTransition(0, 0); //인텐트 애니메이션 없애기
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         });

@@ -71,7 +71,9 @@ public class Login extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Login.this,"로그인 성공",Toast.LENGTH_LONG).show();
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    onBackPressed();
+                                    Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TOP);//액티비티 스택제거
+                                    startActivity(intent);
                                 } else {
                                     Toast.makeText(Login.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                                 }

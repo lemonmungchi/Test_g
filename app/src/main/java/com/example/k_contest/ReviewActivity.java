@@ -44,6 +44,7 @@ public class ReviewActivity extends AppCompatActivity {
 
     private ListView review_List;
     private List_Adapter_Review ReviewListAdapter;
+    private FirebaseUser user;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class ReviewActivity extends AppCompatActivity {
         Intent intent= getIntent();
         String name= intent.getStringExtra("name");
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         review=new ArrayList<String>();
         review_List=findViewById(R.id.review_rlist);
@@ -90,6 +91,7 @@ public class ReviewActivity extends AppCompatActivity {
         reviewbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user == null) {
                     Toast.makeText(getApplicationContext(),"로그인을 하세요",Toast.LENGTH_LONG).show();
                     Intent go_intent=new Intent(ReviewActivity.this, Login.class);

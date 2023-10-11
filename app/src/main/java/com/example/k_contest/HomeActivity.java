@@ -202,12 +202,13 @@ public class HomeActivity extends AppCompatActivity {
                culture_p=true;
            }
        });
-       String i1=StartPoint.getText().toString();
-       String i2=EndPoint.getText().toString();
+
         MapPoint = findViewById(R.id.MapPoint);
         MapPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String i1=StartPoint.getText().toString();
+                String i2=EndPoint.getText().toString();
                 if(i1.length()>0&&i2.length()>0){
                     if(nature_p==true||leisure_p==true||culture_p==true){
                         boolean [] cur_state={nature_p,leisure_p,culture_p};
@@ -288,25 +289,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_name.clear();
                 route_con.clear();
                 route_image.clear();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2","창원시")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -370,25 +352,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_jinju.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -450,25 +413,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_tongyeong.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -530,25 +474,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_sacheon.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -610,25 +535,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_gimhae.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -690,25 +596,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_miryang.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -770,25 +657,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_geoje.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -850,25 +718,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_yangsan.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -930,25 +779,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_uiryeong.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -1010,25 +840,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_hamyang.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -1090,25 +901,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_changnyeong.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -1170,25 +962,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_goseong.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -1250,25 +1023,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_namhae.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -1330,25 +1084,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_hadong.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -1410,25 +1145,6 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_sancheong.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -1490,25 +1206,7 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_haman.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
+                
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -1570,25 +1268,7 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_geochang.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
+                
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()
@@ -1650,25 +1330,7 @@ public class HomeActivity extends AppCompatActivity {
                 route_con.clear();
                 route_image.clear();
                 String item = side_btn_hapcheon.getText().toString();
-                db.collection("nature_data")
-                        .whereEqualTo("category_name2",item)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        route_name.add(document.get("data_title",String.class));
-                                        route_con.add(document.get("data_content", String.class));
-                                        route_image.add(document.get("fileurl1",String.class));
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
+                
                 db.collection("leisure_data")
                         .whereEqualTo("category_name2",item)
                         .get()

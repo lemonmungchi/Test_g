@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="false"
-    android:background="#03A9F4"
+    android:background="#AED2FF"
     android:orientation="vertical"
     android:verticalScrollbarPosition="left">
 
@@ -20,7 +20,7 @@
             android:layout_margin="10dp"
             android:gravity="center"
             android:text="지역을 검색해주세요"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <AutoCompleteTextView

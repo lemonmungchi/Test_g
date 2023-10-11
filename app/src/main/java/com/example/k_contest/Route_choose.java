@@ -187,57 +187,11 @@ public class Route_choose extends AppCompatActivity {
     private ArrayList<Double> result_lat;
     private ArrayList<Double> result_long;
     private ArrayList<String> result_name;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        /*ImageButton backspaceButton = findViewById(R.id.backspaceicon);
-        backspaceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
-        ImageButton homeButton = findViewById(R.id.homeicon);
-
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
-            }
-        });
-        ImageButton mapButton = findViewById(R.id.mapicon);
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Map_myloc.class);
-                startActivity(intent);
-            }
-        });
-        ImageButton searchButton = findViewById(R.id.searchicon);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                startActivity(intent);
-            }
-        });
-        ImageButton profileButton = findViewById(R.id.profileicon);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), UserPageActivity.class);
-                startActivity(intent);
-            }
-        });
-
-         */
-
-
-
 
 
         setContentView(R.layout.activity_route_choose);
@@ -11254,7 +11208,7 @@ public class Route_choose extends AppCompatActivity {
 
                 if(is_Checked.get(position)==false){
                     is_Checked.set(position,true);
-                    route_choice.setBackgroundColor(Color.parseColor("#27005D"));
+                    route_choice.setBackgroundColor(Color.parseColor("#AED2FF"));
                     String item=text_title.getText().toString();
                     result_name.add(item);
                     if((rot.length-2)>0){
@@ -11343,6 +11297,16 @@ public class Route_choose extends AppCompatActivity {
 
                 }
                 //dj.algorithm('출발지', '도착지');
+            }
+        });
+
+
+
+        ImageButton backbutton2 = findViewById(R.id.backbutton2);
+        backbutton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
     }

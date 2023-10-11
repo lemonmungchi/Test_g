@@ -7,9 +7,10 @@
 
     <ImageButton
         android:id="@+id/sideMenuBtn"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
         android:background="#AED2FF"
         android:scaleType="fitCenter"
         android:src="@drawable/menuimage" />

@@ -11244,12 +11244,12 @@ public class Route_choose extends AppCompatActivity {
                     route_text.setText(remove_item);
                     if((rot.length-2)>0){
                         int item_n=mid_data.indexOf(item);
-                        result_lat.remove(mid_lat.get(item_n));
-                        result_long.remove(mid_long.get(item_n));
+                        result_lat.remove(Double.parseDouble(mid_lat.get(item_n)));
+                        result_long.remove(Double.parseDouble(mid_long.get(item_n)));
                     }else {
                         int item_n=route_data.indexOf(item);
-                        result_lat.remove(route_lat.get(item_n));
-                        result_long.remove(route_long.get(item_n));
+                        result_lat.remove(Double.parseDouble(route_lat.get(item_n)));
+                        result_long.remove(Double.parseDouble(route_long.get(item_n)));
                     }
                 }
 

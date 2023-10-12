@@ -1396,9 +1396,7 @@ public class HomeActivity extends AppCompatActivity {
 
         Random random=new Random();
         int ci_n1=random.nextInt(cities.length);
-        int ci_n2=random.nextInt(cities.length);
         String ci1=cities[ci_n1];
-        String ci2=cities[ci_n2];
 
         //추천 리스트 데이터 받아오기
         db.collection("culture_data")
@@ -1460,65 +1458,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
                 });
-        db.collection("culture_data")
-                .whereEqualTo("category_name2",ci2)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
 
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                recommand_Img_list2.add(document.get("fileurl1",String.class));
-                                recommand_name_list2.add(document.get("data_title", String.class));
-                            }
-                            int n1=random.nextInt(recommand_name_list.size());
-                            String url1=recommand_Img_list.get(n1);
-                            Thread uThread = new Thread() {
-                                @Override
-                                public void run(){
-                                    try{
-                                        // 이미지 URL 경로
-                                        URL url = new URL(url1);
-
-                                        // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
-                                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                                        conn.setDoInput(true); // 서버로부터 응답 수신
-                                        conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
-
-                                        InputStream is = conn.getInputStream(); //inputStream 값 가져오기
-                                        bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
-
-                                    }catch (MalformedURLException e){
-                                        e.printStackTrace();
-                                    }catch (IOException e){
-                                        e.printStackTrace();
-                                    }
-                                }
-                            };
-
-                            uThread.start(); // 작업 Thread 실행
-
-                            try{
-                                //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
-                                //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
-                                //join() 메서드는 InterruptedException을 발생시킨다.
-                                uThread.join();
-
-                                //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
-                                //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
-                                recommandImgBtn1.setImageBitmap(bitmap);
-                            }catch (InterruptedException e){
-                                e.printStackTrace();
-                            }           //끝
-
-                            recommandText1.setText(recommand_name_list.get(n1));
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
 
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override

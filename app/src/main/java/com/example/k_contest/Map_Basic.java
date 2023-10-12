@@ -54,6 +54,7 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
     private String secret= BuildConfig.NAVER_SECRET;
 
+
     // 가중치 곱 함수
     public void multiplyMatix(int[][] newGN, double[][] map) {
         for(int i = 0; i < 18; i++){

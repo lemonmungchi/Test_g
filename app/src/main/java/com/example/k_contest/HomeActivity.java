@@ -352,7 +352,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
             }
-        });
+        });         //사이드버튼 시작
         side_btn_jinju.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1392,7 +1392,7 @@ public class HomeActivity extends AppCompatActivity {
                         });
 
             }
-        });
+        });         //사이드버튼끝
 
         Random random=new Random();
         int ci_n1=random.nextInt(cities.length);
@@ -1401,7 +1401,6 @@ public class HomeActivity extends AppCompatActivity {
         String ci2=cities[ci_n2];
 
         //추천 리스트 데이터 받아오기
-        /*
         db.collection("culture_data")
                 .whereEqualTo("category_name2",ci1)
                 .get()
@@ -1608,30 +1607,9 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        Thread uThread = new Thread() {
-            @Override
-            public void run(){
-                try{
-                    // 이미지 URL 경로
-                    URL url = new URL("URL 경로");
 
-                    // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
-                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                    conn.setDoInput(true); // 서버로부터 응답 수신
-                    conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
 
-                    InputStream is = conn.getInputStream(); //inputStream 값 가져오기
-                    bitmap = BitmapFactory.decodeStream(is); // Bitmap으로 변환
-
-                }catch (MalformedURLException e){
-                    e.printStackTrace();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        recommandImgBtn1.setOnClickListener(new View.OnClickListener() {
+        recommandImgBtn1.setOnClickListener(new View.OnClickListener() {            //추천이미지 눌렀을때 해당 관광지 페이지로 이동
             @Override
             public void onClick(View view) {
                 fileurl.clear();
@@ -1734,7 +1712,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         });
             }
-        });*/
+        });
 
 
         searchList = new ArrayList<>();
@@ -1744,8 +1722,6 @@ public class HomeActivity extends AppCompatActivity {
 
             EndPoint = findViewById(R.id.EndPoint);
             EndPoint.setAdapter(new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, searchList));
-
-
 
 
         }

@@ -22,6 +22,8 @@ android {
 
         buildConfigField "String","NAVER_API","\"${properties.getProperty("naver_api_key")}\""
         buildConfigField "String","NAVER_SECRET","\"${properties.getProperty("naver_secret")}\""
+
+         
     }
 
 

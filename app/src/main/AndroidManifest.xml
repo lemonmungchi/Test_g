@@ -37,7 +37,6 @@
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="nowdd7jigt" />
-
         <activity
             android:name=".Map_Basic"
             android:exported="false" />
@@ -52,12 +51,12 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".UserPageActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".HomeActivity"
+            android:exported="true"/>
         <activity android:name=".City_Page_Activity" />
         <activity android:name=".ReviewActivity" />
     </application>

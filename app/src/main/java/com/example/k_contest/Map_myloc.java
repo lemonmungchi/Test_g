@@ -26,6 +26,10 @@ public class Map_myloc extends AppCompatActivity implements OnMapReadyCallback {
 
     private String secret= BuildConfig.NAVER_SECRET;
 
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().getDecorView().setSystemUiVisibility(

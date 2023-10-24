@@ -33,6 +33,14 @@
         <activity
             android:name=".Map_myloc"
             android:exported="false" />
+        <activity android:name=".Loading_1"
+            android:exported="true"/>
+        <activity android:name=".Loading_2"
+            android:exported="true"/>
+        <activity android:name=".Loading_3"
+            android:exported="true"/>
+        <activity android:name=".Loading_4"
+            android:exported="true"/>
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

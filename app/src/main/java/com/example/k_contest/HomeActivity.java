@@ -220,7 +220,7 @@ public class HomeActivity extends AppCompatActivity {
                 if(i1.length()>0&&i2.length()>0){
                     if(nature_p==true||leisure_p==true||culture_p==true){
                         boolean [] cur_state={nature_p,leisure_p,culture_p};
-                        Intent intent = new Intent(getApplicationContext(), Route_choose.class);
+                        Intent intent = new Intent(getApplicationContext(), Loading_1.class);
                         intent.putExtra("Start", StartPoint.getText().toString());
                         intent.putExtra("End", EndPoint.getText().toString());
                         intent.putExtra("State",cur_state);

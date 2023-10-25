@@ -50,9 +50,9 @@ public class Map_Basic extends AppCompatActivity implements OnMapReadyCallback {
 
     private ArrayList<String> dataSample;
 
-    private String NavaApIKey= BuildConfig.NAVER_API;
+    private String NavaApIKey= "nowdd7jigt";
 
-    private String secret= BuildConfig.NAVER_SECRET;
+    private String secret= "C7toUlRTfdqJlYR8tsX6fGj2WtVIFIEySUFTO72L";
 
 
     // 가중치 곱 함수

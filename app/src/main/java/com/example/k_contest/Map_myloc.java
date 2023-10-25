@@ -22,9 +22,9 @@ public class Map_myloc extends AppCompatActivity implements OnMapReadyCallback {
 
     private NaverMap naverMap;
 
-    private String NavaApIKey= BuildConfig.NAVER_API;
+    private String NavaApIKey= "nowdd7jigt";
 
-    private String secret= BuildConfig.NAVER_SECRET;
+    private String secret= "C7toUlRTfdqJlYR8tsX6fGj2WtVIFIEySUFTO72L";
 
 
 

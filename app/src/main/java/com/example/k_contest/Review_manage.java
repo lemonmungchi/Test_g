@@ -29,9 +29,18 @@ import java.util.ArrayList;
 public class Review_manage extends AppCompatActivity {
 
     private ArrayList<String> review;
+    private ArrayList<String> review_title;
 
     private ListView review_List;
     private List_Adapter_ReviewM ReviewListAdapter_M;
+
+    ArrayList<String> fileurl;
+
+    ArrayList<String> data_con;
+
+    String fileurl1;
+
+    String data_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +52,16 @@ public class Review_manage extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         );//네비바 제거
 
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_manage);
 
+
+        fileurl=new ArrayList<String>();
+        data_con=new ArrayList<String>();
         review=new ArrayList<String>();
+        review_title=new ArrayList<String>();
         review_List=findViewById(R.id.review_mlist);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -70,6 +85,7 @@ public class Review_manage extends AppCompatActivity {
 
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     review.add(document.get("review_text",String.class));
+                                    review_title.add(document.get("con_name",String.class));
                                 }
                                 ReviewListAdapter_M=new List_Adapter_ReviewM(Review_manage.this,review);
                                 review_List.setAdapter(ReviewListAdapter_M);
@@ -120,6 +136,115 @@ public class Review_manage extends AppCompatActivity {
                 }
             });
         }
+
+        review_List.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
+                TextView text_title=view.findViewById(R.id.Review_m_title);
+
+                fileurl.clear();
+                data_con.clear();
+                String i=text_title.getText().toString();
+                db.collection("nature_data")
+                        .whereEqualTo("data_title",i)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        fileurl.add(document.get("fileurl1",String.class));
+                                        data_con.add(document.get("data_content",String.class));
+                                    }
+                                    if(fileurl.size()>0&&data_con.size()>0){
+                                        fileurl1=fileurl.get(0);
+                                        data_content=data_con.get(0);
+                                        Intent intent=new Intent(getApplicationContext(), City_Page_Activity.class);
+                                        if(data_content.length()>0 && fileurl1.length()>0 ) {
+                                            data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+                                            data_content = data_content.replaceAll("<[^>]*>", " ");
+                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
+                                            intent.putExtra("fileurl1", fileurl1);
+                                            intent.putExtra("data_content", data_content);
+                                            intent.putExtra("name", i);
+                                            startActivity(intent);
+                                        }
+                                    }else {
+                                        db.collection("culture_data")
+                                                .whereEqualTo("data_title",i)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                fileurl.add(document.get("fileurl1", String.class));
+                                                                data_con.add(document.get("data_content", String.class));
+                                                            }
+                                                            if (fileurl.size() > 0 && data_con.size() > 0) {
+                                                                fileurl1 = fileurl.get(0);
+                                                                data_content = data_con.get(0);
+                                                                Intent intent = new Intent(getApplicationContext(), City_Page_Activity.class);
+                                                                if (data_content.length() > 0 && fileurl1.length() > 0) {
+                                                                    data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+                                                                    data_content = data_content.replaceAll("<[^>]*>", " ");
+                                                                    data_content = data_content.replace("/(<([^>]+)>)/", "");
+                                                                    intent.putExtra("fileurl1", fileurl1);
+                                                                    intent.putExtra("data_content", data_content);
+                                                                    intent.putExtra("name", i);
+                                                                    startActivity(intent);
+                                                                }
+                                                            } else {
+                                                                db.collection("leisure_data")
+                                                                        .whereEqualTo("data_title", i)
+                                                                        .get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                        fileurl.add(document.get("fileurl1", String.class));
+                                                                                        data_con.add(document.get("data_content", String.class));
+                                                                                    }
+                                                                                    if (fileurl.size() > 0 && data_con.size() > 0) {
+                                                                                        fileurl1 = fileurl.get(0);
+                                                                                        data_content = data_con.get(0);
+                                                                                        Intent intent = new Intent(getApplicationContext(), City_Page_Activity.class);
+                                                                                        if (data_content.length() > 0 && fileurl1.length() > 0) {
+                                                                                            data_content = data_content.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+                                                                                            data_content = data_content.replaceAll("<[^>]*>", " ");
+                                                                                            data_content = data_content.replace("/(<([^>]+)>)/", "");
+                                                                                            intent.putExtra("fileurl1", fileurl1);
+                                                                                            intent.putExtra("data_content", data_content);
+                                                                                            intent.putExtra("name", i);
+                                                                                            startActivity(intent);
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+
+                                                                        });
+                                                            }
+
+
+                                                        }
+                                                    }
+
+                                                });
+                                    }
+
+
+
+                                }
+                            }
+
+                        });
+
+
+            }
+        });
 
     }
 }

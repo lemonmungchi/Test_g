@@ -52,11 +52,34 @@ public class List_Adapter_ReviewM  extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.review_mlist, null);
         TextView Review_m=view.findViewById(R.id.Review_m);
+        TextView Review_m_title=view.findViewById(R.id.Review_m_title);
         Review_m.setText(data.get(position));
         Button delete_m=view.findViewById(R.id.delete_m);
 
         ArrayList<String> doc_id=new ArrayList<String>();
+        ArrayList<String> review_title=new ArrayList<String>();
         db=FirebaseFirestore.getInstance();
+
+        for(int i=0;i<data.size();i++){
+            db.collection("Review_Data")
+                    .whereEqualTo("review_text",data.get(i))
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    review_title.add(document.get("con_name",String.class));
+                                }
+                                Review_m_title.setText(review_title.get(position));
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+        }
+
+
 
         delete_m.setOnClickListener(new View.OnClickListener() {
             @Override

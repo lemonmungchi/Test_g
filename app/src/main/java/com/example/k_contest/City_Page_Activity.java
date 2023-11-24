@@ -3,6 +3,9 @@ package com.example.k_contest;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,8 +31,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class City_Page_Activity extends AppCompatActivity {
@@ -39,8 +45,13 @@ public class City_Page_Activity extends AppCompatActivity {
     private TextView infor;
     private String email;
 
+
     private ArrayList<String> heart_value;
     private ArrayList<String> heart_count;
+
+    private ArrayList<String> lat;
+
+    private ArrayList<String> lon;
     private FirebaseUser user;
     private int heart;
 
@@ -59,6 +70,8 @@ public class City_Page_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_page);
 
+
+        Button route_f=findViewById(R.id.route_f);
         imageV=findViewById(R.id.imageV);
         g_name=findViewById(R.id.name);
         infor=findViewById(R.id.infor);
@@ -67,6 +80,8 @@ public class City_Page_Activity extends AppCompatActivity {
 
         heart_value=new ArrayList<String>();
         heart_count=new ArrayList<String>();
+        lat=new ArrayList<String>();
+        lon=new ArrayList<String>();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -292,5 +307,136 @@ public class City_Page_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        route_f.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("nature_data")
+                        .whereEqualTo("data_title",name)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        lat.add(document.get("lattitude",String.class));
+                                        lon.add(document.get("logitude",String.class));
+                                    }
+                                    if(lat.size()>0&&lon.size()>0){
+                                        String url="nmap://actionPath?parameter=value&appname=ownroadrider";
+                                        String url_f="nmap://navigation?dlat=";
+                                        String url_b="&appname=com.example.ownroadrider";
+                                        String encodeResult;
+                                        List<ResolveInfo> list;
+                                        try {
+                                            encodeResult = URLEncoder.encode(name, "UTF-8");
+                                        } catch (UnsupportedEncodingException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                        Intent intents = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                        intents.addCategory(Intent.CATEGORY_BROWSABLE);
+
+                                        list = getPackageManager().queryIntentActivities(intents, PackageManager.MATCH_DEFAULT_ONLY);
+                                        if (list == null || list.isEmpty()) {
+                                            try {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url_f+String.valueOf(lat.get(0))+"&dlng="+String.valueOf(lon.get(0))+"&dname="+encodeResult+url_b)));
+                                            }catch (Exception e){
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nhn.android.nmap")));
+                                            }
+                                        } else {
+                                            startActivity(intent);
+                                        }
+                                    }else{
+                                        db.collection("culture_data")
+                                                .whereEqualTo("data_title",name)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                lat.add(document.get("lattitude",String.class));
+                                                                lon.add(document.get("logitude",String.class));
+                                                            }
+                                                            if(lat.size()>0&&lon.size()>0){
+                                                                String url="nmap://actionPath?parameter=value&appname=ownroadrider";
+                                                                String url_f="nmap://navigation?dlat=";
+                                                                String url_b="&appname=com.example.ownroadrider";
+                                                                String encodeResult;
+                                                                List<ResolveInfo> list;
+                                                                try {
+                                                                    encodeResult = URLEncoder.encode(name, "UTF-8");
+                                                                } catch (UnsupportedEncodingException e) {
+                                                                    throw new RuntimeException(e);
+                                                                }
+                                                                Intent intents = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                                                intents.addCategory(Intent.CATEGORY_BROWSABLE);
+
+                                                                list = getPackageManager().queryIntentActivities(intents, PackageManager.MATCH_DEFAULT_ONLY);
+                                                                if (list == null || list.isEmpty()) {
+                                                                    try {
+                                                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url_f+String.valueOf(lat.get(0))+"&dlng="+String.valueOf(lon.get(0))+"&dname="+encodeResult+url_b)));
+                                                                    }catch (Exception e){
+                                                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nhn.android.nmap")));
+                                                                    }
+                                                                } else {
+                                                                    startActivity(intent);
+                                                                }
+                                                            }else{
+                                                                db.collection("leisure_data")
+                                                                        .whereEqualTo("data_title",name)
+                                                                        .get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                if (task.isSuccessful()) {
+
+                                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                        lat.add(document.get("lattitude",String.class));
+                                                                                        lon.add(document.get("logitude",String.class));
+                                                                                    }
+                                                                                    if(lat.size()>0&&lon.size()>0){
+                                                                                        String url="nmap://actionPath?parameter=value&appname=ownroadrider";
+                                                                                        String url_f="nmap://navigation?dlat=";
+                                                                                        String url_b="&appname=com.example.ownroadrider";
+                                                                                        String encodeResult;
+                                                                                        List<ResolveInfo> list;
+                                                                                        try {
+                                                                                            encodeResult = URLEncoder.encode(name, "UTF-8");
+                                                                                        } catch (UnsupportedEncodingException e) {
+                                                                                            throw new RuntimeException(e);
+                                                                                        }
+                                                                                        Intent intents = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                                                                        intents.addCategory(Intent.CATEGORY_BROWSABLE);
+
+                                                                                        list = getPackageManager().queryIntentActivities(intents, PackageManager.MATCH_DEFAULT_ONLY);
+                                                                                        if (list == null || list.isEmpty()) {
+                                                                                            try {
+                                                                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url_f+String.valueOf(lat.get(0))+"&dlng="+String.valueOf(lon.get(0))+"&dname="+encodeResult+url_b)));
+                                                                                            }catch (Exception e){
+                                                                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nhn.android.nmap")));
+                                                                                            }
+                                                                                        } else {
+                                                                                            startActivity(intent);
+                                                                                        }
+                                                                                    }else{
+                                                                                            Log.d(TAG,"에러");
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        });
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                }
+                            }
+                        });
+            }
+        });
+
     }
 }

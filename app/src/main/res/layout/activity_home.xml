@@ -142,13 +142,13 @@
                     <ImageView
                         android:id="@+id/recommandImgBtn1"
                         android:layout_width="match_parent"
-                        android:layout_height="240dp"
+                        android:layout_height="324dp"
                         android:scaleType="centerCrop" />
 
                     <TextView
                         android:id="@+id/recommandText1"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="34dp"
                         android:gravity="center"
                         android:text="loading...."
                         android:textColor="@color/black"

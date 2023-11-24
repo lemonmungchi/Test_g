@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/imageV"
             android:layout_width="match_parent"
-            android:layout_height="176dp"
+            android:layout_height="240dp"
             android:layout_weight="1"
             android:scaleType="centerCrop" />
 
@@ -64,6 +64,7 @@
 
         </LinearLayout>
 
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -88,6 +89,7 @@
 
         </ScrollView>
 
+
         <Button
             android:id="@+id/reviewpagebutton"
             android:layout_width="match_parent"
@@ -95,6 +97,15 @@
             android:layout_margin="5dp"
             android:background="@drawable/border_radius"
             android:text="리뷰보기"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+        <Button
+            android:id="@+id/route_f"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/border_radius"
+            android:text="길찾기"
             android:textColor="@color/white"
             android:textSize="20sp" />
 

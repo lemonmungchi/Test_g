@@ -93,7 +93,7 @@ public class List_Adapter extends BaseAdapter{
 
 
 
-        bus_route.setOnClickListener(new View.OnClickListener() {
+        bus_route.setOnClickListener(new View.OnClickListener() {       //대중교통 길찾기
             @Override
             public void onClick(View view) {
                 String item= data.get(position);
@@ -126,7 +126,7 @@ public class List_Adapter extends BaseAdapter{
 
             }
         });
-        car_route.setOnClickListener(new View.OnClickListener() {
+        car_route.setOnClickListener(new View.OnClickListener() {       //자동차 길찾기
             @Override
             public void onClick(View view) {
                 String item= data.get(position);

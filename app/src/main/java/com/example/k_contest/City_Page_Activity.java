@@ -325,7 +325,7 @@ public class City_Page_Activity extends AppCompatActivity {
                                     }
                                     if(lat.size()>0&&lon.size()>0){
                                         String url="nmap://actionPath?parameter=value&appname=ownroadrider";
-                                        String url_f="nmap://navigation?dlat=";
+                                        String url_f="nmap://route/public?dlat=";
                                         String url_b="&appname=com.example.ownroadrider";
                                         String encodeResult;
                                         List<ResolveInfo> list;
@@ -362,7 +362,7 @@ public class City_Page_Activity extends AppCompatActivity {
                                                             }
                                                             if(lat.size()>0&&lon.size()>0){
                                                                 String url="nmap://actionPath?parameter=value&appname=ownroadrider";
-                                                                String url_f="nmap://navigation?dlat=";
+                                                                String url_f="nmap://route/public?dlat=";
                                                                 String url_b="&appname=com.example.ownroadrider";
                                                                 String encodeResult;
                                                                 List<ResolveInfo> list;
@@ -399,7 +399,7 @@ public class City_Page_Activity extends AppCompatActivity {
                                                                                     }
                                                                                     if(lat.size()>0&&lon.size()>0){
                                                                                         String url="nmap://actionPath?parameter=value&appname=ownroadrider";
-                                                                                        String url_f="nmap://navigation?dlat=";
+                                                                                        String url_f="nmap://route/public?dlat=";
                                                                                         String url_b="&appname=com.example.ownroadrider";
                                                                                         String encodeResult;
                                                                                         List<ResolveInfo> list;

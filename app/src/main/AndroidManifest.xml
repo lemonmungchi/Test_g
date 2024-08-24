@@ -41,10 +41,7 @@
             android:exported="true"/>
         <activity android:name=".Loading_4"
             android:exported="true"/>
-
-        <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="nowdd7jigt" />
+		
         <activity
             android:name=".Map_Basic"
             android:exported="false" />
